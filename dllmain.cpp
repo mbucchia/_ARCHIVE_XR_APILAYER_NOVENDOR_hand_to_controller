@@ -68,14 +68,16 @@ namespace {
     XrSession sessionId = XR_NULL_HANDLE;
     XrHandTrackerEXT handTracker[2]{ XR_NULL_HANDLE, XR_NULL_HANDLE };
     XrSpace referenceSpace = XR_NULL_HANDLE;
-    bool needAdvertiseProfile;
-    std::unordered_map<std::string, float> actionsState;
-    std::unordered_map<std::string, std::pair<bool, XrTime>> lastBooleanChange;
-    std::unordered_map<std::string, std::pair<float, XrTime>> lastFloatChange;
 
     // Mapping of XrAction and XrSpace.
     std::unordered_map<XrAction, std::vector<std::string>> actionsMap;
     std::unordered_map<XrSpace, std::pair<std::string, XrPosef>> spacesMap;
+
+    // State of the API.
+    bool needAdvertiseProfile;
+    std::unordered_map<std::string, float> actionsState;
+    std::unordered_map<std::string, std::pair<bool, XrTime>> lastBooleanChange;
+    std::unordered_map<std::string, std::pair<float, XrTime>> lastFloatChange;
 
     void Log(const char* fmt, ...);
 
@@ -83,32 +85,85 @@ namespace {
         bool loaded;
         std::string rawInteractionProfile;
         XrPath interactionProfile;
-        bool useFingerAim;
+        bool leftHandEnabled;
+        bool rightHandEnabled;
+
+        // The index of the joint (see enum XrHandJointEXT) to use for the aim pose.
+        int aimJointIndex;
+
+        // The index of the joint (see enum XrHandJointEXT) to use for the grip pose.
+        int gripJointIndex;
+
+        // The threshold (between 0 and 1) when converting a float action into a boolean action and the action is true.
+        float clickThreshold;
+
+        // The transformation to apply to the aim and grip poses.
         XrPosef transform[2];
-        std::string pinchAction[2];
-        std::string squeezeAction[2];
-        std::string palmTapAction[2];
+
+        // The target XrAction path for a given gesture, and the near/far threshold to map the float action too (near maps to 1, far maps to 0).
+#define DEFINE_ACTION(configName)           \
+        std::string configName##Action[2];  \
+        float configName##Near;             \
+        float configName##Far;
+
+        DEFINE_ACTION(pinch);
+        DEFINE_ACTION(thumbPress);
+        DEFINE_ACTION(indexBend);
+        DEFINE_ACTION(squeeze);
+        DEFINE_ACTION(palmTap);
+        DEFINE_ACTION(wristTap);
+        DEFINE_ACTION(indexProximalTap);
+        DEFINE_ACTION(littleProximalTap);
+
+#undef DEFINE_ACTION
 
         void Dump()
         {
             if (loaded)
             {
                 Log("Emulating interaction profile: %s\n", rawInteractionProfile.c_str());
-                Log("Left transform: (%.3f, %.3f, %.3f) (%.3f, %.3f, %.3f, %.3f)\n",
-                    transform[0].position.x, transform[0].position.y, transform[0].position.z,
-                    transform[0].orientation.x, transform[0].orientation.y, transform[0].orientation.z, transform[0].orientation.w);
-                Log("Right transform: (%.3f, %.3f, %.3f) (%.3f, %.3f, %.3f, %.3f)\n",
-                    transform[1].position.x, transform[1].position.y, transform[1].position.z,
-                    transform[1].orientation.x, transform[1].orientation.y, transform[1].orientation.z, transform[1].orientation.w);
-                if (useFingerAim)
+                if (leftHandEnabled)
                 {
-                    Log("Using finger aim\n");
+                    Log("Left transform: (%.3f, %.3f, %.3f) (%.3f, %.3f, %.3f, %.3f)\n",
+                        transform[0].position.x, transform[0].position.y, transform[0].position.z,
+                        transform[0].orientation.x, transform[0].orientation.y, transform[0].orientation.z, transform[0].orientation.w);
+                }
+                if (rightHandEnabled)
+                {
+                    Log("Right transform: (%.3f, %.3f, %.3f) (%.3f, %.3f, %.3f, %.3f)\n",
+                        transform[1].position.x, transform[1].position.y, transform[1].position.z,
+                        transform[1].orientation.x, transform[1].orientation.y, transform[1].orientation.z, transform[1].orientation.w);
+                }
+                if (leftHandEnabled || rightHandEnabled)
+                {
+                    Log("Grip pose uses joint: %d\n", config.gripJointIndex);
+                    Log("Aim pose uses joint: %d\n", config.aimJointIndex);
+                    Log("Click threshold: %.3f\n", config.clickThreshold);
                 }
                 for (int side = 0; side <= 1; side++)
                 {
-                    Log("%s hand pinch action translates to: %s\n", side ? "Right" : "Left", pinchAction[side].c_str());
-                    Log("%s hand squeeze action translates to: %s\n", side ? "Right" : "Left", squeezeAction[side].c_str());
-                    Log("%s hand palm tap action translates to: %s\n", side ? "Right" : "Left", palmTapAction[side].c_str());
+                    if ((side == 0 && !leftHandEnabled) || (side == 1 && !rightHandEnabled))
+                    {
+                        continue;
+                    }
+
+#define LOG_IF_SET(actionName, configName)                                                                          \
+                    if (!configName##Action[side].empty())                                                          \
+                    {                                                                                               \
+                        Log("%s hand " #actionName " translates to: %s (near: %.3f, far: %.3f)\n", side ? "Right" : "Left",    \
+                            configName##Action[side].c_str(), configName##Near, configName##Far);                   \
+                    }
+
+                    LOG_IF_SET("pinch", pinch);
+                    LOG_IF_SET("thumb press", thumbPress);
+                    LOG_IF_SET("index bend", indexBend);
+                    LOG_IF_SET("squeeze", squeeze);
+                    LOG_IF_SET("palm tap", palmTap);
+                    LOG_IF_SET("wrist tap", wristTap);
+                    LOG_IF_SET("index proximal", indexProximalTap);
+                    LOG_IF_SET("little proximal", littleProximalTap);
+
+#undef LOG_IF_SET
                 }
             }
         }
@@ -116,18 +171,47 @@ namespace {
         void Reset()
         {
             loaded = false;
-            rawInteractionProfile = "/interaction_profiles/microsoft/motion_controller";
+            rawInteractionProfile = "/interaction_profiles/hp/mixed_reality_controller";
             interactionProfile = XR_NULL_PATH;
-            useFingerAim = true;
+            leftHandEnabled = true;
+            rightHandEnabled = true;
+            aimJointIndex = XR_HAND_JOINT_INDEX_INTERMEDIATE_EXT;
+            gripJointIndex = XR_HAND_JOINT_PALM_EXT;
+            clickThreshold = 0.75f;
             transform[0] = transform[1] = Pose::Identity();
             pinchAction[0] = pinchAction[1] = "/input/trigger/value";
+            pinchNear = 0.01f;
+            pinchFar = 0.06f;
+            thumbPressAction[0] = thumbPressAction[1] = "";
+            thumbPressNear = 0.01f;
+            thumbPressFar = 0.05f;
+            indexBendAction[0] = indexBendAction[1] = "";
+            indexBendNear = 0.045f;
+            indexBendFar = 0.07f;
             squeezeAction[0] = squeezeAction[1] = "/input/squeeze/value";
-            palmTapAction[0] = palmTapAction[1] = "/input/menu/click";
+            squeezeNear = 0.01f;
+            squeezeFar = 0.07f;
+            palmTapAction[0] = palmTapAction[1] = "";
+            palmTapNear = 0.02f;
+            palmTapFar = 0.06f;
+            wristTapAction[0] = wristTapAction[1] = "/input/menu/click";
+            wristTapNear = 0.04f;
+            wristTapFar = 0.05f;
+            indexProximalTapAction[0] = "/input/y/click";
+            indexProximalTapAction[1] = "/input/b/click";
+            indexProximalTapNear = 0.02f;
+            indexProximalTapFar = 0.035f;
+            littleProximalTapAction[0] = "/input/x/click";
+            littleProximalTapAction[1] = "/input/a/click";
+            littleProximalTapNear = 0.02f;
+            littleProximalTapFar = 0.035f;
         }
     } config;
 
     // Utility logging function.
-    void InternalLog(const char* fmt, va_list va)
+    void InternalLog(
+        const char* fmt,
+        va_list va)
     {
         char buf[1024];
         _vsnprintf_s(buf, sizeof(buf), fmt, va);
@@ -140,7 +224,9 @@ namespace {
     }
 
     // General logging function.
-    void Log(const char* fmt, ...)
+    void Log(
+        const char* fmt,
+        ...)
     {
         va_list va;
         va_start(va, fmt);
@@ -149,7 +235,9 @@ namespace {
     }
 
     // Debug logging function. Can make things very slow (only enabled on Debug builds).
-    void DebugLog(const char* fmt, ...)
+    void DebugLog(
+        const char* fmt,
+        ...)
     {
 #ifdef _DEBUG
         va_list va;
@@ -160,7 +248,8 @@ namespace {
     }
 
     // Load configuration for our layer.
-    bool LoadConfiguration(const std::string configName)
+    bool LoadConfiguration(
+        const std::string configName)
     {
         if (configName.empty())
         {
@@ -203,9 +292,29 @@ namespace {
                         {
                             config.rawInteractionProfile = value;
                         }
-                        else if (name == "useFingerAim")
+                        else if (name == "aim_joint")
                         {
-                            config.useFingerAim = value == "1" || value == "true";
+                            config.aimJointIndex = std::stoi(value);
+                        }
+                        else if (name == "grip_joint")
+                        {
+                            config.gripJointIndex = std::stoi(value);
+                        }
+                        else if (name == "click_threshold")
+                        {
+                            config.clickThreshold = std::stof(value);
+                        }
+                        else if (subName == "enabled")
+                        {
+                            const bool boolValue = value == "1" || value == "true";
+                            if (side == 0)
+                            {
+                                config.leftHandEnabled = boolValue;
+                            }
+                            else
+                            {
+                                config.rightHandEnabled = boolValue;
+                            }
                         }
                         else if (subName == "transform.vec")
                         {
@@ -231,18 +340,30 @@ namespace {
                             std::getline(ss, component, ' ');
                             config.transform[side].orientation.w = std::stof(component);
                         }
-                        else if (subName == "pinch")
-                        {
-                            config.pinchAction[side] = value;
+#define PARSE_ACTION(configString, configName)                          \
+                        else if (subName == configString)               \
+                        {                                               \
+                            config.configName##Action[side] = value;    \
+                        }                                               \
+                        else if (name == configString ".near")          \
+                        {                                               \
+                            config.configName##Near = std::stof(value); \
+                        }                                               \
+                        else if (name == configString ".far")           \
+                        {                                               \
+                            config.configName##Far = std::stof(value);  \
                         }
-                        else if (subName == "squeeze")
-                        {
-                            config.squeezeAction[side] = value;
-                        }
-                        else if (subName == "palm_tap")
-                        {
-                            config.palmTapAction[side] = value;
-                        }
+
+                        PARSE_ACTION("pinch", pinch)
+                        PARSE_ACTION("thumb_press", thumbPress)
+                        PARSE_ACTION("index_bend", indexBend)
+                        PARSE_ACTION("squeeze", squeeze)
+                        PARSE_ACTION("palm_tap", palmTap)
+                        PARSE_ACTION("wrist_tap", wristTap)
+                        PARSE_ACTION("index_proximal_tap", indexProximalTap)
+                        PARSE_ACTION("little_proximal_tap", littleProximalTap)
+
+#undef PARSE_ACTION
                     }
                 }
                 catch (...)
@@ -377,6 +498,46 @@ namespace {
         return result;
     }
 
+    // Utility function to translate an XrPath to a string we can use.
+    std::string getPath(
+        XrPath path)
+    {
+        // TODO: Robustness: implement proper error handling.
+        char buf[XR_MAX_PATH_LENGTH];
+        uint32_t count;
+        xrPathToString(instanceId, path, sizeof(buf), &count, buf);
+        return buf;
+    }
+
+    // Get the binding for a specific action/subaction path.
+    std::string getActionFullPath(
+        XrAction action,
+        XrPath subactionPath)
+    {
+        std::string fullPath;
+        const auto actionPath = actionsMap.find(action);
+        if (actionPath != actionsMap.cend())
+        {
+            if (subactionPath != XR_NULL_PATH)
+            {
+                std::string subPath = getPath(subactionPath);
+                for (auto path : actionPath->second)
+                {
+                    if (path.find(subPath) == 0)
+                    {
+                        fullPath = path;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                fullPath = actionPath->second[0];
+            }
+        }
+        return fullPath;
+    }
+
     XrResult HandToController_xrPollEvent(
         const XrInstance instance,
         XrEventDataBuffer* const eventData)
@@ -406,15 +567,6 @@ namespace {
         return result;
     }
 
-    std::string getPath(XrPath path)
-    {
-        // TODO: Robustness: implement proper error handling.
-        char buf[XR_MAX_PATH_LENGTH];
-        uint32_t count;
-        xrPathToString(instanceId, path, sizeof(buf), &count, buf);
-        return buf;
-    }
-
     XrResult HandToController_xrGetCurrentInteractionProfile(
         const XrSession session,
         const XrPath topLevelUserPath,
@@ -440,32 +592,6 @@ namespace {
         DebugLog("<-- HandToController_xrGetCurrentInteractionProfile %d\n", result);
 
         return result;
-    }
-
-    std::string getActionFullPath(XrAction action, XrPath subactionPath)
-    {
-        std::string fullPath;
-        const auto actionPath = actionsMap.find(action);
-        if (actionPath != actionsMap.cend())
-        {
-            if (subactionPath != XR_NULL_PATH)
-            {
-                std::string subPath = getPath(subactionPath);
-                for (auto path : actionPath->second)
-                {
-                    if (path.find(subPath) == 0)
-                    {
-                        fullPath = path;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                fullPath = actionPath->second[0];
-            }
-        }
-        return fullPath;
     }
 
     XrResult HandToController_xrSuggestInteractionProfileBindings(
@@ -508,7 +634,6 @@ namespace {
 
         return result;
     }
-
 
     XrResult HandToController_xrCreateActionSpace(
         const XrSession session,
@@ -571,12 +696,12 @@ namespace {
             const std::string fullPath = actionSpace->second.first;
             const XrPosef transform = actionSpace->second.second;
 
+            const int side = fullPath.find("/user/hand/right") != std::string::npos ? 1 : 0;
             const bool isAim = fullPath.find("/input/aim/pose") != std::string::npos;
-            const bool isGrip = fullPath.find("/input/grip/pose") != std::string::npos || (isAim && !config.useFingerAim);
+            const bool isGrip = fullPath.find("/input/grip/pose") != std::string::npos;
 
-            if (isGrip || isAim)
+            if (((side == 0 && config.leftHandEnabled) || (side == 1 && config.rightHandEnabled)) && (isGrip || isAim))
             {
-                const int side = fullPath.find("/user/hand/right") != std::string::npos ? 1 : 0;
 
                 DebugLog("Simulating %s controller %s\n", side ? "right" : "left", isGrip ? "grip" : "aim");
 
@@ -591,10 +716,11 @@ namespace {
                 locations.jointCount = XR_HAND_JOINT_COUNT_EXT;
                 locations.jointLocations = jointLocations;
 
+                // Translate the hand poses for the requested joint to a controller pose (XrActionSpace).
                 result = xrLocateHandJointsEXT(handTracker[side], &locateInfo, &locations);
                 if (result == XR_SUCCESS)
                 {
-                    const int joint = isGrip ? XR_HAND_JOINT_PALM_EXT : XR_HAND_JOINT_INDEX_TIP_EXT;
+                    const int joint = isGrip ? config.gripJointIndex : config.aimJointIndex;
 
                     location->locationFlags = locations.jointLocations[joint].locationFlags;
                     DebugLog("locationFlags %d\n", location->locationFlags);
@@ -619,6 +745,42 @@ namespace {
         return result;
     }
 
+    // Compute an action state based on the distance between 2 joints.
+    void computeJointAction(
+        const XrHandJointLocationEXT jointLocations[2][XR_HAND_JOINT_COUNT_EXT],
+        const int side1,
+        const int joint1,
+        const int side2,
+        const int joint2,
+        const std::string& sidePath,
+        const std::string& actionPath,
+        const float nearDistance,
+        const float farDistance)
+    {
+        if (!actionPath.empty() &&
+            Pose::IsPoseValid(jointLocations[side1][joint1].locationFlags) &&
+            Pose::IsPoseValid(jointLocations[side2][joint2].locationFlags))
+        {
+            const std::string path = sidePath + actionPath;
+
+            // We ignore joints radius and assume the near/far distance are configured to account for them.
+            const float distance = max(Length(jointLocations[side1][joint1].pose.position - jointLocations[side2][joint2].pose.position), 0.f);
+
+            const float value = 1.f - (std::clamp(distance, nearDistance, farDistance) - nearDistance) / (farDistance - nearDistance);
+
+            // TODO: Robustness: do we need to debounce actions to avoid false-triggering?
+
+            DebugLog("Action %s -> %.3f (distance %.3f)\n", path.c_str(), value, distance);
+            actionsState.insert_or_assign(path, value);
+
+            // Create click from value for convenience (but not the other way around).
+            if (path.rfind("/value") != std::string::npos)
+            {
+                actionsState.insert_or_assign(path.substr(0, path.length() - 6) + "/click", value);
+            }
+        }
+    }
+
     XrResult HandToController_xrSyncActions(
         const XrSession session, 
         const XrActionsSyncInfo* const syncInfo)
@@ -634,32 +796,13 @@ namespace {
             // TODO: Optimization: add caching of the hand pose between this API and xrLocateSpace() above.
 
             // Latch gesture state for both hands.
+            // We do this regardless of whether a hand is enabled or not, in order to still handle 2-handed gestures.
             XrHandJointsLocateInfoEXT locateInfo{ XR_TYPE_HAND_JOINTS_LOCATE_INFO_EXT };
             locateInfo.baseSpace = referenceSpace;
             locateInfo.time = begunFrameTime;
 
             XrHandJointLocationEXT jointLocations[2][XR_HAND_JOINT_COUNT_EXT];
             XrResult handResult[2];
-
-            // Helper to update state.
-            const auto insertValue = [](const std::string& path, const float value)
-            {
-                // TODO: Robustness: do we need to debounce actions to avoid false-triggering?
-
-                DebugLog("Action %s -> %f\n", path.c_str(), value);
-                actionsState.insert_or_assign(path, value);
-
-                // Create click/value interop for convenience.
-                if (path.rfind("/click") != std::string::npos)
-                {
-                    actionsState.insert_or_assign(path.substr(0, path.length() - 6) + "/value", value);
-                }
-                else if (path.rfind("/value") != std::string::npos)
-                {
-                    actionsState.insert_or_assign(path.substr(0, path.length() - 6) + "/click", value);
-                }
-
-            };
 
             for (int side = 0; side <= 1; side++)
             {
@@ -670,57 +813,45 @@ namespace {
                 locations.jointLocations = jointLocations[side];
 
                 handResult[side] = xrLocateHandJointsEXT(handTracker[side], &locateInfo, &locations);
-                if (handResult[side] == XR_SUCCESS)
-                {
-                    // Handle gestures made up from one hand.
-
-                    // Pinching.
-                    if (Pose::IsPoseValid(jointLocations[side][XR_HAND_JOINT_THUMB_TIP_EXT].locationFlags) &&
-                        Pose::IsPoseValid(jointLocations[side][XR_HAND_JOINT_INDEX_TIP_EXT].locationFlags))
-                    {
-                        const std::string path = sidePath + config.pinchAction[side];
-
-                        const float distance = max(Length(jointLocations[side][XR_HAND_JOINT_THUMB_TIP_EXT].pose.position - jointLocations[side][XR_HAND_JOINT_INDEX_TIP_EXT].pose.position) -
-                            (jointLocations[side][XR_HAND_JOINT_THUMB_TIP_EXT].radius + jointLocations[side][XR_HAND_JOINT_INDEX_TIP_EXT].radius), 0.f);
-                        
-                        static constexpr float restingDistance = 0.06f; // 6cm
-                        const float value = (1.f / restingDistance) * std::clamp(restingDistance - distance, 0.f, restingDistance);
-
-                        insertValue(path, value);
-                    }
-
-                    // TODO: Feature: add more gesture recognition here.
-                }
-                else
+                if (handResult[side] != XR_SUCCESS)
                 {
                     Log("Failed to get hand pose: %d\n", handResult);
                 }
 
-                if (handResult[0] == XR_SUCCESS && handResult[1] == XR_SUCCESS)
+                for (int side = 0; side <= 1; side++)
                 {
-                    // Handle gestures made up using both hands.
-
-                    for (int side = 0; side <= 1; side++)
+                    // Skip actions for disabled hands.
+                    if ((side == 0 && !config.leftHandEnabled) || (side == 1 && !config.rightHandEnabled))
                     {
-                        const std::string sidePath = side ? "/user/hand/right" : "/user/hand/left";
-                        const int other_side = side ? 0 : 1;
+                        continue;
+                    }
 
-                        // Palm tap.
-                        if (Pose::IsPoseValid(jointLocations[side][XR_HAND_JOINT_PALM_EXT].locationFlags) &&
-                            Pose::IsPoseValid(jointLocations[other_side][XR_HAND_JOINT_INDEX_TIP_EXT].locationFlags))
+                    const std::string sidePath = side ? "/user/hand/right" : "/user/hand/left";
+                    const int other_side = side ? 0 : 1;
+
+                    if (handResult[side] == XR_SUCCESS)
+                    {
+                        // Handle gestures made up from one hand.
+
+#define ACTION_PARAMS(configName) config.configName##Action[side], config.configName##Near, config.configName##Far
+
+                        computeJointAction(jointLocations, side, XR_HAND_JOINT_THUMB_TIP_EXT, side, XR_HAND_JOINT_INDEX_TIP_EXT, sidePath, ACTION_PARAMS(pinch));
+                        computeJointAction(jointLocations, side, XR_HAND_JOINT_INDEX_INTERMEDIATE_EXT, side, XR_HAND_JOINT_THUMB_TIP_EXT, sidePath, ACTION_PARAMS(thumbPress));
+                        computeJointAction(jointLocations, side, XR_HAND_JOINT_INDEX_PROXIMAL_EXT, side, XR_HAND_JOINT_INDEX_TIP_EXT, sidePath, ACTION_PARAMS(indexBend));
+                        // TODO: Feature: add squeeze (which uses 4 joints).
+
+                        if (handResult[other_side] == XR_SUCCESS)
                         {
-                            const std::string path = sidePath + config.palmTapAction[side];
+                            // Handle gestures made up using both hands.
 
-                            const float distance = max(Length(jointLocations[side][XR_HAND_JOINT_PALM_EXT].pose.position - jointLocations[other_side][XR_HAND_JOINT_INDEX_TIP_EXT].pose.position) -
-                                (jointLocations[side][XR_HAND_JOINT_PALM_EXT].radius + jointLocations[other_side][XR_HAND_JOINT_INDEX_TIP_EXT].radius), 0.f);
-
-                            static constexpr float restingDistance = 0.05f; // 5cm
-                            const float value = (1.f / restingDistance) * std::clamp(restingDistance - distance, 0.f, restingDistance);
-
-                            insertValue(path, value);
+                            computeJointAction(jointLocations, side, XR_HAND_JOINT_PALM_EXT, other_side, XR_HAND_JOINT_INDEX_TIP_EXT, sidePath, ACTION_PARAMS(palmTap));
+                            computeJointAction(jointLocations, side, XR_HAND_JOINT_WRIST_EXT, other_side, XR_HAND_JOINT_INDEX_TIP_EXT, sidePath, ACTION_PARAMS(wristTap));
+                            computeJointAction(jointLocations, side, XR_HAND_JOINT_INDEX_PROXIMAL_EXT, other_side, XR_HAND_JOINT_INDEX_TIP_EXT, sidePath, ACTION_PARAMS(indexProximalTap));
+                            computeJointAction(jointLocations, side, XR_HAND_JOINT_LITTLE_PROXIMAL_EXT, other_side, XR_HAND_JOINT_INDEX_TIP_EXT, sidePath, ACTION_PARAMS(littleProximalTap));
                         }
 
                         // TODO: Feature: add more gesture recognition here.
+#undef ACTION_PARAMS
                     }
                 }
             }
@@ -749,8 +880,7 @@ namespace {
             if (stateVar != actionsState.cend())
             {
                 auto lastState = lastBooleanChange.find(fullPath);
-                // TODO: Feature: make it a configurable threshold.
-                const bool value = stateVar->second > 0.75f;
+                const bool value = stateVar->second > config.clickThreshold;
 
                 // TODO: Cleanliness: refactor common code with xrGetActionStateFloat() below.
                 if (lastState != lastBooleanChange.end())
@@ -779,6 +909,7 @@ namespace {
         // Call the chain to perform the operation for unhandled paths.
         if (!handled)
         {
+            // TODO: Compliance: properly set isActive when not bound.
             result = next_xrGetActionStateBoolean(session, getInfo, state);
         }
 
