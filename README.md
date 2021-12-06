@@ -45,10 +45,14 @@ Could not load config for "Zouna"
 
 The presence of the configuration file for the desired application will enable the input translation feature. Without a configuration file, even an empty one, the software will not be active.
 
-By default, an empty configuration will emulate a Windows Mixed Reality motion controller with basic bindings:
+By default, an empty configuration will emulate an HP Mixed Reality motion controller with basic bindings:
 
-- Pinching acts as the controller's trigger;
-- Tapping the palm with the index of the opposite hand acts as the controller's menu button.
+- Pinching (index to thumb) acts as the controller's trigger;
+- Tapping the palm with the index of the opposite hand acts as the controller's menu button;
+- Tapping the index proximal with the index of the opposite hand acts as the controller's Y or B button;
+- Tapping the little proximal with the index of the opposite hand acts as the controller's X or A button.
+
+NOTE: Squeezing is currently not implemented.
 
 5. When running the application, the changes should take affect. Inspect the log file if it needs to be confirmed:
 
