@@ -21,6 +21,11 @@
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
 #include <windows.h>
 #include <unknwn.h>
+#include <wrl.h>
+
+// D3D
+#include <d3d11.h>
+#include <d3dcompiler.h>
 
 // OpenXR + Windows-specific definitions.
 #define XR_USE_PLATFORM_WIN32
@@ -31,6 +36,8 @@
 #include "loader_interfaces.h"
 
 // Utilities.
+#include "XrError.h"
 #include "XrMath.h"
+#include "XrToString.h"
 
 #endif //PCH_H

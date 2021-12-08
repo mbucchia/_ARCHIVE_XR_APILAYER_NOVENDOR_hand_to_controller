@@ -20,12 +20,24 @@
     <ClInclude Include="XrMath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="HandRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XrError.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XrToString.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HandRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -16,10 +16,13 @@
 
 #include "pch.h"
 
+#include "HandRenderer.h"
+
 #define STRINGIFY(s) XSTRINGIFY(s)
 #define XSTRINGIFY(s) #s
 
 namespace {
+    using Microsoft::WRL::ComPtr;
     using namespace xr::math;
 
     // TODO: Cleanliness: refactor the code to make use of classes instead of the many hanging global variables.
@@ -48,6 +51,11 @@ namespace {
     PFN_xrGetActionStateBoolean next_xrGetActionStateBoolean = nullptr;
     PFN_xrGetActionStateFloat next_xrGetActionStateFloat = nullptr;
     PFN_xrGetActionStatePose next_xrGetActionStatePose = nullptr;
+    PFN_xrCreateSwapchain next_xrCreateSwapchain = nullptr;
+    PFN_xrDestroySwapchain next_xrDestroySwapchain = nullptr;
+    PFN_xrEnumerateSwapchainImages next_xrEnumerateSwapchainImages = nullptr;
+    PFN_xrAcquireSwapchainImage next_xrAcquireSwapchainImage = nullptr;
+    PFN_xrEndFrame next_xrEndFrame = nullptr;
 
     // Function pointers to interact with the runtime.
     PFN_xrCreateReferenceSpace xrCreateReferenceSpace = nullptr;
@@ -79,6 +87,21 @@ namespace {
     std::unordered_map<std::string, std::pair<bool, XrTime>> lastBooleanChange;
     std::unordered_map<std::string, std::pair<float, XrTime>> lastFloatChange;
 
+    // Hands visualization.
+    ComPtr<ID3D11Device> d3d11Device = nullptr;
+    HandRenderer handRenderer;
+    std::unordered_map<XrSwapchain, XrSwapchainCreateInfo> swapchainInfo;
+    struct SwapchainResources
+    {
+        ID3D11RenderTargetView* rtv;
+        ID3D11DepthStencilView* dsv;
+    };
+    std::unordered_map<XrSwapchain, ComPtr<ID3D11Texture2D>> ownDepthBuffer;
+    std::unordered_map<XrSwapchain, ComPtr<ID3D11DepthStencilView>> ownDsv;
+    std::unordered_map<XrSwapchain, std::vector<SwapchainResources>> swapchainResources;
+    std::unordered_map<XrSwapchain, uint32_t> swapchainIndices;
+
+
     void Log(const char* fmt, ...);
 
     struct {
@@ -87,6 +110,19 @@ namespace {
         XrPath interactionProfile;
         bool leftHandEnabled;
         bool rightHandEnabled;
+        bool displayEnabled;
+
+        // Whether to try to use the app's depth buffer or always use our own.
+        bool useOwnDepthBuffer;
+
+        // The skin tone to use for rendering the hand, 0=bright to 2=dark.
+        int skinTone;
+
+        // The opacity (alpha channel) for the hand mesh.
+        float opacity;
+
+        // Which projection layer to use for drawing the hands.
+        int projLayerIndex;
 
         // The index of the joint (see enum XrHandJointEXT) to use for the aim pose.
         int aimJointIndex;
@@ -122,6 +158,11 @@ namespace {
             if (loaded)
             {
                 Log("Emulating interaction profile: %s\n", rawInteractionProfile.c_str());
+                if (displayEnabled)
+                {
+                    Log("Hands display is enabled in projection layer %d with %s depth buffer\n", projLayerIndex, useOwnDepthBuffer ? "own" : "app (if available)");
+                    Log("Using %s skin tone and %.3f opacity\n", skinTone == 0 ? "bright" : skinTone == 1 ? "medium" : "dark", opacity);
+                }
                 if (leftHandEnabled)
                 {
                     Log("Left transform: (%.3f, %.3f, %.3f) (%.3f, %.3f, %.3f, %.3f)\n",
@@ -171,10 +212,16 @@ namespace {
         void Reset()
         {
             loaded = false;
+            // NOTE: Have to maintain parity with Form1 ctor in Form1.cs.
             rawInteractionProfile = "/interaction_profiles/hp/mixed_reality_controller";
             interactionProfile = XR_NULL_PATH;
             leftHandEnabled = true;
             rightHandEnabled = true;
+            displayEnabled = true;
+            useOwnDepthBuffer = false;
+            config.skinTone = 1; // Medium
+            opacity = 1.0f;
+            projLayerIndex = 0;
             aimJointIndex = XR_HAND_JOINT_INDEX_INTERMEDIATE_EXT;
             gripJointIndex = XR_HAND_JOINT_PALM_EXT;
             clickThreshold = 0.75f;
@@ -247,101 +294,106 @@ namespace {
 #endif
     }
 
-    // Load configuration for our layer.
-    bool LoadConfiguration(
-        const std::string configName)
+    void ParseConfigurationStatement(
+        const std::string line,
+        unsigned int lineNumber = 1)
     {
-        if (configName.empty())
+        try
         {
-            return false;
-        }
-
-        std::ifstream configFile(std::filesystem::path(dllHome) / std::filesystem::path(configName + ".cfg"));
-        if (configFile.is_open())
-        {
-            Log("Loading config for \"%s\"\n", configName.c_str());
-
-            unsigned int lineNumber = 0;
-            std::string line;
-            while (std::getline(configFile, line))
+            // TODO: Usability: handle comments, white spaces, blank lines...
+            const auto offset = line.find('=');
+            if (offset != std::string::npos)
             {
-                lineNumber++;
-                try
+                const std::string name = line.substr(0, offset);
+                const std::string value = line.substr(offset + 1);
+                std::string subName;
+                int side = -1;
+
+                if (line.substr(0, 5) == "left.")
                 {
-                    // TODO: Usability: handle comments, white spaces, blank lines...
-                    const auto offset = line.find('=');
-                    if (offset != std::string::npos)
+                    side = 0;
+                    subName = name.substr(5);
+                }
+                else if (line.substr(0, 6) == "right.")
+                {
+                    side = 1;
+                    subName = name.substr(6);
+                }
+
+                if (name == "interaction_profile")
+                {
+                    config.rawInteractionProfile = value;
+                }
+                else if (name == "display.enabled")
+                {
+                    config.displayEnabled = value == "1" || value == "true";
+                }
+                else if (name == "force_own_depth_buffer")
+                {
+                    config.useOwnDepthBuffer = value == "1" || value == "true";
+                }
+                else if (name == "skin_tone")
+                {
+                    config.skinTone = std::stof(value);
+                }
+                else if (name == "opacity")
+                {
+                    config.opacity = std::stof(value);
+                }
+                else if (name == "proj_layer_index")
+                {
+                    config.projLayerIndex = std::stoi(value);
+                }
+                else if (name == "aim_joint")
+                {
+                    config.aimJointIndex = std::stoi(value);
+                }
+                else if (name == "grip_joint")
+                {
+                    config.gripJointIndex = std::stoi(value);
+                }
+                else if (name == "click_threshold")
+                {
+                    config.clickThreshold = std::stof(value);
+                }
+                else if (side >= 0 && subName == "enabled")
+                {
+                    const bool boolValue = value == "1" || value == "true";
+                    if (side == 0)
                     {
-                        const std::string name = line.substr(0, offset);
-                        const std::string value = line.substr(offset + 1);
-                        std::string subName;
-                        int side = -1;
-
-                        if (line.substr(0, 5) == "left.")
-                        {
-                            side = 0;
-                            subName = name.substr(5);
-                        }
-                        else if (line.substr(0, 6) == "right.")
-                        {
-                            side = 1;
-                            subName = name.substr(6);
-                        }
-
-                        if (name == "interactionProfile")
-                        {
-                            config.rawInteractionProfile = value;
-                        }
-                        else if (name == "aim_joint")
-                        {
-                            config.aimJointIndex = std::stoi(value);
-                        }
-                        else if (name == "grip_joint")
-                        {
-                            config.gripJointIndex = std::stoi(value);
-                        }
-                        else if (name == "click_threshold")
-                        {
-                            config.clickThreshold = std::stof(value);
-                        }
-                        else if (subName == "enabled")
-                        {
-                            const bool boolValue = value == "1" || value == "true";
-                            if (side == 0)
-                            {
-                                config.leftHandEnabled = boolValue;
-                            }
-                            else
-                            {
-                                config.rightHandEnabled = boolValue;
-                            }
-                        }
-                        else if (subName == "transform.vec")
-                        {
-                            std::stringstream ss(value);
-                            std::string component;
-                            std::getline(ss, component, ' ');
-                            config.transform[side].position.x = std::stof(component);
-                            std::getline(ss, component, ' ');
-                            config.transform[side].position.y = std::stof(component);
-                            std::getline(ss, component, ' ');
-                            config.transform[side].position.z = std::stof(component);
-                        }
-                        else if (subName == "transform.quat")
-                        {
-                            std::stringstream ss(value);
-                            std::string component;
-                            std::getline(ss, component, ' ');
-                            config.transform[side].orientation.x = std::stof(component);
-                            std::getline(ss, component, ' ');
-                            config.transform[side].orientation.y = std::stof(component);
-                            std::getline(ss, component, ' ');
-                            config.transform[side].orientation.z = std::stof(component);
-                            std::getline(ss, component, ' ');
-                            config.transform[side].orientation.w = std::stof(component);
-                        }
+                        config.leftHandEnabled = boolValue;
+                    }
+                    else
+                    {
+                        config.rightHandEnabled = boolValue;
+                    }
+                }
+                else if (side >= 0 && subName == "transform.vec")
+                {
+                    std::stringstream ss(value);
+                    std::string component;
+                    std::getline(ss, component, ' ');
+                    config.transform[side].position.x = std::stof(component);
+                    std::getline(ss, component, ' ');
+                    config.transform[side].position.y = std::stof(component);
+                    std::getline(ss, component, ' ');
+                    config.transform[side].position.z = std::stof(component);
+                }
+                else if (side >= 0 && subName == "transform.quat")
+                {
+                    std::stringstream ss(value);
+                    std::string component;
+                    std::getline(ss, component, ' ');
+                    config.transform[side].orientation.x = std::stof(component);
+                    std::getline(ss, component, ' ');
+                    config.transform[side].orientation.y = std::stof(component);
+                    std::getline(ss, component, ' ');
+                    config.transform[side].orientation.z = std::stof(component);
+                    std::getline(ss, component, ' ');
+                    config.transform[side].orientation.w = std::stof(component);
+                }
 #define PARSE_ACTION(configString, configName)                          \
-                        else if (subName == configString)               \
+                        else if (side >= 0 && subName == configString)   \
                         {                                               \
                             config.configName##Action[side] = value;    \
                         }                                               \
@@ -364,12 +416,42 @@ namespace {
                         PARSE_ACTION("little_proximal_tap", littleProximalTap)
 
 #undef PARSE_ACTION
-                    }
-                }
-                catch (...)
+                else
                 {
-                    Log("Error parsing L%u\n", lineNumber);
+                    Log("L%u: Unrecognized option\n", lineNumber);
                 }
+            }
+            else
+            {
+                Log("L%u: Improperly formatted option\n", lineNumber);
+            }
+        }
+        catch (...)
+        {
+            Log("L%u: Parsing error\n", lineNumber);
+        }
+    }
+
+    // Load configuration for our layer.
+    bool LoadConfiguration(
+        const std::string configName)
+    {
+        if (configName.empty())
+        {
+            return false;
+        }
+
+        std::ifstream configFile(std::filesystem::path(dllHome) / std::filesystem::path(configName + ".cfg"));
+        if (configFile.is_open())
+        {
+            Log("Loading config for \"%s\"\n", configName.c_str());
+
+            unsigned int lineNumber = 0;
+            std::string line;
+            while (std::getline(configFile, line))
+            {
+                lineNumber++;
+                ParseConfigurationStatement(line, lineNumber);
             }
             configFile.close();
 
@@ -456,6 +538,29 @@ namespace {
             {
                 sessionId = *session;
                 needAdvertiseProfile = true;
+
+                if (config.displayEnabled)
+                {
+                    // Get the D3D device so we can draw the hands.
+                    const XrBaseInStructure* entry = reinterpret_cast<const XrBaseInStructure*>(createInfo->next);
+                    while (entry)
+                    {
+                        if (entry->type == XR_TYPE_GRAPHICS_BINDING_D3D11_KHR)
+                        {
+                            // Keep track of the D3D device.
+                            const XrGraphicsBindingD3D11KHR* d3dBindings = reinterpret_cast<const XrGraphicsBindingD3D11KHR*>(entry);
+                            d3d11Device = d3dBindings->device;
+                            handRenderer.SetDevice(d3d11Device);
+                        }
+                        else if (entry->type == XR_TYPE_GRAPHICS_BINDING_D3D12_KHR)
+                        {
+                            // TODO: Support D3D12.
+                            Log("D3D12 is not supported.\n");
+                        }
+
+                        entry = entry->next;
+                    }
+                }
             }
         }
 
@@ -490,6 +595,12 @@ namespace {
                 handTracker[1] = XR_NULL_HANDLE;
             }
 
+            // Destroy the graphics resources.
+            ownDsv.clear();
+            ownDepthBuffer.clear();
+            handRenderer.SetDevice(nullptr);
+            d3d11Device = nullptr;
+
             sessionId = XR_NULL_HANDLE;
         }
 
@@ -499,7 +610,7 @@ namespace {
     }
 
     // Utility function to translate an XrPath to a string we can use.
-    std::string getPath(
+    std::string GetXrPath(
         XrPath path)
     {
         // TODO: Robustness: implement proper error handling.
@@ -510,7 +621,7 @@ namespace {
     }
 
     // Get the binding for a specific action/subaction path.
-    std::string getActionFullPath(
+    std::string GetXrActionFullPath(
         XrAction action,
         XrPath subactionPath)
     {
@@ -520,7 +631,7 @@ namespace {
         {
             if (subactionPath != XR_NULL_PATH)
             {
-                std::string subPath = getPath(subactionPath);
+                std::string subPath = GetXrPath(subactionPath);
                 for (auto path : actionPath->second)
                 {
                     if (path.find(subPath) == 0)
@@ -576,7 +687,7 @@ namespace {
 
         XrResult result;
 
-        std::string path = topLevelUserPath != XR_NULL_PATH ? getPath(topLevelUserPath) : "";
+        std::string path = topLevelUserPath != XR_NULL_PATH ? GetXrPath(topLevelUserPath) : "";
         if (path.empty() || path == "/user/hand/left" || path == "/user/hand/right")
         {
             // Return our emulated interaction profile for the hands.
@@ -604,7 +715,7 @@ namespace {
         const XrResult result = next_xrSuggestInteractionProfileBindings(instance, suggestedBindings);
         if (result == XR_SUCCESS)
         {
-            const std::string interactionProfile = getPath(suggestedBindings->interactionProfile);
+            const std::string interactionProfile = GetXrPath(suggestedBindings->interactionProfile);
             Log("Application is suggesting bindings for interaction profile: %s\n", interactionProfile.c_str());
 
             // Look for controller bindings.
@@ -614,7 +725,7 @@ namespace {
                 {
                     // Keep track of the XrAction for the controllers, so we can override the behavior for them.
                     // TODO: Optimization: only store grip/aim and the actions actually bound by the config file.
-                    std::string fullPath = getPath(suggestedBindings->suggestedBindings[i].binding);
+                    std::string fullPath = GetXrPath(suggestedBindings->suggestedBindings[i].binding);
                     if (fullPath.find("/user/hand/right") == 0 || fullPath.find("/user/hand/left") == 0)
                     {
                         auto actionPath = actionsMap.find(suggestedBindings->suggestedBindings[i].action);
@@ -648,7 +759,7 @@ namespace {
         {
             // Keep track of the XrSpace for controllers, so we can override the behavior for them.
             // TODO: Optimization: only store grip/aim.
-            const std::string fullPath = getActionFullPath(createInfo->action, createInfo->subactionPath);
+            const std::string fullPath = GetXrActionFullPath(createInfo->action, createInfo->subactionPath);
             if (fullPath.find("/user/hand/right") == 0 || fullPath.find("/user/hand/left") == 0)
             {
                 spacesMap.insert(std::make_pair(*space, std::make_pair(fullPath, createInfo->poseInActionSpace)));
@@ -746,7 +857,7 @@ namespace {
     }
 
     // Compute an action state based on the distance between 2 joints.
-    void computeJointAction(
+    void ComputeJointAction(
         const XrHandJointLocationEXT jointLocations[2][XR_HAND_JOINT_COUNT_EXT],
         const int side1,
         const int joint1,
@@ -835,19 +946,19 @@ namespace {
 
 #define ACTION_PARAMS(configName) config.configName##Action[side], config.configName##Near, config.configName##Far
 
-                        computeJointAction(jointLocations, side, XR_HAND_JOINT_THUMB_TIP_EXT, side, XR_HAND_JOINT_INDEX_TIP_EXT, sidePath, ACTION_PARAMS(pinch));
-                        computeJointAction(jointLocations, side, XR_HAND_JOINT_INDEX_INTERMEDIATE_EXT, side, XR_HAND_JOINT_THUMB_TIP_EXT, sidePath, ACTION_PARAMS(thumbPress));
-                        computeJointAction(jointLocations, side, XR_HAND_JOINT_INDEX_PROXIMAL_EXT, side, XR_HAND_JOINT_INDEX_TIP_EXT, sidePath, ACTION_PARAMS(indexBend));
+                        ComputeJointAction(jointLocations, side, XR_HAND_JOINT_THUMB_TIP_EXT, side, XR_HAND_JOINT_INDEX_TIP_EXT, sidePath, ACTION_PARAMS(pinch));
+                        ComputeJointAction(jointLocations, side, XR_HAND_JOINT_INDEX_INTERMEDIATE_EXT, side, XR_HAND_JOINT_THUMB_TIP_EXT, sidePath, ACTION_PARAMS(thumbPress));
+                        ComputeJointAction(jointLocations, side, XR_HAND_JOINT_INDEX_PROXIMAL_EXT, side, XR_HAND_JOINT_INDEX_TIP_EXT, sidePath, ACTION_PARAMS(indexBend));
                         // TODO: Feature: add squeeze (which uses 4 joints).
 
                         if (handResult[other_side] == XR_SUCCESS)
                         {
                             // Handle gestures made up using both hands.
 
-                            computeJointAction(jointLocations, side, XR_HAND_JOINT_PALM_EXT, other_side, XR_HAND_JOINT_INDEX_TIP_EXT, sidePath, ACTION_PARAMS(palmTap));
-                            computeJointAction(jointLocations, side, XR_HAND_JOINT_WRIST_EXT, other_side, XR_HAND_JOINT_INDEX_TIP_EXT, sidePath, ACTION_PARAMS(wristTap));
-                            computeJointAction(jointLocations, side, XR_HAND_JOINT_INDEX_PROXIMAL_EXT, other_side, XR_HAND_JOINT_INDEX_TIP_EXT, sidePath, ACTION_PARAMS(indexProximalTap));
-                            computeJointAction(jointLocations, side, XR_HAND_JOINT_LITTLE_PROXIMAL_EXT, other_side, XR_HAND_JOINT_INDEX_TIP_EXT, sidePath, ACTION_PARAMS(littleProximalTap));
+                            ComputeJointAction(jointLocations, side, XR_HAND_JOINT_PALM_EXT, other_side, XR_HAND_JOINT_INDEX_TIP_EXT, sidePath, ACTION_PARAMS(palmTap));
+                            ComputeJointAction(jointLocations, side, XR_HAND_JOINT_WRIST_EXT, other_side, XR_HAND_JOINT_INDEX_TIP_EXT, sidePath, ACTION_PARAMS(wristTap));
+                            ComputeJointAction(jointLocations, side, XR_HAND_JOINT_INDEX_PROXIMAL_EXT, other_side, XR_HAND_JOINT_INDEX_TIP_EXT, sidePath, ACTION_PARAMS(indexProximalTap));
+                            ComputeJointAction(jointLocations, side, XR_HAND_JOINT_LITTLE_PROXIMAL_EXT, other_side, XR_HAND_JOINT_INDEX_TIP_EXT, sidePath, ACTION_PARAMS(littleProximalTap));
                         }
 
                         // TODO: Feature: add more gesture recognition here.
@@ -873,7 +984,7 @@ namespace {
         XrResult result;
 
         // Translate inputs for the controllers.
-        const std::string fullPath = getActionFullPath(getInfo->action, getInfo->subactionPath);
+        const std::string fullPath = GetXrActionFullPath(getInfo->action, getInfo->subactionPath);
         if (!fullPath.empty())
         {
             const auto stateVar = actionsState.find(fullPath);
@@ -929,7 +1040,7 @@ namespace {
         XrResult result;
 
         // Translate inputs for the controllers.
-        const std::string fullPath = getActionFullPath(getInfo->action, getInfo->subactionPath);
+        const std::string fullPath = GetXrActionFullPath(getInfo->action, getInfo->subactionPath);
         if (!fullPath.empty())
         {
             const auto stateVar = actionsState.find(fullPath);
@@ -981,7 +1092,7 @@ namespace {
 
         XrResult result;
 
-        const std::string fullPath = getActionFullPath(getInfo->action, getInfo->subactionPath);
+        const std::string fullPath = GetXrActionFullPath(getInfo->action, getInfo->subactionPath);
         if (!fullPath.empty())
         {
             // Always make the hands active.
@@ -995,6 +1106,299 @@ namespace {
         }
 
         DebugLog("<-- HandToController_xrGetActionStatePose %d\n", result);
+
+        return result;
+    }
+
+    bool IsSwapchainHandled(
+        const XrSwapchain swapchain)
+    {
+        return swapchainInfo.find(swapchain) != swapchainInfo.cend();
+    }
+
+    XrResult HandToController_xrCreateSwapchain(
+        const XrSession session,
+        const XrSwapchainCreateInfo* const createInfo,
+        XrSwapchain* const swapchain)
+    {
+        DebugLog("--> HandToController_xrCreateSwapchain\n");
+
+        // Call the chain to perform the actual operation.
+        const XrResult result = next_xrCreateSwapchain(session, createInfo, swapchain);
+        if (result == XR_SUCCESS && d3d11Device)
+        {
+            if (createInfo->arraySize <= 2)
+            {
+                // We keep track of the swapchain info for when we intercept the textures in xrEnumerateSwapchainImages().
+                swapchainInfo.insert_or_assign(*swapchain, *createInfo);
+            }
+            else
+            {
+                Log("Does not support swapchain with arraySize of %u\n", createInfo->arraySize);
+            }
+        }
+
+        DebugLog("<-- HandToController_xrCreateSwapchain %d\n", result);
+
+        return result;
+    }
+
+    XrResult HandToController_xrDestroySwapchain(
+        const XrSwapchain swapchain)
+    {
+        DebugLog("--> HandToController_xrDestroySwapchain\n");
+
+        // Call the chain to perform the actual operation.
+        const XrResult result = next_xrDestroySwapchain(swapchain);
+        if (result == XR_SUCCESS && IsSwapchainHandled(swapchain))
+        {
+            // Cleanup the resource views.
+            for (auto entry : swapchainResources[swapchain])
+            {
+                if (entry.rtv)
+                {
+                    entry.rtv->Release();
+                }
+                if (entry.dsv)
+                {
+                    entry.dsv->Release();
+                }
+            }
+            swapchainResources.erase(swapchain);
+            swapchainIndices.erase(swapchain);
+            swapchainInfo.erase(swapchain);
+            ownDsv.erase(swapchain);
+            ownDepthBuffer.erase(swapchain);
+        }
+
+        DebugLog("<-- HandToController_xrDestroySwapchain %d\n", result);
+
+        return result;
+    }
+
+    void CreateOwnDepthBuffer(
+        const XrSwapchain swapchain)
+    {
+        if (ownDepthBuffer.find(swapchain) != ownDepthBuffer.cend())
+        {
+            return;
+        }
+
+        XrSwapchainCreateInfo& imageInfo = swapchainInfo.find(swapchain)->second;
+
+        D3D11_TEXTURE2D_DESC depthStencilDesc;
+        ZeroMemory(&depthStencilDesc, sizeof(D3D11_TEXTURE2D_DESC));
+        depthStencilDesc.Width = imageInfo.width;
+        depthStencilDesc.Height = imageInfo.height;
+        depthStencilDesc.MipLevels = 1;
+        depthStencilDesc.ArraySize = imageInfo.arraySize;
+        depthStencilDesc.Format = DXGI_FORMAT_D32_FLOAT;
+        depthStencilDesc.SampleDesc.Count = 1;
+        depthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
+        depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+
+        ComPtr<ID3D11Texture2D> depthStencil;
+        CHECK_HRCMD(d3d11Device->CreateTexture2D(&depthStencilDesc, NULL, depthStencil.GetAddressOf()));
+        ownDepthBuffer.insert_or_assign(swapchain, depthStencil);
+
+        D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc;
+        ZeroMemory(&dsvDesc, sizeof(D3D11_DEPTH_STENCIL_VIEW_DESC));
+        dsvDesc.Format = depthStencilDesc.Format;
+        dsvDesc.ViewDimension = imageInfo.arraySize == 1 ? D3D11_DSV_DIMENSION_TEXTURE2D : D3D11_DSV_DIMENSION_TEXTURE2DARRAY;
+        dsvDesc.Texture2DArray.ArraySize = imageInfo.arraySize;
+
+        ComPtr<ID3D11DepthStencilView> dsv;
+        CHECK_HRCMD(d3d11Device->CreateDepthStencilView(depthStencil.Get(), &dsvDesc, dsv.GetAddressOf()));
+        ownDsv.insert_or_assign(swapchain, dsv);
+    }
+
+    XrResult HandToController_xrEnumerateSwapchainImages(
+        const XrSwapchain swapchain,
+        const uint32_t imageCapacityInput,
+        uint32_t* const imageCountOutput,
+        XrSwapchainImageBaseHeader* const images)
+    {
+        DebugLog("--> HandToController_xrEnumerateSwapchainImages\n");
+
+        // Call the chain to perform the actual operation.
+        const XrResult result = next_xrEnumerateSwapchainImages(swapchain, imageCapacityInput, imageCountOutput, images);
+        if (result == XR_SUCCESS && IsSwapchainHandled(swapchain) && imageCapacityInput > 0)
+        {
+            XrSwapchainImageD3D11KHR* d3dImages = reinterpret_cast<XrSwapchainImageD3D11KHR*>(images);
+            XrSwapchainCreateInfo& imageInfo = swapchainInfo.find(swapchain)->second;
+            for (uint32_t i = 0; i < *imageCountOutput; i++)
+            {
+                SwapchainResources resources;
+                ZeroMemory(&resources, sizeof(SwapchainResources));
+
+                // Create RTV or DSV based on the type of swapchain, so we can do some rendering!
+                D3D11_RENDER_TARGET_VIEW_DESC rtvDesc;
+                ZeroMemory(&rtvDesc, sizeof(D3D11_RENDER_TARGET_VIEW_DESC));
+                rtvDesc.Format = (DXGI_FORMAT)imageInfo.format;
+                rtvDesc.ViewDimension = imageInfo.arraySize == 1 ? D3D11_RTV_DIMENSION_TEXTURE2D : D3D11_RTV_DIMENSION_TEXTURE2DARRAY;
+                rtvDesc.Texture2DArray.ArraySize = imageInfo.arraySize;
+
+                D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc;
+                ZeroMemory(&dsvDesc, sizeof(D3D11_DEPTH_STENCIL_VIEW_DESC));
+                dsvDesc.Format = (DXGI_FORMAT)imageInfo.format;
+                dsvDesc.ViewDimension = imageInfo.arraySize == 1 ? D3D11_DSV_DIMENSION_TEXTURE2D : D3D11_DSV_DIMENSION_TEXTURE2DARRAY;
+                dsvDesc.Texture2DArray.ArraySize = imageInfo.arraySize;
+
+                if (!(imageInfo.usageFlags & XR_SWAPCHAIN_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT))
+                {
+                    CHECK_HRCMD(d3d11Device->CreateRenderTargetView(d3dImages[i].texture, &rtvDesc, &resources.rtv));
+                }
+                else
+                {
+                    CHECK_HRCMD(d3d11Device->CreateDepthStencilView(d3dImages[i].texture, &dsvDesc, &resources.dsv));
+                }
+
+                swapchainResources[swapchain].push_back(resources);
+            }
+        }
+
+        DebugLog("<-- HandToController_xrEnumerateSwapchainImages %d\n", result);
+
+        return result;
+    }
+
+    XrResult HandToController_xrAcquireSwapchainImage(
+        const XrSwapchain swapchain,
+        const XrSwapchainImageAcquireInfo* const acquireInfo,
+        uint32_t* const index)
+    {
+        DebugLog("--> HandToController_xrAcquireSwapchainImage\n");
+
+        // Call the chain to perform the actual operation.
+        const XrResult result = next_xrAcquireSwapchainImage(swapchain, acquireInfo, index);
+        if (result == XR_SUCCESS && IsSwapchainHandled(swapchain))
+        {
+            // Keep track of the current texture index.
+            swapchainIndices.insert_or_assign(swapchain, *index);
+        }
+
+        DebugLog("<-- HandToController_xrAcquireSwapchainImage %d\n", result);
+
+        return result;
+    }
+
+    XrResult HandToController_xrEndFrame(
+        const XrSession session,
+        const XrFrameEndInfo* const frameEndInfo)
+    {
+        DebugLog("--> HandToController_xrEndFrame\n");
+
+        std::vector<const XrCompositionLayerBaseHeader*> layers(frameEndInfo->layerCount);
+        int projLayerIndex = 0;
+        for (uint32_t i = 0; config.displayEnabled && i < frameEndInfo->layerCount; i++)
+        {
+            // Render the hands in the desired projection layer.
+            if (frameEndInfo->layers[i]->type == XR_TYPE_COMPOSITION_LAYER_PROJECTION)
+            {
+                if (projLayerIndex++ != config.projLayerIndex)
+                {
+                    continue;
+                }
+
+                // TODO: Compliance: Lots of missing checks below.
+
+                // Collect the info we need about this layer.
+                const XrCompositionLayerProjection* proj = reinterpret_cast<const XrCompositionLayerProjection*>(frameEndInfo->layers[i]);
+                const XrSwapchain colorSwapchain[2] = { proj->views[0].subImage.swapchain, proj->views[1].subImage.swapchain };
+                const uint32_t colorImageArrayIndex[2] = { proj->views[0].subImage.imageArrayIndex, proj->views[1].subImage.imageArrayIndex };
+
+                // TODO: Compliance: can't really figure out the correct logic for imageArrayIndex... For now always assume left==0 and right==0 (non-VPRT) or 1 (VPRT)
+
+                if (!IsSwapchainHandled(colorSwapchain[0]) || !IsSwapchainHandled(colorSwapchain[1]))
+                {
+                    break;
+                }
+
+                // Search for the depth buffers.
+                XrSwapchain depthSwapchain[2] = { XR_NULL_HANDLE, XR_NULL_HANDLE };
+                float depthNear = 0.001f, depthFar = 100.0f;
+                for (uint32_t j = 0; !config.useOwnDepthBuffer && j < proj->viewCount; j++)
+                {
+                    const auto view = proj->views[j];
+                    const XrBaseInStructure* entry = reinterpret_cast<const XrBaseInStructure*>(view.next);
+                    while (entry)
+                    {
+                        if (entry->type == XR_TYPE_COMPOSITION_LAYER_DEPTH_INFO_KHR)
+                        {
+                            const XrCompositionLayerDepthInfoKHR* depth = reinterpret_cast<const XrCompositionLayerDepthInfoKHR*>(entry);
+                            // The order of color/depth textures must match.
+                            if (depth->subImage.imageArrayIndex == colorImageArrayIndex[j])
+                            {
+                                depthSwapchain[j] = depth->subImage.swapchain;
+                                depthNear = depth->nearZ;
+                                depthFar = depth->farZ;
+                            }
+                            break;
+                        }
+                        entry = entry->next;
+                    }
+                }
+
+                // Get the hand joints poses.
+                // TODO: Optimization: add caching of the hand pose between this API and xrSyncActions() above.
+                XrHandJointsLocateInfoEXT locateInfo{ XR_TYPE_HAND_JOINTS_LOCATE_INFO_EXT };
+                locateInfo.baseSpace = proj->space;
+                locateInfo.time = begunFrameTime;
+
+                XrHandJointLocationEXT jointLocations[2][XR_HAND_JOINT_COUNT_EXT];
+                XrResult handResult[2];
+                for (int side = 0; side <= 1; side++)
+                {
+                    XrHandJointLocationsEXT locations{ XR_TYPE_HAND_JOINT_LOCATIONS_EXT };
+                    locations.jointCount = XR_HAND_JOINT_COUNT_EXT;
+                    locations.jointLocations = jointLocations[side];
+
+                    handResult[side] = xrLocateHandJointsEXT(handTracker[side], &locateInfo, &locations);
+                }
+
+                // Render the hands.
+                const XrSwapchain& leftColorSwapchain = colorSwapchain[0];
+                const XrSwapchain& rightColorSwapchain = colorSwapchain[1];
+                ID3D11RenderTargetView* const rtv[2] = {
+                    swapchainResources[leftColorSwapchain][swapchainIndices[leftColorSwapchain]].rtv,
+                    swapchainResources[rightColorSwapchain][swapchainIndices[rightColorSwapchain]].rtv,
+                };
+
+                const XrSwapchain& leftDepthSwapchain = depthSwapchain[0];
+                const XrSwapchain& rightDepthSwapchain = depthSwapchain[1];
+                const bool useOwnDepthBuffer = !IsSwapchainHandled(leftDepthSwapchain) || !IsSwapchainHandled(rightDepthSwapchain);
+                if (useOwnDepthBuffer)
+                {
+                    CreateOwnDepthBuffer(leftColorSwapchain);
+                }
+                ID3D11DepthStencilView* const dsv[2] = {
+                    IsSwapchainHandled(leftDepthSwapchain) ?
+                        swapchainResources[leftDepthSwapchain][swapchainIndices[leftDepthSwapchain]].dsv : ownDsv[leftColorSwapchain].Get(),
+                    IsSwapchainHandled(rightDepthSwapchain) ?
+                        swapchainResources[rightDepthSwapchain][swapchainIndices[rightDepthSwapchain]].dsv : ownDsv[leftColorSwapchain].Get(), /* Intentionally uses the same own depth buffer for rendering */
+                };
+
+                const XrPosef eyePoses[2] = { proj->views[0].pose, proj->views[1].pose };
+                const XrFovf fovs[2] = { proj->views[0].fov, proj->views[1].fov };
+
+                const bool isVPRT = leftColorSwapchain == rightColorSwapchain;
+                handRenderer.SetProperties(config.skinTone, config.opacity);
+                handRenderer.SetEyePoses(eyePoses, fovs);
+                handRenderer.SetJointsLocations(handResult, jointLocations);
+                handRenderer.RenderHands(
+                    rtv, dsv, proj->views[0].subImage.imageRect,
+                    isVPRT,
+                    useOwnDepthBuffer,
+                    depthNear, depthFar);
+
+                break;
+            }
+        }
+
+        // Call the chain to perform the actual submission.
+        const XrResult result = next_xrEndFrame(session, frameEndInfo);
+
+        DebugLog("<-- HandToController_xrEndFrame %d\n", result);
 
         return result;
     }
@@ -1034,6 +1438,11 @@ namespace {
             INTERCEPT_CALL(xrGetActionStateBoolean);
             INTERCEPT_CALL(xrGetActionStateFloat);
             INTERCEPT_CALL(xrGetActionStatePose);
+            INTERCEPT_CALL(xrCreateSwapchain);
+            INTERCEPT_CALL(xrDestroySwapchain);
+            INTERCEPT_CALL(xrEnumerateSwapchainImages);
+            INTERCEPT_CALL(xrAcquireSwapchainImage);
+            INTERCEPT_CALL(xrEndFrame);
 
 #undef INTERCEPT_CALL
 
