@@ -22,6 +22,8 @@
 #include <windows.h>
 #include <unknwn.h>
 #include <wrl.h>
+#include <winsock2.h>
+#include <ws2tcpip.h>
 
 // D3D
 #include <d3d11.h>

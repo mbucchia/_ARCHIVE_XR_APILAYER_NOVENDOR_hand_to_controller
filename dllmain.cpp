@@ -101,6 +101,8 @@ namespace {
     std::unordered_map<XrSwapchain, std::vector<SwapchainResources>> swapchainResources;
     std::unordered_map<XrSwapchain, uint32_t> swapchainIndices;
 
+    // Socket for remote configuraion.
+    SOCKET configSocket = -1;
 
     void Log(const char* fmt, ...);
 
@@ -465,6 +467,25 @@ namespace {
         XrFrameState* const frameState)
     {
         DebugLog("--> HandToController_xrWaitFrame\n");
+
+        // Arbitrarily choose this place to handle configuration input.
+        if (configSocket != INVALID_SOCKET)
+        {
+            struct sockaddr_in saddr;
+            while (true)
+            {
+                char buffer[100] = {};
+                int slen = sizeof(saddr);
+                const int len = recvfrom(configSocket, buffer, sizeof(buffer), 0, (struct sockaddr*)&saddr, &slen);
+                if (len <= 0)
+                {
+                    break;
+                }
+
+                std::string line(buffer);
+                ParseConfigurationStatement(line);
+            }
+        }
 
         // Call the chain to perform the actual operation.
         const XrResult result = next_xrWaitFrame(session, frameWaitInfo, frameState);
@@ -1660,6 +1681,30 @@ namespace {
 
                 // TODO: Robustness: implement proper error handling.
                 xrStringToPath(*instance, config.rawInteractionProfile.c_str(), &config.interactionProfile);
+
+                // Prepare the config socket.
+                if (configSocket == INVALID_SOCKET)
+                {
+                    WSADATA wsaData;
+                    WSAStartup(MAKEWORD(2, 2), &wsaData);
+                    configSocket = socket(AF_INET, SOCK_DGRAM, 0);
+                    if (configSocket != INVALID_SOCKET)
+                    {
+                        int one = 1;
+                        setsockopt(configSocket, SOL_SOCKET, SO_REUSEADDR, (const char*)&one, sizeof(one));
+                        u_long mode = 1; // 1 to enable non-blocking socket
+                        ioctlsocket(configSocket, FIONBIO, &mode);
+                    }
+
+                    struct sockaddr_in saddr;
+                    saddr.sin_family = AF_INET;
+                    saddr.sin_addr.s_addr = INADDR_ANY;
+                    saddr.sin_port = htons(10001);
+                    if (configSocket == INVALID_SOCKET || bind(configSocket, (const struct sockaddr*)&saddr, sizeof(saddr)))
+                    {
+                        Log("Failed to create or bind configuration socket\n");
+                    }
+                }
             }
         }
 
