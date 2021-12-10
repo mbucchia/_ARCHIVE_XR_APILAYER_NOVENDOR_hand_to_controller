@@ -48,11 +48,9 @@ The presence of the configuration file for the desired application will enable t
 By default, an empty configuration will emulate an HP Mixed Reality motion controller with basic bindings:
 
 - Pinching (index to thumb) acts as the controller's trigger;
-- Tapping the palm with the index of the opposite hand acts as the controller's menu button;
-- Tapping the index proximal with the index of the opposite hand acts as the controller's Y or B button;
-- Tapping the little proximal with the index of the opposite hand acts as the controller's X or A button.
-
-NOTE: Squeezing is currently not implemented.
+- Squeezing (middle, ring and little fingers) acts as the controller's squeezing;
+- Tapping the wrist of the left hand with the index of the right hand acts as the controller's menu button;
+- Tapping the tip of the index of the right hand with the index of the left hand acts as the controller's B button;
 
 5. When running the application, the changes should take affect. Inspect the log file if it needs to be confirmed:
 
@@ -80,4 +78,18 @@ If the order observed is incorrect, re-run the `Install-XR_APILAYER_NOVENDOR_han
 
 The configuration file allows to modify the behavior of the software for each application.
 
-TODO: Details of each option.
+Please use the configuration tool (`ConfigUI.exe`) to generate a configuration file.
+
+## Known issues
+
+* Hand display is only supported with DirectX 11 applications.
+* Hand display opacity is not implemented (always 100% opaque).
+* The `Load` option in the configuration tool is not implemented.
+* The software was only tested with the Windows Mixed Reality OpenXR runtime.
+* The software is not optimized.
+
+## Contributions
+
+The author is Matthieu Bucchianeri (https://github.com/mbucchia/). Please note that this software is not affiliated with Microsoft nor Ultraleap.
+
+Special thanks to Roman Bershadsky (https://flightsimulation.romandesign.ca/) for his ideas on how this software should work!
