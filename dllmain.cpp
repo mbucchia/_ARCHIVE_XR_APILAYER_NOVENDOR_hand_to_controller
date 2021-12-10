@@ -148,8 +148,7 @@ namespace {
         DEFINE_ACTION(squeeze);
         DEFINE_ACTION(palmTap);
         DEFINE_ACTION(wristTap);
-        DEFINE_ACTION(indexProximalTap);
-        DEFINE_ACTION(littleProximalTap);
+        DEFINE_ACTION(indexTipTap);
 
 #undef DEFINE_ACTION
 
@@ -201,8 +200,7 @@ namespace {
                     LOG_IF_SET("squeeze", squeeze);
                     LOG_IF_SET("palm tap", palmTap);
                     LOG_IF_SET("wrist tap", wristTap);
-                    LOG_IF_SET("index proximal", indexProximalTap);
-                    LOG_IF_SET("little proximal", littleProximalTap);
+                    LOG_IF_SET("index tip tap", indexTipTap);
 
 #undef LOG_IF_SET
                 }
@@ -219,7 +217,7 @@ namespace {
             rightHandEnabled = true;
             displayEnabled = true;
             useOwnDepthBuffer = false;
-            config.skinTone = 1; // Medium
+            skinTone = 1; // Medium
             opacity = 1.0f;
             projLayerIndex = 0;
             aimJointIndex = XR_HAND_JOINT_INDEX_INTERMEDIATE_EXT;
@@ -227,31 +225,28 @@ namespace {
             clickThreshold = 0.75f;
             transform[0] = transform[1] = Pose::Identity();
             pinchAction[0] = pinchAction[1] = "/input/trigger/value";
-            pinchNear = 0.01f;
-            pinchFar = 0.06f;
+            pinchNear = 0.0f;
+            pinchFar = 0.05f;
             thumbPressAction[0] = thumbPressAction[1] = "";
-            thumbPressNear = 0.01f;
+            thumbPressNear = 0.0f;
             thumbPressFar = 0.05f;
             indexBendAction[0] = indexBendAction[1] = "";
             indexBendNear = 0.045f;
             indexBendFar = 0.07f;
             squeezeAction[0] = squeezeAction[1] = "/input/squeeze/value";
-            squeezeNear = 0.01f;
+            squeezeNear = 0.035f;
             squeezeFar = 0.07f;
             palmTapAction[0] = palmTapAction[1] = "";
             palmTapNear = 0.02f;
             palmTapFar = 0.06f;
-            wristTapAction[0] = wristTapAction[1] = "/input/menu/click";
+            wristTapAction[0] = "/input/menu/click";
+            wristTapAction[1] = "";
             wristTapNear = 0.04f;
             wristTapFar = 0.05f;
-            indexProximalTapAction[0] = "/input/y/click";
-            indexProximalTapAction[1] = "/input/b/click";
-            indexProximalTapNear = 0.02f;
-            indexProximalTapFar = 0.035f;
-            littleProximalTapAction[0] = "/input/x/click";
-            littleProximalTapAction[1] = "/input/a/click";
-            littleProximalTapNear = 0.02f;
-            littleProximalTapFar = 0.035f;
+            indexTipTapAction[0] = "";
+            indexTipTapAction[1] = "/input/b/click";
+            indexTipTapNear = 0.0f;
+            indexTipTapFar = 0.07f;
         }
     } config;
 
@@ -334,7 +329,7 @@ namespace {
                 }
                 else if (name == "skin_tone")
                 {
-                    config.skinTone = std::stof(value);
+                    config.skinTone = std::stoi(value);
                 }
                 else if (name == "opacity")
                 {
@@ -406,14 +401,13 @@ namespace {
                             config.configName##Far = std::stof(value);  \
                         }
 
-                        PARSE_ACTION("pinch", pinch)
-                        PARSE_ACTION("thumb_press", thumbPress)
-                        PARSE_ACTION("index_bend", indexBend)
-                        PARSE_ACTION("squeeze", squeeze)
-                        PARSE_ACTION("palm_tap", palmTap)
-                        PARSE_ACTION("wrist_tap", wristTap)
-                        PARSE_ACTION("index_proximal_tap", indexProximalTap)
-                        PARSE_ACTION("little_proximal_tap", littleProximalTap)
+                PARSE_ACTION("pinch", pinch)
+                PARSE_ACTION("thumb_press", thumbPress)
+                PARSE_ACTION("index_bend", indexBend)
+                PARSE_ACTION("squeeze", squeeze)
+                PARSE_ACTION("palm_tap", palmTap)
+                PARSE_ACTION("wrist_tap", wristTap)
+                PARSE_ACTION("index_tip_tap", indexTipTap)
 
 #undef PARSE_ACTION
                 else
@@ -528,7 +522,7 @@ namespace {
             rightTrackerCreateInfo.hand = XR_HAND_RIGHT_EXT;
             rightTrackerCreateInfo.handJointSet = XR_HAND_JOINT_SET_DEFAULT_EXT;
 
-            if (xrCreateReferenceSpace(*session, &referenceSpaceCreateInfo, &referenceSpace) != XR_SUCCESS || 
+            if (xrCreateReferenceSpace(*session, &referenceSpaceCreateInfo, &referenceSpace) != XR_SUCCESS ||
                 xrCreateHandTrackerEXT(*session, &leftTrackerCreateInfo, &handTracker[0]) != XR_SUCCESS ||
                 xrCreateHandTrackerEXT(*session, &rightTrackerCreateInfo, &handTracker[1]) != XR_SUCCESS)
             {
@@ -856,6 +850,43 @@ namespace {
         return result;
     }
 
+    // Compute the scaled action value based on the distance between 2 joints.
+    float ComputeJointActionValue(
+        const XrHandJointLocationEXT jointLocations[2][XR_HAND_JOINT_COUNT_EXT],
+        const int side1,
+        const int joint1,
+        const int side2,
+        const int joint2,
+        const float nearDistance,
+        const float farDistance)
+    {
+        if (Pose::IsPoseValid(jointLocations[side1][joint1].locationFlags) &&
+            Pose::IsPoseValid(jointLocations[side2][joint2].locationFlags))
+        {
+            // We ignore joints radius and assume the near/far distance are configured to account for them.
+            const float distance = max(Length(jointLocations[side1][joint1].pose.position - jointLocations[side2][joint2].pose.position), 0.f);
+
+            return 1.f - (std::clamp(distance, nearDistance, farDistance) - nearDistance) / (farDistance - nearDistance);
+        }
+        return NAN;
+    }
+
+    void RecordActionValue(
+        const float value,
+        const std::string& path)
+    {
+        // TODO: Robustness: do we need to debounce actions to avoid false-triggering?
+
+        DebugLog("Action %s -> %.3f\n", path.c_str(), value);
+        actionsState.insert_or_assign(path, value);
+
+        // Create click from value for convenience (but not the other way around).
+        if (path.rfind("/value") != std::string::npos)
+        {
+            actionsState.insert_or_assign(path.substr(0, path.length() - 6) + "/click", value);
+        }
+    }
+
     // Compute an action state based on the distance between 2 joints.
     void ComputeJointAction(
         const XrHandJointLocationEXT jointLocations[2][XR_HAND_JOINT_COUNT_EXT],
@@ -868,26 +899,12 @@ namespace {
         const float nearDistance,
         const float farDistance)
     {
-        if (!actionPath.empty() &&
-            Pose::IsPoseValid(jointLocations[side1][joint1].locationFlags) &&
-            Pose::IsPoseValid(jointLocations[side2][joint2].locationFlags))
+        if (!actionPath.empty())
         {
-            const std::string path = sidePath + actionPath;
-
-            // We ignore joints radius and assume the near/far distance are configured to account for them.
-            const float distance = max(Length(jointLocations[side1][joint1].pose.position - jointLocations[side2][joint2].pose.position), 0.f);
-
-            const float value = 1.f - (std::clamp(distance, nearDistance, farDistance) - nearDistance) / (farDistance - nearDistance);
-
-            // TODO: Robustness: do we need to debounce actions to avoid false-triggering?
-
-            DebugLog("Action %s -> %.3f (distance %.3f)\n", path.c_str(), value, distance);
-            actionsState.insert_or_assign(path, value);
-
-            // Create click from value for convenience (but not the other way around).
-            if (path.rfind("/value") != std::string::npos)
+            const float value = ComputeJointActionValue(jointLocations, side1, joint1, side2, joint2, nearDistance, farDistance);
+            if (!isnan(value))
             {
-                actionsState.insert_or_assign(path.substr(0, path.length() - 6) + "/click", value);
+                RecordActionValue(value, sidePath + actionPath);
             }
         }
     }
@@ -949,7 +966,34 @@ namespace {
                         ComputeJointAction(jointLocations, side, XR_HAND_JOINT_THUMB_TIP_EXT, side, XR_HAND_JOINT_INDEX_TIP_EXT, sidePath, ACTION_PARAMS(pinch));
                         ComputeJointAction(jointLocations, side, XR_HAND_JOINT_INDEX_INTERMEDIATE_EXT, side, XR_HAND_JOINT_THUMB_TIP_EXT, sidePath, ACTION_PARAMS(thumbPress));
                         ComputeJointAction(jointLocations, side, XR_HAND_JOINT_INDEX_PROXIMAL_EXT, side, XR_HAND_JOINT_INDEX_TIP_EXT, sidePath, ACTION_PARAMS(indexBend));
-                        // TODO: Feature: add squeeze (which uses 4 joints).
+
+                        if (!config.squeezeAction[side].empty())
+                        {
+                            // Squeeze requires to look at 3 fingers.
+                            float squeeze[3] = {
+                                ComputeJointActionValue(jointLocations, side, XR_HAND_JOINT_MIDDLE_TIP_EXT, side, XR_HAND_JOINT_MIDDLE_METACARPAL_EXT, config.squeezeNear, config.squeezeFar),
+                                ComputeJointActionValue(jointLocations, side, XR_HAND_JOINT_RING_TIP_EXT, side, XR_HAND_JOINT_RING_METACARPAL_EXT, config.squeezeNear, config.squeezeFar),
+                                ComputeJointActionValue(jointLocations, side, XR_HAND_JOINT_LITTLE_TIP_EXT, side, XR_HAND_JOINT_LITTLE_METACARPAL_EXT, config.squeezeNear, config.squeezeFar)
+                            };
+
+                            // Quickly bubble sort.
+                            if (squeeze[0] > squeeze[1])
+                            {
+                                std::swap(squeeze[0], squeeze[1]);
+                            }
+                            if (squeeze[0] > squeeze[2])
+                            {
+                                std::swap(squeeze[0], squeeze[2]);
+                            }
+                            if (squeeze[1] > squeeze[2])
+                            {
+                                std::swap(squeeze[1], squeeze[2]);
+                            }
+
+                            // Ignore the lowest value, average the other ones.
+                            const float value = (squeeze[1] + squeeze[2]) / 2.f;
+                            RecordActionValue(value, sidePath + config.squeezeAction[side]);
+                        }
 
                         if (handResult[other_side] == XR_SUCCESS)
                         {
@@ -957,12 +1001,41 @@ namespace {
 
                             ComputeJointAction(jointLocations, side, XR_HAND_JOINT_PALM_EXT, other_side, XR_HAND_JOINT_INDEX_TIP_EXT, sidePath, ACTION_PARAMS(palmTap));
                             ComputeJointAction(jointLocations, side, XR_HAND_JOINT_WRIST_EXT, other_side, XR_HAND_JOINT_INDEX_TIP_EXT, sidePath, ACTION_PARAMS(wristTap));
-                            ComputeJointAction(jointLocations, side, XR_HAND_JOINT_INDEX_PROXIMAL_EXT, other_side, XR_HAND_JOINT_INDEX_TIP_EXT, sidePath, ACTION_PARAMS(indexProximalTap));
-                            ComputeJointAction(jointLocations, side, XR_HAND_JOINT_LITTLE_PROXIMAL_EXT, other_side, XR_HAND_JOINT_INDEX_TIP_EXT, sidePath, ACTION_PARAMS(littleProximalTap));
+                            ComputeJointAction(jointLocations, side, XR_HAND_JOINT_INDEX_TIP_EXT, other_side, XR_HAND_JOINT_INDEX_TIP_EXT, sidePath, ACTION_PARAMS(indexTipTap));
                         }
 
                         // TODO: Feature: add more gesture recognition here.
 #undef ACTION_PARAMS
+                    }
+                }
+            }
+
+            // Special handling for Windows key.
+            for (int side = 0; side <= 1; side++)
+            {
+                const std::string fullPath = std::string((side == 0 ? "/user/hand/left" : "/user/hand/right")) + "/input/system/click";
+                const auto stateVar = actionsState.find(fullPath);
+                if (stateVar != actionsState.cend())
+                {
+                    auto lastState = lastBooleanChange.find(fullPath);
+                    const bool value = stateVar->second >= config.clickThreshold;
+
+                    const bool didChange = lastState != lastBooleanChange.end() && value != lastState->second.first;
+                    if (lastState == lastBooleanChange.end() || didChange)
+                    {
+                        lastBooleanChange.insert_or_assign(fullPath, std::make_pair(value, begunFrameTime));
+                    }
+
+                    if (didChange && value)
+                    {
+                        INPUT input[2];
+                        ZeroMemory(&input, sizeof(INPUT));
+                        input[0].type = INPUT_KEYBOARD;
+                        input[0].ki.wVk = VK_LWIN;
+                        input[1].type = INPUT_KEYBOARD;
+                        input[1].ki.wVk = VK_LWIN;
+                        input[1].ki.dwFlags = KEYEVENTF_KEYUP;
+                        SendInput(2, input, sizeof(INPUT));
                     }
                 }
             }
@@ -991,7 +1064,7 @@ namespace {
             if (stateVar != actionsState.cend())
             {
                 auto lastState = lastBooleanChange.find(fullPath);
-                const bool value = stateVar->second > config.clickThreshold;
+                const bool value = stateVar->second >= config.clickThreshold;
 
                 // TODO: Cleanliness: refactor common code with xrGetActionStateFloat() below.
                 if (lastState != lastBooleanChange.end())
@@ -999,6 +1072,7 @@ namespace {
                     const bool lastValue = lastState->second.first;
                     const XrTime lastChange = lastState->second.second;
 
+                    // TODO: Compliance: this is technically incorrect, this value needs to be computed based on xrSyncActions() calls, not xrGetActionState*().
                     state->changedSinceLastSync = (value != lastValue) ? XR_TRUE : XR_FALSE;
                     state->lastChangeTime = (value != lastValue) ? begunFrameTime : lastChange;
                 }
