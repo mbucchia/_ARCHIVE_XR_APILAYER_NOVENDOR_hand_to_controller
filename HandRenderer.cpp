@@ -267,18 +267,6 @@ void HandRenderer::RenderHands(
     deferredContext->VSSetShader(m_vertexShader.Get(), nullptr, 0);
     deferredContext->PSSetShader(m_pixelShader.Get(), nullptr, 0);
 
-    CubeShader::ViewProjectionConstantBuffer viewProjectionCBufferData{};
-    for (uint32_t k = 0; k < 2; k++) {
-        const DirectX::XMMATRIX spaceToView = xr::math::LoadInvertedXrPose(m_eyePose[k]);
-        xr::math::NearFar nearFar{ depthNear, depthFar };
-        const DirectX::XMMATRIX projectionMatrix = xr::math::ComposeProjectionMatrix(m_eyeFov[k], nearFar);
-
-        // Set view projection matrix for each view, transpose for shader usage.
-        DirectX::XMStoreFloat4x4(&viewProjectionCBufferData.ViewProjection[k],
-            DirectX::XMMatrixTranspose(spaceToView * projectionMatrix));
-    }
-    deferredContext->UpdateSubresource(m_viewProjectionCBuffer.Get(), 0, nullptr, &viewProjectionCBufferData, 0, 0);
-
     // Set cube primitive data.
     const UINT strides[] = { sizeof(CubeShader::Vertex) };
     const UINT offsets[] = { 0 };
@@ -291,13 +279,35 @@ void HandRenderer::RenderHands(
     // Render each view.
     for (uint32_t k = 0; k < (isVPRT ? 1u : 2u); k++)
     {
+        CubeShader::ViewProjectionConstantBuffer viewProjectionCBufferData{};
         if (isVPRT)
         {
             deferredContext->OMSetRenderTargets(1, rtv, dsv[0]);
+
+            for (uint32_t k = 0; k < 2; k++) {
+                const DirectX::XMMATRIX spaceToView = xr::math::LoadInvertedXrPose(m_eyePose[k]);
+                xr::math::NearFar nearFar{ depthNear, depthFar };
+                const DirectX::XMMATRIX projectionMatrix = xr::math::ComposeProjectionMatrix(m_eyeFov[k], nearFar);
+
+                // Set view projection matrix for each view, transpose for shader usage.
+                DirectX::XMStoreFloat4x4(&viewProjectionCBufferData.ViewProjection[k],
+                    DirectX::XMMatrixTranspose(spaceToView * projectionMatrix));
+            }
+            deferredContext->UpdateSubresource(m_viewProjectionCBuffer.Get(), 0, nullptr, &viewProjectionCBufferData, 0, 0);
         }
         else
         {
             deferredContext->OMSetRenderTargets(1, &rtv[k], dsv[k]);
+
+            const DirectX::XMMATRIX spaceToView = xr::math::LoadInvertedXrPose(m_eyePose[k]);
+            xr::math::NearFar nearFar{ depthNear, depthFar };
+            const DirectX::XMMATRIX projectionMatrix = xr::math::ComposeProjectionMatrix(m_eyeFov[k], nearFar);
+
+            // Set view projection matrix for the first, transpose for shader usage.
+            DirectX::XMStoreFloat4x4(&viewProjectionCBufferData.ViewProjection[0],
+                DirectX::XMMatrixTranspose(spaceToView * projectionMatrix));
+            deferredContext->UpdateSubresource(m_viewProjectionCBuffer.Get(), 0, nullptr, &viewProjectionCBufferData, 0, 0);
+
         }
 
         if (clearDepthBuffer)
