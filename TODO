@@ -1,0 +1,30 @@
+Tracking:
+
+* Cache hand poses to deduplicate 3 similar calls (xrLocateSpace, xrSyncActions and xrEndFrame).
+* Improve gesture detection robustness.
+
+Graphics:
+
+* Support DX12, probably can use d3d11on12.
+* Implement alpha blending in the shader to support hands opacity.
+* Improve the visuals of the hands.
+* Add an option to bypass d3d context restore (needs to change scissors in the rendering). Might help with perf.
+
+Config tool:
+
+* Implement loading of existing config file.
+
+Non-WMR support:
+
+* Fix workaround at layer creation (create aux XrInstance instead).
+* Proper error handling/reporting everywhere in the code.
+
+Install script:
+
+* Make a proper installer.
+
+Stretch-goals (to support beyond MSFS):
+
+* OpenXR compliance issues (XrSession, XrActionSet, behavior of unhandled actions...).
+* Proper support of imageArrayIndex for swapchains.
+* Performance statistics telemetry?

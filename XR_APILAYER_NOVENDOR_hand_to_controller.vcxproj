@@ -113,6 +113,7 @@
     <None Include="packages.config" />
     <None Include="README.md" />
     <None Include="THIRD_PARTY" />
+    <None Include="TODO" />
     <None Include="Uninstall-XR_APILAYER_NOVENDOR_hand_to_controller.ps1" />
     <None Include="XR_APILAYER_NOVENDOR_hand_to_controller.json" />
   </ItemGroup>

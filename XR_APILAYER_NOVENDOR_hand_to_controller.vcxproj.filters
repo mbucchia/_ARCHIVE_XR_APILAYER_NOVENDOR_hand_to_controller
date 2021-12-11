@@ -49,5 +49,6 @@
     <None Include="Uninstall-XR_APILAYER_NOVENDOR_hand_to_controller.ps1" />
     <None Include="XR_APILAYER_NOVENDOR_hand_to_controller.json" />
     <None Include="THIRD_PARTY" />
+    <None Include="TODO" />
   </ItemGroup>
 </Project>

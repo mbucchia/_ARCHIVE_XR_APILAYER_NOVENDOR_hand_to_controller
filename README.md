@@ -12,11 +12,13 @@ A ZIP file containing the necessary files to install and use the layer can be fo
 
 1. Create a folder in `%ProgramFiles%`. It's important to make it in `%ProgramFiles%` so that UWP applications can access it! For example: `C:\Program Files\OpenXR-API-Layers`.
 
-2. Place `XR_APILAYER_NOVENDOR_hand_to_controller.json`, `XR_APILAYER_NOVENDOR_hand_to_controller.dll`, `Install-XR_APILAYER_NOVENDOR_hand_to_controller.ps1` and `Uninstall-XR_APILAYER_NOVENDOR_hand_to_controller.ps1` in the folder created above.
+2. Place `XR_APILAYER_NOVENDOR_hand_to_controller.json`, `XR_APILAYER_NOVENDOR_hand_to_controller.dll`, `Install-XR_APILAYER_NOVENDOR_hand_to_controller.ps1` and `Uninstall-XR_APILAYER_NOVENDOR_hand_to_controller.ps1` in the folder created above. Also copy any configuration file (eg: `FS2020.cfg`) to that folder.
 
 3. Run the script `Install-XR_APILAYER_NOVENDOR_hand_to_controller.ps1`. You will be prompted for elevation (running as Administrator).
 
-4. Start the OpenXR Developer Tools for Windows Mixed Reality, under the *System Status* tab, scroll down to *API Layers*. A layer named `XR_APILAYER_NOVENDOR_hand_to_controller` should be listed.
+Some people have reported issues with the script failing to run due to some Windows policies. For now the workaround to this issue is to create a registry key `HKLM\Software\Khronos\OpenXR\1\ApiLayers\Implicit`, then under this path create a DWORD value with the full path to the `XR_APILAYER_NOVENDOR_hand_to_controller.json` file and a value 0.
+
+4. (Optional) Start the OpenXR Developer Tools for Windows Mixed Reality, under the *System Status* tab, scroll down to *API Layers*. A layer named `XR_APILAYER_NOVENDOR_hand_to_controller` should be listed.
 
 ## Removal
 
@@ -24,7 +26,7 @@ A ZIP file containing the necessary files to install and use the layer can be fo
 
 2. Run the script `Uninstall-XR_APILAYER_NOVENDOR_hand_to_controller.ps1`. You will be prompted for elevation (running as Administrator).
 
-3. Start the OpenXR Developer Tools for Windows Mixed Reality, under the *System Status* tab, scroll down to *API Layers*. There should be no layer named `XR_APILAYER_NOVENDOR_hand_to_controller`.
+3. (Optional) Start the OpenXR Developer Tools for Windows Mixed Reality, under the *System Status* tab, scroll down to *API Layers*. There should be no layer named `XR_APILAYER_NOVENDOR_hand_to_controller`.
 
 ## App configuration
 
@@ -74,6 +76,15 @@ Loading config for "FS2020"
 
 If the order observed is incorrect, re-run the `Install-XR_APILAYER_NOVENDOR_hand_to_controller.ps1` script.
 
+Some people have reported issues with the script failing to run due to some Windows policies. For now the workaround to this issue is to modify the registry manually:
+
+- Go to `HKLM\Software\Khronos\OpenXR\1\ApiLayers\Implicit`;
+- There should be a key pointing to the Ultraleap layer (typically `C:\Program Files\Ultraleap\OpenXR\UltraleapHandTracking.json`). Write down the exact path, then delete the key;
+- Create a new DWORD value with the full path to the `XR_APILAYER_NOVENDOR_hand_to_controller.json` file and a value 0;
+- Re-create the Ultraleap entry with the same path (typically `C:\Program Files\Ultraleap\OpenXR\UltraleapHandTracking.json`).
+
+It's important that the key for Ultraleap is created chronologically _after_ the key for `XR_APILAYER_NOVENDOR_hand_to_controller.json`. This is what guarantees the loading order.
+
 ## Configuration file
 
 The configuration file allows to modify the behavior of the software for each application.
@@ -82,9 +93,9 @@ Please use the configuration tool (`ConfigUI.exe`) to generate a configuration f
 
 ## Known issues
 
+* The "Load" option in the configuration tool is not implemented.
 * Hand display is only supported with DirectX 11 applications.
 * Hand display opacity is not implemented (always 100% opaque).
-* The `Load` option in the configuration tool is not implemented.
 * The software was only tested with the Windows Mixed Reality OpenXR runtime.
 * The software is not optimized.
 
