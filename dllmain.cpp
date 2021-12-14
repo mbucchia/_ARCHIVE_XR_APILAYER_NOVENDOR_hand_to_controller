@@ -1577,26 +1577,37 @@ namespace {
         next_xrGetInstanceProcAddr = apiLayerInfo->nextInfo->nextGetInstanceProcAddr;
 
         // Check that the XR_EXT_hand_tracking extension is supported by the runtime and/or an upstream API layer.
-        // TODO: Robustness: this call is illegal - the XrInstance does not exist yet... We may need to create a dummy instance in order to be able to perform these checks.
+        // But first, we need to create a dummy instance in order to be able to perform these checks.
         PFN_xrEnumerateInstanceExtensionProperties next_xrEnumerateInstanceExtensionProperties = nullptr;
-        next_xrGetInstanceProcAddr(*instance, "xrEnumerateInstanceExtensionProperties", reinterpret_cast<PFN_xrVoidFunction*>(&next_xrEnumerateInstanceExtensionProperties));
-        // Workaround for now, seems to work with WMR runtime (and assuming there is only the Ultraleap layer behind our layer).
-        if (next_xrEnumerateInstanceExtensionProperties == nullptr)
         {
-            apiLayerInfo->nextInfo->next->nextGetInstanceProcAddr(*instance, "xrEnumerateInstanceExtensionProperties", reinterpret_cast<PFN_xrVoidFunction*>(&next_xrEnumerateInstanceExtensionProperties));
+            // Call the chain to create the dummy instance.
+            XrApiLayerCreateInfo chainApiLayerInfo = *apiLayerInfo;
+            chainApiLayerInfo.nextInfo = apiLayerInfo->nextInfo->next;
+            const XrResult result = apiLayerInfo->nextInfo->nextCreateApiLayerInstance(instanceCreateInfo, &chainApiLayerInfo, instance);
+            if (result == XR_SUCCESS)
+            {
+                next_xrGetInstanceProcAddr(*instance, "xrEnumerateInstanceExtensionProperties", reinterpret_cast<PFN_xrVoidFunction*>(&next_xrEnumerateInstanceExtensionProperties));
+            }
+            else
+            {
+                Log("Failed to create bootstrap instance: %d\n", result);
+            }
         }
 
-        uint32_t extensionsCount = 0;
-        next_xrEnumerateInstanceExtensionProperties(nullptr, 0, &extensionsCount, nullptr);
-        std::vector<XrExtensionProperties> extensions(extensionsCount, { XR_TYPE_EXTENSION_PROPERTIES });
-        next_xrEnumerateInstanceExtensionProperties(nullptr, extensionsCount, &extensionsCount, extensions.data());
         bool hasHandTrackingExt = false;
-        for (auto extension : extensions) {
-            const std::string extensionName(extension.extensionName);
+        if (next_xrEnumerateInstanceExtensionProperties)
+        {
+            uint32_t extensionsCount = 0;
+            next_xrEnumerateInstanceExtensionProperties(nullptr, 0, &extensionsCount, nullptr);
+            std::vector<XrExtensionProperties> extensions(extensionsCount, { XR_TYPE_EXTENSION_PROPERTIES });
+            next_xrEnumerateInstanceExtensionProperties(nullptr, extensionsCount, &extensionsCount, extensions.data());
+            for (auto extension : extensions) {
+                const std::string extensionName(extension.extensionName);
 
-            if (extensionName == "XR_EXT_hand_tracking")
-            {
-                hasHandTrackingExt = true;
+                if (extensionName == "XR_EXT_hand_tracking")
+                {
+                    hasHandTrackingExt = true;
+                }
             }
         }
 
@@ -1615,7 +1626,13 @@ namespace {
             Log("XR_EXT_hand_tracking is not available from the OpenXR runtime or any upsteam API layer.\n");
         }
 
-        // Call the chain to create the instance.
+        // Destroy the dummy instance.
+        PFN_xrDestroyInstance next_xrDestroyInstance = nullptr;
+        next_xrGetInstanceProcAddr(*instance, "xrDestroyInstance", reinterpret_cast<PFN_xrVoidFunction*>(&next_xrDestroyInstance));
+        next_xrDestroyInstance(*instance);
+        *instance = XR_NULL_HANDLE;
+
+        // Call the chain to create the instance we actually want.
         XrApiLayerCreateInfo chainApiLayerInfo = *apiLayerInfo;
         chainApiLayerInfo.nextInfo = apiLayerInfo->nextInfo->next;
         const XrResult result = apiLayerInfo->nextInfo->nextCreateApiLayerInstance(&chainInstanceCreateInfo, &chainApiLayerInfo, instance);
