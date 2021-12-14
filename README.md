@@ -14,9 +14,7 @@ A ZIP file containing the necessary files to install and use the layer can be fo
 
 2. Place `XR_APILAYER_NOVENDOR_hand_to_controller.json`, `XR_APILAYER_NOVENDOR_hand_to_controller.dll`, `Install-XR_APILAYER_NOVENDOR_hand_to_controller.ps1` and `Uninstall-XR_APILAYER_NOVENDOR_hand_to_controller.ps1` in the folder created above. Also copy any configuration file (eg: `FS2020.cfg`) to that folder.
 
-3. Run the script `Install-XR_APILAYER_NOVENDOR_hand_to_controller.ps1`. You will be prompted for elevation (running as Administrator).
-
-Some people have reported issues with the script failing to run due to some Windows policies. For now the workaround to this issue is to create a registry key `HKLM\Software\Khronos\OpenXR\1\ApiLayers\Implicit`, then under this path create a DWORD value with the full path to the `XR_APILAYER_NOVENDOR_hand_to_controller.json` file and a value 0.
+3. Run the script `Install-XR_APILAYER_NOVENDOR_hand_to_controller.ps1` by right-clicking on the file, then choosing "Run with PowerShell". You will be prompted for elevation (running as Administrator).
 
 4. (Optional) Start the OpenXR Developer Tools for Windows Mixed Reality, under the *System Status* tab, scroll down to *API Layers*. A layer named `XR_APILAYER_NOVENDOR_hand_to_controller` should be listed.
 
@@ -24,17 +22,21 @@ Some people have reported issues with the script failing to run due to some Wind
 
 1. Go to the folder where the API layer is installed. For example: `C:\Program Files\OpenXR-API-Layers`.
 
-2. Run the script `Uninstall-XR_APILAYER_NOVENDOR_hand_to_controller.ps1`. You will be prompted for elevation (running as Administrator).
+2. Run the script `Uninstall-XR_APILAYER_NOVENDOR_hand_to_controller.ps1` by right-clicking on the file, then choosing "Run with PowerShell". You will be prompted for elevation (running as Administrator).
 
 3. (Optional) Start the OpenXR Developer Tools for Windows Mixed Reality, under the *System Status* tab, scroll down to *API Layers*. There should be no layer named `XR_APILAYER_NOVENDOR_hand_to_controller`.
 
 ## App configuration
 
-1. First, retrieve the name that the application passes to OpenXR. In order to do that, run the application while the API layer is enabled.
+NOTE TO Microsoft Flight Simulator 2020 USERS: The ZIP archive already contains a configuration file (`FS2020.cfg`) for Flight Simulator 2020! Just copy the file as part of Setup step 2) above!
+
+In order to enable the software for a given application (eg: Microsoft Flight Simulator 2020 aka MSFS2020), a configuration file must be present for this application.
+
+1. Each application registers itself with a name. The first step is to retrieve the name that the application passes to OpenXR. In order to do that, follow the setup instructions above to install the software, then run the application you wish to enable NIS scaling for. In this example, we start MSFS2020.
 
 2. Locate the log file for the layer. It will typically be `%LocalAppData%\XR_APILAYER_NOVENDOR_hand_to_controller.log`.
 
-3. In the log file, search for the first line saying "Could not load config for ...":
+3. In the log file, search for the first line saying "Could not load config for ...". The name specified on this line is the application name:
 
 ```
 dllHome is "C:\Program Files\OpenXR-API-Layers"
@@ -45,22 +47,12 @@ Could not load config for "Zouna"
 
 4. In the same folder where `XR_APILAYER_NOVENDOR_hand_to_controller.json` was copied during setup, create a file with a name matching the application name, and with the extension `.cfg`. For example `C:\Program Files\OpenXR-API-Layers\FS2020.cfg`.
 
-The presence of the configuration file for the desired application will enable the input translation feature. Without a configuration file, even an empty one, the software will not be active.
-
 By default, an empty configuration will emulate an HP Mixed Reality motion controller with basic bindings:
 
 - Pinching (index to thumb) acts as the controller's trigger;
 - Squeezing (middle, ring and little fingers) acts as the controller's squeezing;
 - Tapping the wrist of the left hand with the index of the right hand acts as the controller's menu button;
 - Tapping the tip of the index of the right hand with the index of the left hand acts as the controller's B button;
-
-5. When running the application, the changes should take affect. Inspect the log file if it needs to be confirmed:
-
-```
-dllHome is "C:\Program Files\OpenXR-API-Layers"
-XR_APILAYER_NOVENDOR_hand_to_controller layer is active
-Loading config for "FS2020"
-```
 
 ## Using with Leap Motion
 
@@ -91,9 +83,10 @@ The configuration file allows to modify the behavior of the software for each ap
 
 Please use the configuration tool (`ConfigUI.exe`) to generate a configuration file.
 
-## Known issues
+## Known issues and limitations
 
 * The "Load" option in the configuration tool is not implemented.
+* Binding multiple gestures to the same action is presently broken.
 * Hand display is only supported with DirectX 11 applications.
 * Hand display opacity is not implemented (always 100% opaque).
 * The software was only tested with the Windows Mixed Reality OpenXR runtime.
@@ -104,3 +97,5 @@ Please use the configuration tool (`ConfigUI.exe`) to generate a configuration f
 The author is Matthieu Bucchianeri (https://github.com/mbucchia/). Please note that this software is not affiliated with Microsoft nor Ultraleap.
 
 Special thanks to Roman Bershadsky (https://flightsimulation.romandesign.ca/) for his ideas on how this software should work!
+
+Special thanks to BufordTX for spotting my bug in the installation script.
