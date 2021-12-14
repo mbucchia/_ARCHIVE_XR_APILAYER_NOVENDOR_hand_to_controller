@@ -1,30 +1,41 @@
+Bug fixes:
+
+* (#2) Binding multiple gestures to the same action does not work.
+
 Tracking:
 
+* Change behavior when hand tracking is lost.
 * Cache hand poses to deduplicate 3 similar calls (xrLocateSpace, xrSyncActions and xrEndFrame).
 * Improve gesture detection robustness.
 
 Graphics:
 
-* Support DX12, probably can use d3d11on12.
 * Implement alpha blending in the shader to support hands opacity.
-* Improve the visuals of the hands.
 * Add an option to bypass d3d context restore (needs to change scissors in the rendering). Might help with perf.
+
+Haptics:
+
+* Play audio instead of haptics.
+* Bind haptics + current gesture to an action (eg: to simulate button presses with "finger gun" gesture).
 
 Config tool:
 
-* Implement loading of existing config file.
-
-Non-WMR support:
-
-* Fix workaround at layer creation (create aux XrInstance instead).
-* Proper error handling/reporting everywhere in the code.
+* (#1) Implement loading of existing config file.
+* Add grip pose offset axis correction to reflect proper X/Y/Z axes.
 
 Install script:
 
-* Make a proper installer.
+* (#3) Make a proper installer so we can handle layer ordering with the NIS layer too.
 
-Stretch-goals (to support beyond MSFS):
+Misc:
 
+* Proper error handling/reporting everywhere in the code.
+* Add hotkeys for certain desired behaviors (eg: disable left/right hand).
+
+Stretch-goals:
+
+* Support DX12, probably can use d3d11on12.
+* Improve the visuals of the hands.
 * OpenXR compliance issues (XrSession, XrActionSet, behavior of unhandled actions...).
 * Proper support of imageArrayIndex for swapchains.
-* Performance statistics telemetry?
+* Performance statistics
