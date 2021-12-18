@@ -20,12 +20,12 @@ Haptics:
 
 Config tool:
 
-* (#1) Implement loading of existing config file.
+* (#3) Add custom gesture
 * Add grip pose offset axis correction to reflect proper X/Y/Z axes.
 
 Install script:
 
-* (#3) Make a proper installer so we can handle layer ordering with the NIS layer too.
+* (#1) Make a proper installer so we can handle layer ordering with the NIS layer too.
 
 Misc:
 

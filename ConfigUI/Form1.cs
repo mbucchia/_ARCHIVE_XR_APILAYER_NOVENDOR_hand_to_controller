@@ -64,14 +64,13 @@ namespace ConfigUI
             leftSqueezeAction.SelectedIndex = 3; // /input/squeeze/value
             leftWristTapAction.SelectedIndex = 1; // /input/menu/click
             leftPalmTapAction.SelectedIndex = 0;
-            leftIndexTipTapAction.SelectedIndex = 0;
+            leftIndexTipTapAction.SelectedIndex = 8; // /input/b/click
             rightPinchAction.SelectedIndex = 2; // /input/trigger/value
             rightThumbPressAction.SelectedIndex = 0;
             rightIndexBendAction.SelectedIndex = 0;
             rightSqueezeAction.SelectedIndex = 3; // /input/squeeze/value
             rightWristTapAction.SelectedIndex = 0;
             rightPalmTapAction.SelectedIndex = 0;
-            rightIndexTipTapAction.SelectedIndex = 8; // /input/b/click
             interactionProfile.SelectedIndex = 1; // HP Reverb
 
             pinchNear.Value = 0;
@@ -128,6 +127,12 @@ namespace ConfigUI
 
         private void UpdateLeftRotation()
         {
+            // We store the Euler angles as well (the API layer will ignore them and use the quaternion instead.
+            if (saveToFile != null)
+            {
+                SendUpdate("left.transform.euler", leftXRotation.Value + " " + leftYRotation.Value + " " + leftZRotation.Value);
+            }
+
             Quaternion q = Quaternion.CreateFromYawPitchRoll(
                 (float)(leftYRotation.Value * Math.PI) / 180.0f,
                 (float)(leftXRotation.Value * Math.PI) / 180.0f,
@@ -137,6 +142,12 @@ namespace ConfigUI
 
         private void UpdateRightRotation()
         {
+            // We store the Euler angles as well (the API layer will ignore them and use the quaternion instead.
+            if (saveToFile != null)
+            {
+                SendUpdate("right.transform.euler", rightXRotation.Value + " " + rightYRotation.Value + " " + rightZRotation.Value);
+            }
+
             Quaternion q = Quaternion.CreateFromYawPitchRoll(
                 (float)(rightYRotation.Value * Math.PI) / 180.0f,
                 (float)(rightXRotation.Value * Math.PI) / 180.0f,
@@ -324,11 +335,6 @@ namespace ConfigUI
         private void rightPalmTapAction_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateAction("right.palm_tap", rightPalmTapAction.Text);
-        }
-
-        private void rightIndexTipTapAction_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            UpdateAction("right.index_tip_tap", rightIndexTipTapAction.Text);
         }
 
         private void interactionProfile_SelectedIndexChanged(object sender, EventArgs e)
@@ -594,7 +600,6 @@ namespace ConfigUI
             rightSqueezeAction_SelectedIndexChanged(null, null);
             rightWristTapAction_SelectedIndexChanged(null, null);
             rightPalmTapAction_SelectedIndexChanged(null, null);
-            rightIndexTipTapAction_SelectedIndexChanged(null, null);
             interactionProfile_SelectedIndexChanged(null, null);
 
             pinchNear_Scroll(null, null);
@@ -620,6 +625,36 @@ namespace ConfigUI
             opacity_Scroll(null, null);
         }
 
+        private void ParseVec(TrackBar X, TrackBar Y, TrackBar Z, string action)
+        {
+            var values = action.Split(' ');
+            X.Value = (int)Math.Round(Double.Parse(values[0]) * 1000);
+            Y.Value = (int)Math.Round(Double.Parse(values[1]) * 1000);
+            Z.Value = (int)Math.Round(Double.Parse(values[2]) * 1000);
+        }
+        private void ParseEuler(TrackBar X, TrackBar Y, TrackBar Z, string action)
+        {
+            var values = action.Split(' ');
+            X.Value = Int32.Parse(values[0]);
+            Y.Value = Int32.Parse(values[1]);
+            Z.Value = Int32.Parse(values[2]);
+        }
+
+        private void SelectActionByName(ComboBox box, string action)
+        {
+            for (int i = 0; i < box.Items.Count; i++)
+            {
+                if (box.Items[i].ToString().Split(' ')[0] == action)
+                {
+                    box.SelectedIndex = i;
+                    return;
+                }
+            }
+
+            MessageBox.Show(this, "Action does not exist: " + action, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            box.SelectedItem = 0;
+        }
+
         private void loadMenuItem_Click(object sender, EventArgs e)
         {
             var openFileDialog = new OpenFileDialog
@@ -632,11 +667,180 @@ namespace ConfigUI
                 CheckPathExists = true
             };
 
-            var status = openFileDialog.ShowDialog();
-            if (status == DialogResult.OK)
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                // XXX: openFileDialog.FileName
-                MessageBox.Show(this, "Sorry, loading is not implemented yet!");
+                var configFile = new StreamReader(openFileDialog.FileName);
+
+                try
+                {
+                    while (true)
+                    {
+                        var line = configFile.ReadLine();
+                        if (line == null)
+                        {
+                            break;
+                        }
+
+                        var split = line.Split('=');
+                        if (split.Length == 1)
+                        {
+                            continue;
+                        }
+                        var name = split[0];
+                        var value = split[1];
+
+                        switch (name)
+                        {
+                            case "left.transform.vec":
+                                ParseVec(leftXOffset, leftYOffset, leftZOffset, value);
+                                leftXOffset_Scroll(null, null);
+                                leftYOffset_Scroll(null, null);
+                                leftZOffset_Scroll(null, null);
+                                break;
+                            case "right.transform.vec":
+                                ParseVec(rightXOffset, rightYOffset, rightZOffset, value);
+                                rightXOffset_Scroll(null, null);
+                                rightYOffset_Scroll(null, null);
+                                rightZOffset_Scroll(null, null);
+                                break;
+                            // Since quaternion have multiple representations in Euler angles, we store the Euler angles (for UI use only). The API layer will use the quaternion instead.
+                            case "left.transform.euler":
+                                ParseEuler(leftXRotation, leftYRotation, leftZRotation, value);
+                                leftXRotation_Scroll(null, null);
+                                leftYRotation_Scroll(null, null);
+                                leftZRotation_Scroll(null, null);
+                                break;
+                            case "right.transform.euler":
+                                ParseEuler(rightXRotation, rightYRotation, rightZRotation, value);
+                                rightXRotation_Scroll(null, null);
+                                rightYRotation_Scroll(null, null);
+                                rightZRotation_Scroll(null, null);
+                                break;
+                            case "left.enabled":
+                                leftDisable.Checked = !(value == "1" || value == "true");
+                                break;
+                            case "right.enabled":
+                                rightDisable.Checked = !(value == "1" || value == "true");
+                                break;
+                            case "aim_joint":
+                                aimJoint.SelectedIndex = Int32.Parse(value);
+                                break;
+                            case "grip_joint":
+                                gripJoint.SelectedIndex = Int32.Parse(value);
+                                break;
+                            case "left.pinch":
+                                SelectActionByName(leftPinchAction, value);
+                                break;
+                            case "left.thumb_press":
+                                SelectActionByName(leftThumbPressAction, value);
+                                break;
+                            case "left.index_bend":
+                                SelectActionByName(leftIndexBendAction, value);
+                                break;
+                            case "left.squeeze":
+                                SelectActionByName(leftSqueezeAction, value);
+                                break;
+                            case "left.wrist_tap":
+                                SelectActionByName(leftWristTapAction, value);
+                                break;
+                            case "left.palm_tap":
+                                SelectActionByName(leftPalmTapAction, value);
+                                break;
+                            case "left.index_tip_tap":
+                                SelectActionByName(leftIndexTipTapAction, value);
+                                break;
+                            case "right.pinch":
+                                SelectActionByName(rightPinchAction, value);
+                                break;
+                            case "right.thumb_press":
+                                SelectActionByName(rightThumbPressAction, value);
+                                break;
+                            case "right.index_bend":
+                                SelectActionByName(rightIndexBendAction, value);
+                                break;
+                            case "right.squeeze":
+                                SelectActionByName(rightSqueezeAction, value);
+                                break;
+                            case "right.wrist_tap":
+                                SelectActionByName(rightWristTapAction, value);
+                                break;
+                            case "right.palm_tap":
+                                SelectActionByName(rightPalmTapAction, value);
+                                break;
+                            case "interaction_profile":
+                                SelectActionByName(interactionProfile, value);
+                                break;
+                            case "pinch.near":
+                                pinchNear.Value = (int)Math.Round(Double.Parse(value) * 1000);
+                                break;
+                            case "pinch.far":
+                                pinchFar.Value = (int)Math.Round(Double.Parse(value) * 1000);
+                                break;
+                            case "thumb_press.near":
+                                thumbPressNear.Value = (int)Math.Round(Double.Parse(value) * 1000);
+                                break;
+                            case "thumb_press.far":
+                                thumbPressFar.Value = (int)Math.Round(Double.Parse(value) * 1000);
+                                break;
+                            case "index_bend.near":
+                                indexBendNear.Value = (int)Math.Round(Double.Parse(value) * 1000);
+                                break;
+                            case "index_bend.far":
+                                indexBendFar.Value = (int)Math.Round(Double.Parse(value) * 1000);
+                                break;
+                            case "squeeze.near":
+                                squeezeNear.Value = (int)Math.Round(Double.Parse(value) * 1000);
+                                break;
+                            case "squeeze.far":
+                                squeezeFar.Value = (int)Math.Round(Double.Parse(value) * 1000);
+                                break;
+                            case "wrist_tap.near":
+                                wristTapNear.Value = (int)Math.Round(Double.Parse(value) * 1000);
+                                break;
+                            case "wrist_tap.far":
+                                wristTapFar.Value = (int)Math.Round(Double.Parse(value) * 1000);
+                                break;
+                            case "palm_tap.near":
+                                palmTapNear.Value = (int)Math.Round(Double.Parse(value) * 1000);
+                                break;
+                            case "palm_tap.far":
+                                palmTapFar.Value = (int)Math.Round(Double.Parse(value) * 1000);
+                                break;
+                            case "index_tip_tap.near":
+                                indexTipTapNear.Value = (int)Math.Round(Double.Parse(value) * 1000);
+                                break;
+                            case "index_tip_tap.far":
+                                indexTipTapFar.Value = (int)Math.Round(Double.Parse(value) * 1000);
+                                break;
+                            case "click_threshold":
+                                clickThreshold.Value = (int)Math.Round(Double.Parse(value) * 100);
+                                break;
+                            case "display.enabled":
+                                displayDisable.Checked = !(value == "1" || value == "true");
+                                break;
+                            case "proj_layer_index":
+                                projLayerIndex.Value = Int32.Parse(value);
+                                break;
+                            case "force_own_depth_buffer":
+                                depthDisable.Checked = value == "1" || value == "true";
+                                break;
+                            case "skin_tone":
+                                skinTone.SelectedIndex = Int32.Parse(value);
+                                break;
+                            case "opacity":
+                                opacity.Value = (int)((float.Parse(value) * 100) + float.Epsilon);
+                                break;
+                        }
+
+                        FlushConfiguration();
+                    }
+
+                    status.Text = "Loaded from " + openFileDialog.FileName;
+                }
+                finally
+                {
+                    configFile.Close();
+                }
             }
         }
 

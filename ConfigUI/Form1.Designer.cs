@@ -107,8 +107,6 @@ namespace ConfigUI
             this.leftWristTapAction = new System.Windows.Forms.ComboBox();
             this.label35 = new System.Windows.Forms.Label();
             this.groupBox16 = new System.Windows.Forms.GroupBox();
-            this.rightIndexTipTapAction = new System.Windows.Forms.ComboBox();
-            this.label39 = new System.Windows.Forms.Label();
             this.rightPalmTapAction = new System.Windows.Forms.ComboBox();
             this.label41 = new System.Windows.Forms.Label();
             this.rightWristTapAction = new System.Windows.Forms.ComboBox();
@@ -278,7 +276,7 @@ namespace ConfigUI
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 31);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(2);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(1024, 601);
@@ -295,9 +293,9 @@ namespace ConfigUI
             this.tabPage1.Controls.Add(this.groupBox4);
             this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(2);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(2);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabPage1.Size = new System.Drawing.Size(1016, 575);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Offsets";
@@ -423,9 +421,9 @@ namespace ConfigUI
             this.groupBox4.Controls.Add(this.groupBox5);
             this.groupBox4.Controls.Add(this.groupBox6);
             this.groupBox4.Location = new System.Drawing.Point(3, 261);
-            this.groupBox4.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox4.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox4.Size = new System.Drawing.Size(1011, 248);
             this.groupBox4.TabIndex = 1;
             this.groupBox4.TabStop = false;
@@ -435,7 +433,7 @@ namespace ConfigUI
             // 
             this.rightDisable.AutoSize = true;
             this.rightDisable.Location = new System.Drawing.Point(15, 221);
-            this.rightDisable.Margin = new System.Windows.Forms.Padding(2);
+            this.rightDisable.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.rightDisable.Name = "rightDisable";
             this.rightDisable.Size = new System.Drawing.Size(68, 21);
             this.rightDisable.TabIndex = 2;
@@ -458,9 +456,9 @@ namespace ConfigUI
             this.groupBox5.Controls.Add(this.rightXRotationText);
             this.groupBox5.Controls.Add(this.rightXRotation);
             this.groupBox5.Location = new System.Drawing.Point(513, 26);
-            this.groupBox5.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox5.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox5.Size = new System.Drawing.Size(483, 189);
             this.groupBox5.TabIndex = 1;
             this.groupBox5.TabStop = false;
@@ -490,7 +488,7 @@ namespace ConfigUI
             // 
             this.rightZRotationText.Enabled = false;
             this.rightZRotationText.Location = new System.Drawing.Point(421, 144);
-            this.rightZRotationText.Margin = new System.Windows.Forms.Padding(2);
+            this.rightZRotationText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.rightZRotationText.Name = "rightZRotationText";
             this.rightZRotationText.Size = new System.Drawing.Size(31, 20);
             this.rightZRotationText.TabIndex = 10;
@@ -500,7 +498,7 @@ namespace ConfigUI
             this.rightZRotation.BackColor = System.Drawing.SystemColors.Window;
             this.rightZRotation.LargeChange = 10;
             this.rightZRotation.Location = new System.Drawing.Point(23, 131);
-            this.rightZRotation.Margin = new System.Windows.Forms.Padding(2);
+            this.rightZRotation.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.rightZRotation.Maximum = 180;
             this.rightZRotation.Minimum = -180;
             this.rightZRotation.Name = "rightZRotation";
@@ -533,7 +531,7 @@ namespace ConfigUI
             // 
             this.rightYRotationText.Enabled = false;
             this.rightYRotationText.Location = new System.Drawing.Point(421, 94);
-            this.rightYRotationText.Margin = new System.Windows.Forms.Padding(2);
+            this.rightYRotationText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.rightYRotationText.Name = "rightYRotationText";
             this.rightYRotationText.Size = new System.Drawing.Size(31, 20);
             this.rightYRotationText.TabIndex = 6;
@@ -543,7 +541,7 @@ namespace ConfigUI
             this.rightYRotation.BackColor = System.Drawing.SystemColors.Window;
             this.rightYRotation.LargeChange = 10;
             this.rightYRotation.Location = new System.Drawing.Point(23, 81);
-            this.rightYRotation.Margin = new System.Windows.Forms.Padding(2);
+            this.rightYRotation.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.rightYRotation.Maximum = 180;
             this.rightYRotation.Minimum = -180;
             this.rightYRotation.Name = "rightYRotation";
@@ -576,7 +574,7 @@ namespace ConfigUI
             // 
             this.rightXRotationText.Enabled = false;
             this.rightXRotationText.Location = new System.Drawing.Point(421, 44);
-            this.rightXRotationText.Margin = new System.Windows.Forms.Padding(2);
+            this.rightXRotationText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.rightXRotationText.Name = "rightXRotationText";
             this.rightXRotationText.Size = new System.Drawing.Size(31, 20);
             this.rightXRotationText.TabIndex = 2;
@@ -586,7 +584,7 @@ namespace ConfigUI
             this.rightXRotation.BackColor = System.Drawing.SystemColors.Window;
             this.rightXRotation.LargeChange = 10;
             this.rightXRotation.Location = new System.Drawing.Point(23, 31);
-            this.rightXRotation.Margin = new System.Windows.Forms.Padding(2);
+            this.rightXRotation.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.rightXRotation.Maximum = 180;
             this.rightXRotation.Minimum = -180;
             this.rightXRotation.Name = "rightXRotation";
@@ -610,9 +608,9 @@ namespace ConfigUI
             this.groupBox6.Controls.Add(this.rightXOffsetText);
             this.groupBox6.Controls.Add(this.rightXOffset);
             this.groupBox6.Location = new System.Drawing.Point(15, 26);
-            this.groupBox6.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox6.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox6.Size = new System.Drawing.Size(483, 189);
             this.groupBox6.TabIndex = 0;
             this.groupBox6.TabStop = false;
@@ -642,7 +640,7 @@ namespace ConfigUI
             // 
             this.rightZOffsetText.Enabled = false;
             this.rightZOffsetText.Location = new System.Drawing.Point(421, 144);
-            this.rightZOffsetText.Margin = new System.Windows.Forms.Padding(2);
+            this.rightZOffsetText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.rightZOffsetText.Name = "rightZOffsetText";
             this.rightZOffsetText.Size = new System.Drawing.Size(31, 20);
             this.rightZOffsetText.TabIndex = 10;
@@ -652,7 +650,7 @@ namespace ConfigUI
             this.rightZOffset.BackColor = System.Drawing.SystemColors.Window;
             this.rightZOffset.LargeChange = 10;
             this.rightZOffset.Location = new System.Drawing.Point(23, 131);
-            this.rightZOffset.Margin = new System.Windows.Forms.Padding(2);
+            this.rightZOffset.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.rightZOffset.Maximum = 100;
             this.rightZOffset.Minimum = -100;
             this.rightZOffset.Name = "rightZOffset";
@@ -685,7 +683,7 @@ namespace ConfigUI
             // 
             this.rightYOffsetText.Enabled = false;
             this.rightYOffsetText.Location = new System.Drawing.Point(421, 94);
-            this.rightYOffsetText.Margin = new System.Windows.Forms.Padding(2);
+            this.rightYOffsetText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.rightYOffsetText.Name = "rightYOffsetText";
             this.rightYOffsetText.Size = new System.Drawing.Size(31, 20);
             this.rightYOffsetText.TabIndex = 6;
@@ -695,7 +693,7 @@ namespace ConfigUI
             this.rightYOffset.BackColor = System.Drawing.SystemColors.Window;
             this.rightYOffset.LargeChange = 10;
             this.rightYOffset.Location = new System.Drawing.Point(23, 81);
-            this.rightYOffset.Margin = new System.Windows.Forms.Padding(2);
+            this.rightYOffset.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.rightYOffset.Maximum = 100;
             this.rightYOffset.Minimum = -100;
             this.rightYOffset.Name = "rightYOffset";
@@ -728,7 +726,7 @@ namespace ConfigUI
             // 
             this.rightXOffsetText.Enabled = false;
             this.rightXOffsetText.Location = new System.Drawing.Point(421, 44);
-            this.rightXOffsetText.Margin = new System.Windows.Forms.Padding(2);
+            this.rightXOffsetText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.rightXOffsetText.Name = "rightXOffsetText";
             this.rightXOffsetText.Size = new System.Drawing.Size(31, 20);
             this.rightXOffsetText.TabIndex = 2;
@@ -738,7 +736,7 @@ namespace ConfigUI
             this.rightXOffset.BackColor = System.Drawing.SystemColors.Window;
             this.rightXOffset.LargeChange = 10;
             this.rightXOffset.Location = new System.Drawing.Point(23, 31);
-            this.rightXOffset.Margin = new System.Windows.Forms.Padding(2);
+            this.rightXOffset.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.rightXOffset.Maximum = 100;
             this.rightXOffset.Minimum = -100;
             this.rightXOffset.Name = "rightXOffset";
@@ -753,9 +751,9 @@ namespace ConfigUI
             this.groupBox1.Controls.Add(this.groupBox3);
             this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox1.Size = new System.Drawing.Size(1011, 248);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
@@ -765,7 +763,7 @@ namespace ConfigUI
             // 
             this.leftDisable.AutoSize = true;
             this.leftDisable.Location = new System.Drawing.Point(15, 221);
-            this.leftDisable.Margin = new System.Windows.Forms.Padding(2);
+            this.leftDisable.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.leftDisable.Name = "leftDisable";
             this.leftDisable.Size = new System.Drawing.Size(68, 21);
             this.leftDisable.TabIndex = 2;
@@ -788,9 +786,9 @@ namespace ConfigUI
             this.groupBox3.Controls.Add(this.leftXRotationText);
             this.groupBox3.Controls.Add(this.leftXRotation);
             this.groupBox3.Location = new System.Drawing.Point(513, 26);
-            this.groupBox3.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox3.Size = new System.Drawing.Size(483, 189);
             this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
@@ -820,7 +818,7 @@ namespace ConfigUI
             // 
             this.leftZRotationText.Enabled = false;
             this.leftZRotationText.Location = new System.Drawing.Point(421, 144);
-            this.leftZRotationText.Margin = new System.Windows.Forms.Padding(2);
+            this.leftZRotationText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.leftZRotationText.Name = "leftZRotationText";
             this.leftZRotationText.Size = new System.Drawing.Size(31, 20);
             this.leftZRotationText.TabIndex = 10;
@@ -830,7 +828,7 @@ namespace ConfigUI
             this.leftZRotation.BackColor = System.Drawing.SystemColors.Window;
             this.leftZRotation.LargeChange = 10;
             this.leftZRotation.Location = new System.Drawing.Point(23, 131);
-            this.leftZRotation.Margin = new System.Windows.Forms.Padding(2);
+            this.leftZRotation.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.leftZRotation.Maximum = 180;
             this.leftZRotation.Minimum = -180;
             this.leftZRotation.Name = "leftZRotation";
@@ -863,7 +861,7 @@ namespace ConfigUI
             // 
             this.leftYRotationText.Enabled = false;
             this.leftYRotationText.Location = new System.Drawing.Point(421, 94);
-            this.leftYRotationText.Margin = new System.Windows.Forms.Padding(2);
+            this.leftYRotationText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.leftYRotationText.Name = "leftYRotationText";
             this.leftYRotationText.Size = new System.Drawing.Size(31, 20);
             this.leftYRotationText.TabIndex = 6;
@@ -873,7 +871,7 @@ namespace ConfigUI
             this.leftYRotation.BackColor = System.Drawing.SystemColors.Window;
             this.leftYRotation.LargeChange = 10;
             this.leftYRotation.Location = new System.Drawing.Point(23, 81);
-            this.leftYRotation.Margin = new System.Windows.Forms.Padding(2);
+            this.leftYRotation.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.leftYRotation.Maximum = 180;
             this.leftYRotation.Minimum = -180;
             this.leftYRotation.Name = "leftYRotation";
@@ -906,7 +904,7 @@ namespace ConfigUI
             // 
             this.leftXRotationText.Enabled = false;
             this.leftXRotationText.Location = new System.Drawing.Point(421, 44);
-            this.leftXRotationText.Margin = new System.Windows.Forms.Padding(2);
+            this.leftXRotationText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.leftXRotationText.Name = "leftXRotationText";
             this.leftXRotationText.Size = new System.Drawing.Size(31, 20);
             this.leftXRotationText.TabIndex = 2;
@@ -916,7 +914,7 @@ namespace ConfigUI
             this.leftXRotation.BackColor = System.Drawing.SystemColors.Window;
             this.leftXRotation.LargeChange = 10;
             this.leftXRotation.Location = new System.Drawing.Point(23, 31);
-            this.leftXRotation.Margin = new System.Windows.Forms.Padding(2);
+            this.leftXRotation.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.leftXRotation.Maximum = 180;
             this.leftXRotation.Minimum = -180;
             this.leftXRotation.Name = "leftXRotation";
@@ -940,9 +938,9 @@ namespace ConfigUI
             this.groupBox2.Controls.Add(this.leftXOffsetText);
             this.groupBox2.Controls.Add(this.leftXOffset);
             this.groupBox2.Location = new System.Drawing.Point(15, 26);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox2.Size = new System.Drawing.Size(483, 189);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
@@ -972,7 +970,7 @@ namespace ConfigUI
             // 
             this.leftZOffsetText.Enabled = false;
             this.leftZOffsetText.Location = new System.Drawing.Point(421, 144);
-            this.leftZOffsetText.Margin = new System.Windows.Forms.Padding(2);
+            this.leftZOffsetText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.leftZOffsetText.Name = "leftZOffsetText";
             this.leftZOffsetText.Size = new System.Drawing.Size(31, 20);
             this.leftZOffsetText.TabIndex = 10;
@@ -982,7 +980,7 @@ namespace ConfigUI
             this.leftZOffset.BackColor = System.Drawing.SystemColors.Window;
             this.leftZOffset.LargeChange = 10;
             this.leftZOffset.Location = new System.Drawing.Point(23, 131);
-            this.leftZOffset.Margin = new System.Windows.Forms.Padding(2);
+            this.leftZOffset.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.leftZOffset.Maximum = 100;
             this.leftZOffset.Minimum = -100;
             this.leftZOffset.Name = "leftZOffset";
@@ -1015,7 +1013,7 @@ namespace ConfigUI
             // 
             this.leftYOffsetText.Enabled = false;
             this.leftYOffsetText.Location = new System.Drawing.Point(421, 94);
-            this.leftYOffsetText.Margin = new System.Windows.Forms.Padding(2);
+            this.leftYOffsetText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.leftYOffsetText.Name = "leftYOffsetText";
             this.leftYOffsetText.Size = new System.Drawing.Size(31, 20);
             this.leftYOffsetText.TabIndex = 6;
@@ -1025,7 +1023,7 @@ namespace ConfigUI
             this.leftYOffset.BackColor = System.Drawing.SystemColors.Window;
             this.leftYOffset.LargeChange = 10;
             this.leftYOffset.Location = new System.Drawing.Point(23, 81);
-            this.leftYOffset.Margin = new System.Windows.Forms.Padding(2);
+            this.leftYOffset.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.leftYOffset.Maximum = 100;
             this.leftYOffset.Minimum = -100;
             this.leftYOffset.Name = "leftYOffset";
@@ -1058,7 +1056,7 @@ namespace ConfigUI
             // 
             this.leftXOffsetText.Enabled = false;
             this.leftXOffsetText.Location = new System.Drawing.Point(421, 44);
-            this.leftXOffsetText.Margin = new System.Windows.Forms.Padding(2);
+            this.leftXOffsetText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.leftXOffsetText.Name = "leftXOffsetText";
             this.leftXOffsetText.Size = new System.Drawing.Size(31, 20);
             this.leftXOffsetText.TabIndex = 2;
@@ -1068,7 +1066,7 @@ namespace ConfigUI
             this.leftXOffset.BackColor = System.Drawing.SystemColors.Window;
             this.leftXOffset.LargeChange = 10;
             this.leftXOffset.Location = new System.Drawing.Point(23, 31);
-            this.leftXOffset.Margin = new System.Windows.Forms.Padding(2);
+            this.leftXOffset.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.leftXOffset.Maximum = 100;
             this.leftXOffset.Minimum = -100;
             this.leftXOffset.Name = "leftXOffset";
@@ -1087,9 +1085,9 @@ namespace ConfigUI
             this.tabPage2.Controls.Add(this.groupBox8);
             this.tabPage2.Controls.Add(this.label28);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(2);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(2);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabPage2.Size = new System.Drawing.Size(1016, 575);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Bindings";
@@ -1255,8 +1253,6 @@ namespace ConfigUI
             // 
             // groupBox16
             // 
-            this.groupBox16.Controls.Add(this.rightIndexTipTapAction);
-            this.groupBox16.Controls.Add(this.label39);
             this.groupBox16.Controls.Add(this.rightPalmTapAction);
             this.groupBox16.Controls.Add(this.label41);
             this.groupBox16.Controls.Add(this.rightWristTapAction);
@@ -1267,39 +1263,6 @@ namespace ConfigUI
             this.groupBox16.TabIndex = 0;
             this.groupBox16.TabStop = false;
             this.groupBox16.Text = "Right hand";
-            // 
-            // rightIndexTipTapAction
-            // 
-            this.rightIndexTipTapAction.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.rightIndexTipTapAction.FormattingEnabled = true;
-            this.rightIndexTipTapAction.Items.AddRange(new object[] {
-            "",
-            "/input/menu/click",
-            "/input/trigger/value",
-            "/input/squeeze/value (HP/Oculus only)",
-            "/input/squeeze/click",
-            "/input/x/click (HP/Oculus left hand only)",
-            "/input/y/click (HP/Oculus left hand only)",
-            "/input/a/click (HP/Oculus right hand only)",
-            "/input/b/click (HP/Oculus right hand only)",
-            "/input/thumbstick/click",
-            "/input/system/click (Windows button)",
-            "/input/trackpad/click (WMR 1st gen only)",
-            "/input/select/click (simple_controller only)"});
-            this.rightIndexTipTapAction.Location = new System.Drawing.Point(87, 82);
-            this.rightIndexTipTapAction.Name = "rightIndexTipTapAction";
-            this.rightIndexTipTapAction.Size = new System.Drawing.Size(325, 21);
-            this.rightIndexTipTapAction.TabIndex = 5;
-            this.rightIndexTipTapAction.SelectedIndexChanged += new System.EventHandler(this.rightIndexTipTapAction_SelectedIndexChanged);
-            // 
-            // label39
-            // 
-            this.label39.AutoSize = true;
-            this.label39.Location = new System.Drawing.Point(8, 85);
-            this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(68, 13);
-            this.label39.TabIndex = 4;
-            this.label39.Text = "Index tip tap:";
             // 
             // rightPalmTapAction
             // 
@@ -1719,9 +1682,9 @@ namespace ConfigUI
             // 
             this.tabPage3.Controls.Add(this.groupBox17);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Margin = new System.Windows.Forms.Padding(2);
+            this.tabPage3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(1016, 575);
+            this.tabPage3.Size = new System.Drawing.Size(1016, 582);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Gestures";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -1822,7 +1785,7 @@ namespace ConfigUI
             // 
             this.squeezeFarText.Enabled = false;
             this.squeezeFarText.Location = new System.Drawing.Point(847, 193);
-            this.squeezeFarText.Margin = new System.Windows.Forms.Padding(2);
+            this.squeezeFarText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.squeezeFarText.Name = "squeezeFarText";
             this.squeezeFarText.Size = new System.Drawing.Size(31, 20);
             this.squeezeFarText.TabIndex = 26;
@@ -1854,7 +1817,7 @@ namespace ConfigUI
             // 
             this.squeezeNearText.Enabled = false;
             this.squeezeNearText.Location = new System.Drawing.Point(440, 193);
-            this.squeezeNearText.Margin = new System.Windows.Forms.Padding(2);
+            this.squeezeNearText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.squeezeNearText.Name = "squeezeNearText";
             this.squeezeNearText.Size = new System.Drawing.Size(31, 20);
             this.squeezeNearText.TabIndex = 23;
@@ -1913,7 +1876,7 @@ namespace ConfigUI
             // 
             this.clickThresholdText.Enabled = false;
             this.clickThresholdText.Location = new System.Drawing.Point(440, 417);
-            this.clickThresholdText.Margin = new System.Windows.Forms.Padding(2);
+            this.clickThresholdText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.clickThresholdText.Name = "clickThresholdText";
             this.clickThresholdText.Size = new System.Drawing.Size(31, 20);
             this.clickThresholdText.TabIndex = 51;
@@ -1954,7 +1917,7 @@ namespace ConfigUI
             // 
             this.indexTipTapFarText.Enabled = false;
             this.indexTipTapFarText.Location = new System.Drawing.Point(847, 346);
-            this.indexTipTapFarText.Margin = new System.Windows.Forms.Padding(2);
+            this.indexTipTapFarText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.indexTipTapFarText.Name = "indexTipTapFarText";
             this.indexTipTapFarText.Size = new System.Drawing.Size(31, 20);
             this.indexTipTapFarText.TabIndex = 47;
@@ -1986,7 +1949,7 @@ namespace ConfigUI
             // 
             this.indexTipTapNearText.Enabled = false;
             this.indexTipTapNearText.Location = new System.Drawing.Point(440, 346);
-            this.indexTipTapNearText.Margin = new System.Windows.Forms.Padding(2);
+            this.indexTipTapNearText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.indexTipTapNearText.Name = "indexTipTapNearText";
             this.indexTipTapNearText.Size = new System.Drawing.Size(31, 20);
             this.indexTipTapNearText.TabIndex = 44;
@@ -2025,7 +1988,7 @@ namespace ConfigUI
             // 
             this.palmTapFarText.Enabled = false;
             this.palmTapFarText.Location = new System.Drawing.Point(847, 295);
-            this.palmTapFarText.Margin = new System.Windows.Forms.Padding(2);
+            this.palmTapFarText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.palmTapFarText.Name = "palmTapFarText";
             this.palmTapFarText.Size = new System.Drawing.Size(31, 20);
             this.palmTapFarText.TabIndex = 40;
@@ -2057,7 +2020,7 @@ namespace ConfigUI
             // 
             this.palmTapNearText.Enabled = false;
             this.palmTapNearText.Location = new System.Drawing.Point(440, 295);
-            this.palmTapNearText.Margin = new System.Windows.Forms.Padding(2);
+            this.palmTapNearText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.palmTapNearText.Name = "palmTapNearText";
             this.palmTapNearText.Size = new System.Drawing.Size(31, 20);
             this.palmTapNearText.TabIndex = 37;
@@ -2096,7 +2059,7 @@ namespace ConfigUI
             // 
             this.wristTapFarText.Enabled = false;
             this.wristTapFarText.Location = new System.Drawing.Point(847, 244);
-            this.wristTapFarText.Margin = new System.Windows.Forms.Padding(2);
+            this.wristTapFarText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.wristTapFarText.Name = "wristTapFarText";
             this.wristTapFarText.Size = new System.Drawing.Size(31, 20);
             this.wristTapFarText.TabIndex = 33;
@@ -2128,7 +2091,7 @@ namespace ConfigUI
             // 
             this.wristTapNearText.Enabled = false;
             this.wristTapNearText.Location = new System.Drawing.Point(440, 244);
-            this.wristTapNearText.Margin = new System.Windows.Forms.Padding(2);
+            this.wristTapNearText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.wristTapNearText.Name = "wristTapNearText";
             this.wristTapNearText.Size = new System.Drawing.Size(31, 20);
             this.wristTapNearText.TabIndex = 30;
@@ -2167,7 +2130,7 @@ namespace ConfigUI
             // 
             this.indexBendFarText.Enabled = false;
             this.indexBendFarText.Location = new System.Drawing.Point(847, 142);
-            this.indexBendFarText.Margin = new System.Windows.Forms.Padding(2);
+            this.indexBendFarText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.indexBendFarText.Name = "indexBendFarText";
             this.indexBendFarText.Size = new System.Drawing.Size(31, 20);
             this.indexBendFarText.TabIndex = 19;
@@ -2199,7 +2162,7 @@ namespace ConfigUI
             // 
             this.indexBendNearText.Enabled = false;
             this.indexBendNearText.Location = new System.Drawing.Point(440, 142);
-            this.indexBendNearText.Margin = new System.Windows.Forms.Padding(2);
+            this.indexBendNearText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.indexBendNearText.Name = "indexBendNearText";
             this.indexBendNearText.Size = new System.Drawing.Size(31, 20);
             this.indexBendNearText.TabIndex = 16;
@@ -2248,7 +2211,7 @@ namespace ConfigUI
             // 
             this.pinchFarText.Enabled = false;
             this.pinchFarText.Location = new System.Drawing.Point(847, 40);
-            this.pinchFarText.Margin = new System.Windows.Forms.Padding(2);
+            this.pinchFarText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pinchFarText.Name = "pinchFarText";
             this.pinchFarText.Size = new System.Drawing.Size(31, 20);
             this.pinchFarText.TabIndex = 5;
@@ -2257,7 +2220,7 @@ namespace ConfigUI
             // 
             this.thumbPressFarText.Enabled = false;
             this.thumbPressFarText.Location = new System.Drawing.Point(847, 91);
-            this.thumbPressFarText.Margin = new System.Windows.Forms.Padding(2);
+            this.thumbPressFarText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.thumbPressFarText.Name = "thumbPressFarText";
             this.thumbPressFarText.Size = new System.Drawing.Size(31, 20);
             this.thumbPressFarText.TabIndex = 12;
@@ -2312,7 +2275,7 @@ namespace ConfigUI
             // 
             this.pinchNearText.Enabled = false;
             this.pinchNearText.Location = new System.Drawing.Point(440, 40);
-            this.pinchNearText.Margin = new System.Windows.Forms.Padding(2);
+            this.pinchNearText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pinchNearText.Name = "pinchNearText";
             this.pinchNearText.Size = new System.Drawing.Size(31, 20);
             this.pinchNearText.TabIndex = 2;
@@ -2321,7 +2284,7 @@ namespace ConfigUI
             // 
             this.thumbPressNearText.Enabled = false;
             this.thumbPressNearText.Location = new System.Drawing.Point(440, 91);
-            this.thumbPressNearText.Margin = new System.Windows.Forms.Padding(2);
+            this.thumbPressNearText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.thumbPressNearText.Name = "thumbPressNearText";
             this.thumbPressNearText.Size = new System.Drawing.Size(31, 20);
             this.thumbPressNearText.TabIndex = 9;
@@ -2352,9 +2315,9 @@ namespace ConfigUI
             // 
             this.tabPage4.Controls.Add(this.groupBox7);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
-            this.tabPage4.Margin = new System.Windows.Forms.Padding(2);
+            this.tabPage4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(1016, 575);
+            this.tabPage4.Size = new System.Drawing.Size(1016, 582);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Misc";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -2374,9 +2337,9 @@ namespace ConfigUI
             this.groupBox7.Controls.Add(this.label27);
             this.groupBox7.Controls.Add(this.projLayerIndex);
             this.groupBox7.Location = new System.Drawing.Point(3, 3);
-            this.groupBox7.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox7.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox7.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox7.Size = new System.Drawing.Size(1011, 161);
             this.groupBox7.TabIndex = 0;
             this.groupBox7.TabStop = false;
@@ -2503,7 +2466,6 @@ namespace ConfigUI
             // 
             // menuStrip1
             // 
-            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.loadMenuItem,
@@ -2581,10 +2543,10 @@ namespace ConfigUI
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "OpenXR hand_to_controller API layer configuration tool";
+            this.Text = "OpenXR hand_to_controller configuration tool";
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -2762,8 +2724,6 @@ namespace ConfigUI
         private System.Windows.Forms.ComboBox leftWristTapAction;
         private System.Windows.Forms.Label label35;
         private System.Windows.Forms.GroupBox groupBox16;
-        private System.Windows.Forms.ComboBox rightIndexTipTapAction;
-        private System.Windows.Forms.Label label39;
         private System.Windows.Forms.ComboBox rightPalmTapAction;
         private System.Windows.Forms.Label label41;
         private System.Windows.Forms.ComboBox rightWristTapAction;

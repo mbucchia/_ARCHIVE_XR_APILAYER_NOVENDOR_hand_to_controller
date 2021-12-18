@@ -247,8 +247,9 @@ namespace {
             wristTapAction[1] = "";
             wristTapNear = 0.04f;
             wristTapFar = 0.05f;
-            indexTipTapAction[0] = "";
-            indexTipTapAction[1] = "/input/b/click";
+            // This gesture only makes sense for one hand, but we leave it symmetrical for simplicity.
+            indexTipTapAction[0] = "/input/b/click";
+            indexTipTapAction[1] = "";
             indexTipTapNear = 0.0f;
             indexTipTapFar = 0.07f;
         }
@@ -393,6 +394,10 @@ namespace {
                     config.transform[side].orientation.z = std::stof(component);
                     std::getline(ss, component, ' ');
                     config.transform[side].orientation.w = std::stof(component);
+                }
+                else if (side >= 0 && subName == "transform.euler")
+                {
+                    // For UI use only.
                 }
 #define PARSE_ACTION(configString, configName)                          \
                         else if (side >= 0 && subName == configString)   \
