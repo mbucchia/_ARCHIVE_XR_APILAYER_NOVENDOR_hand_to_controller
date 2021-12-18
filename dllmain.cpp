@@ -28,6 +28,7 @@ namespace {
     // TODO: Cleanliness: refactor the code to make use of classes instead of the many hanging global variables.
 
     const std::string LayerName = "XR_APILAYER_NOVENDOR_hand_to_controller";
+    const std::string VersionString = "Beta-1";
 
     // The path where the DLL loads config files and stores logs.
     std::string dllHome;
@@ -90,6 +91,7 @@ namespace {
     // Hands visualization.
     ComPtr<ID3D11Device> d3d11Device = nullptr;
     HandRenderer handRenderer;
+    // TODO: Group the maps together to reduce lookup.
     std::unordered_map<XrSwapchain, XrSwapchainCreateInfo> swapchainInfo;
     struct SwapchainResources
     {
@@ -257,8 +259,11 @@ namespace {
         const char* fmt,
         va_list va)
     {
+        const std::time_t now = std::time(nullptr);
+
         char buf[1024];
-        _vsnprintf_s(buf, sizeof(buf), fmt, va);
+        size_t offset = std::strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S %z: ", std::localtime(&now));
+        _vsnprintf_s(buf + offset, sizeof(buf) - offset, sizeof(buf) - offset, fmt, va);
         OutputDebugStringA(buf);
         if (logStream.is_open())
         {
@@ -1222,14 +1227,14 @@ namespace {
         const XrResult result = next_xrCreateSwapchain(session, createInfo, swapchain);
         if (result == XR_SUCCESS && d3d11Device)
         {
-            if (createInfo->arraySize <= 2)
+            if (createInfo->arraySize <= 2 && createInfo->faceCount == 1)
             {
                 // We keep track of the swapchain info for when we intercept the textures in xrEnumerateSwapchainImages().
                 swapchainInfo.insert_or_assign(*swapchain, *createInfo);
             }
             else
             {
-                Log("Does not support swapchain with arraySize of %u\n", createInfo->arraySize);
+                Log("Does not support swapchain with arraySize of %u and faceCount of %u\n", createInfo->arraySize, createInfo->faceCount);
             }
         }
 
@@ -1578,15 +1583,16 @@ namespace {
 
         // Check that the XR_EXT_hand_tracking extension is supported by the runtime and/or an upstream API layer.
         // But first, we need to create a dummy instance in order to be able to perform these checks.
+        XrInstance dummyInstance = XR_NULL_HANDLE;
         PFN_xrEnumerateInstanceExtensionProperties next_xrEnumerateInstanceExtensionProperties = nullptr;
         {
             // Call the chain to create the dummy instance.
             XrApiLayerCreateInfo chainApiLayerInfo = *apiLayerInfo;
             chainApiLayerInfo.nextInfo = apiLayerInfo->nextInfo->next;
-            const XrResult result = apiLayerInfo->nextInfo->nextCreateApiLayerInstance(instanceCreateInfo, &chainApiLayerInfo, instance);
+            const XrResult result = apiLayerInfo->nextInfo->nextCreateApiLayerInstance(instanceCreateInfo, &chainApiLayerInfo, &dummyInstance);
             if (result == XR_SUCCESS)
             {
-                next_xrGetInstanceProcAddr(*instance, "xrEnumerateInstanceExtensionProperties", reinterpret_cast<PFN_xrVoidFunction*>(&next_xrEnumerateInstanceExtensionProperties));
+                next_xrGetInstanceProcAddr(dummyInstance, "xrEnumerateInstanceExtensionProperties", reinterpret_cast<PFN_xrVoidFunction*>(&next_xrEnumerateInstanceExtensionProperties));
             }
             else
             {
@@ -1627,10 +1633,11 @@ namespace {
         }
 
         // Destroy the dummy instance.
-        PFN_xrDestroyInstance next_xrDestroyInstance = nullptr;
-        next_xrGetInstanceProcAddr(*instance, "xrDestroyInstance", reinterpret_cast<PFN_xrVoidFunction*>(&next_xrDestroyInstance));
-        next_xrDestroyInstance(*instance);
-        *instance = XR_NULL_HANDLE;
+        {
+            PFN_xrDestroyInstance next_xrDestroyInstance = nullptr;
+            next_xrGetInstanceProcAddr(dummyInstance, "xrDestroyInstance", reinterpret_cast<PFN_xrVoidFunction*>(&next_xrDestroyInstance));
+            next_xrDestroyInstance(dummyInstance);
+        }
 
         // Call the chain to create the instance we actually want.
         XrApiLayerCreateInfo chainApiLayerInfo = *apiLayerInfo;
@@ -1684,6 +1691,16 @@ namespace {
             }
             else
             {
+                PFN_xrGetInstanceProperties xrGetInstanceProperties;
+                XrInstanceProperties instanceProperties = { XR_TYPE_INSTANCE_PROPERTIES };
+                if (next_xrGetInstanceProcAddr(*instance, "xrGetInstanceProperties", reinterpret_cast<PFN_xrVoidFunction*>(&xrGetInstanceProperties)) == XR_SUCCESS &&
+                    xrGetInstanceProperties(*instance, &instanceProperties) == XR_SUCCESS)
+                {
+                    const std::string runtimeName(instanceProperties.runtimeName);
+                    Log("Using OpenXR runtime %s, version %u.%u.%u\n", runtimeName.c_str(),
+                        XR_VERSION_MAJOR(instanceProperties.runtimeVersion), XR_VERSION_MINOR(instanceProperties.runtimeVersion), XR_VERSION_PATCH(instanceProperties.runtimeVersion));
+                }
+
                 // Resolve additional symbols.
                 // TODO: Robustness: implement proper error handling.
                 next_xrGetInstanceProcAddr(*instance, "xrCreateReferenceSpace", reinterpret_cast<PFN_xrVoidFunction*>(&xrCreateReferenceSpace));
@@ -1801,7 +1818,7 @@ extern "C" {
 
         DebugLog("<-- HandToController_xrNegotiateLoaderApiLayerInterface\n");
 
-        Log("%s layer is active\n", LayerName.c_str());
+        Log("%s layer (%s) is active\n", LayerName.c_str(), VersionString.c_str());
 
         return XR_SUCCESS;
     }
