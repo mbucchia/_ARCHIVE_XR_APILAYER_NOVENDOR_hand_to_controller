@@ -121,13 +121,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
-    <None Include="Install-XR_APILAYER_NOVENDOR_hand_to_controller.ps1" />
     <None Include="packages.config" />
     <None Include="README.md" />
     <None Include="THIRD_PARTY" />
     <None Include="TODO" />
-    <None Include="Uninstall-XR_APILAYER_NOVENDOR_hand_to_controller.ps1" />
-    <None Include="XR_APILAYER_NOVENDOR_hand_to_controller.json" />
+    <None Include="XR_APILAYER_NOVENDOR_hand_to_controller.json">
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

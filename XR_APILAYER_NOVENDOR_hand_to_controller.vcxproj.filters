@@ -45,8 +45,6 @@
     <None Include="packages.config" />
     <None Include=".gitignore" />
     <None Include="README.md" />
-    <None Include="Install-XR_APILAYER_NOVENDOR_hand_to_controller.ps1" />
-    <None Include="Uninstall-XR_APILAYER_NOVENDOR_hand_to_controller.ps1" />
     <None Include="XR_APILAYER_NOVENDOR_hand_to_controller.json" />
     <None Include="THIRD_PARTY" />
     <None Include="TODO" />
