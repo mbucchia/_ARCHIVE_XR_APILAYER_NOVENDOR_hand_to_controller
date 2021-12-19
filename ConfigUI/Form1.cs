@@ -10,6 +10,9 @@ using System.Windows.Forms;
 using System.Net.Sockets;
 using System.Numerics;
 using System.IO;
+using Silk.NET.Core;
+using Silk.NET.Core.Native;
+using Silk.NET.OpenXR;
 
 namespace ConfigUI
 {
@@ -22,9 +25,71 @@ namespace ConfigUI
             ResetDefaults();
         }
 
+        private unsafe void InitXr()
+        {
+            var xr = XR.GetApi();
+
+            // Make sure our layer is installed.
+            uint layerCount = 0;
+            xr.EnumerateApiLayerProperties(ref layerCount, null);
+            var layers = new ApiLayerProperties[layerCount];
+            for (int i = 0; i < layers.Length; i++)
+            {
+                layers[i].Type = StructureType.TypeApiLayerProperties;
+            }
+            var layersSpan = new Span<ApiLayerProperties>(layers);
+            if (xr.EnumerateApiLayerProperties(ref layerCount, layersSpan) == Result.Success)
+            {
+                bool found = false;
+                string layersList = "";
+                for (int i = 0; i < layers.Length; i++)
+                {
+                    fixed (void* nptr = layers[i].LayerName)
+                    {
+                        string layerName = SilkMarshal.PtrToString(new System.IntPtr(nptr));
+                        layersList += layerName + "\n";
+                        if (layerName == "XR_APILAYER_NOVENDOR_hand_to_controller")
+                        {
+                            found = true;
+                        }
+                    }
+                }
+
+                tooltip.SetToolTip(layerActive, layersList);
+
+                if (!found)
+                {
+                    layerActive.Text = "Hand to controller layer is NOT active";
+                    layerActive.ForeColor = Color.Red;
+                }
+                else
+                {
+                    layerActive.Text = "Hand to controller layer is active";
+                    layerActive.ForeColor = Color.Green;
+                }
+            }
+            else
+            {
+                MessageBox.Show(this, "Failed to query API layers", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // We don't want our layer to interfere. Disable it for this process.
+            Environment.SetEnvironmentVariable("DISABLE_XR_APILAYER_NOVENDOR_hand_to_controller", "1");
+        }
+
         private void ResetDefaults()
         {
             m_initializing = true;
+
+            try
+            {
+                InitXr();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(this, "Failed to initialize OpenXR", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
             // Set all the defaults.
             // NOTE: Have to maintain parity with config::Reset() in dllmain.cpp.
@@ -883,6 +948,14 @@ namespace ConfigUI
             ResetDefaults();
             FlushConfiguration();
             status.Text = "Restored defaults";
+        }
+
+        private void reportIssuesLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            string githubIssues = "https://github.com/mbucchia/XR_APILAYER_NOVENDOR_hand_to_controller/issues";
+
+            reportIssuesLink.LinkVisited = true;
+            System.Diagnostics.Process.Start(githubIssues);
         }
     }
 }

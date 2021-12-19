@@ -29,6 +29,7 @@ namespace ConfigUI
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -213,6 +214,10 @@ namespace ConfigUI
             this.restoreMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.status = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.layerActive = new System.Windows.Forms.Label();
+            this.reportIssuesLink = new System.Windows.Forms.LinkLabel();
+            this.tooltip = new System.Windows.Forms.ToolTip(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -266,20 +271,21 @@ namespace ConfigUI
             ((System.ComponentModel.ISupportInitialize)(this.projLayerIndex)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            this.tabPage5.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
             // 
+            this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 31);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabControl1.Location = new System.Drawing.Point(0, 36);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1024, 601);
+            this.tabControl1.Size = new System.Drawing.Size(1536, 936);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -292,11 +298,10 @@ namespace ConfigUI
             this.tabPage1.Controls.Add(this.gripJoint);
             this.tabPage1.Controls.Add(this.groupBox4);
             this.tabPage1.Controls.Add(this.groupBox1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.tabPage1.Size = new System.Drawing.Size(1016, 575);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage1.Size = new System.Drawing.Size(1528, 906);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Offsets";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -304,9 +309,10 @@ namespace ConfigUI
             // linkLabel2
             // 
             this.linkLabel2.AutoSize = true;
-            this.linkLabel2.Location = new System.Drawing.Point(638, 520);
+            this.linkLabel2.Location = new System.Drawing.Point(957, 800);
+            this.linkLabel2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.linkLabel2.Name = "linkLabel2";
-            this.linkLabel2.Size = new System.Drawing.Size(243, 13);
+            this.linkLabel2.Size = new System.Drawing.Size(365, 20);
             this.linkLabel2.TabIndex = 7;
             this.linkLabel2.TabStop = true;
             this.linkLabel2.Text = "Refer to the OpenXR grip and aim poses definition";
@@ -315,9 +321,10 @@ namespace ConfigUI
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(638, 537);
+            this.linkLabel1.Location = new System.Drawing.Point(957, 826);
+            this.linkLabel1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(298, 13);
+            this.linkLabel1.Size = new System.Drawing.Size(446, 20);
             this.linkLabel1.TabIndex = 8;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "Refer to the OpenXR XR_EXT_hand_tracking joints definition";
@@ -326,9 +333,10 @@ namespace ConfigUI
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(313, 528);
+            this.label26.Location = new System.Drawing.Point(470, 812);
+            this.label26.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(124, 13);
+            this.label26.Size = new System.Drawing.Size(185, 20);
             this.label26.TabIndex = 4;
             this.label26.Text = "Hand joint to use for aim:";
             // 
@@ -363,18 +371,20 @@ namespace ConfigUI
             "Little intermediate",
             "Little distal",
             "Little tip"});
-            this.aimJoint.Location = new System.Drawing.Point(444, 525);
+            this.aimJoint.Location = new System.Drawing.Point(666, 808);
+            this.aimJoint.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.aimJoint.Name = "aimJoint";
-            this.aimJoint.Size = new System.Drawing.Size(121, 21);
+            this.aimJoint.Size = new System.Drawing.Size(180, 28);
             this.aimJoint.TabIndex = 5;
             this.aimJoint.SelectedIndexChanged += new System.EventHandler(this.aimJoint_SelectedIndexChanged);
             // 
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(15, 528);
+            this.label25.Location = new System.Drawing.Point(22, 812);
+            this.label25.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(125, 13);
+            this.label25.Size = new System.Drawing.Size(186, 20);
             this.label25.TabIndex = 2;
             this.label25.Text = "Hand joint to use for grip:";
             // 
@@ -409,9 +419,10 @@ namespace ConfigUI
             "Little intermediate",
             "Little distal",
             "Little tip"});
-            this.gripJoint.Location = new System.Drawing.Point(146, 525);
+            this.gripJoint.Location = new System.Drawing.Point(219, 808);
+            this.gripJoint.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.gripJoint.Name = "gripJoint";
-            this.gripJoint.Size = new System.Drawing.Size(121, 21);
+            this.gripJoint.Size = new System.Drawing.Size(180, 28);
             this.gripJoint.TabIndex = 3;
             this.gripJoint.SelectedIndexChanged += new System.EventHandler(this.gripJoint_SelectedIndexChanged);
             // 
@@ -420,11 +431,9 @@ namespace ConfigUI
             this.groupBox4.Controls.Add(this.rightDisable);
             this.groupBox4.Controls.Add(this.groupBox5);
             this.groupBox4.Controls.Add(this.groupBox6);
-            this.groupBox4.Location = new System.Drawing.Point(3, 261);
-            this.groupBox4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox4.Location = new System.Drawing.Point(4, 402);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox4.Size = new System.Drawing.Size(1011, 248);
+            this.groupBox4.Size = new System.Drawing.Size(1516, 382);
             this.groupBox4.TabIndex = 1;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Right Hand";
@@ -432,10 +441,9 @@ namespace ConfigUI
             // rightDisable
             // 
             this.rightDisable.AutoSize = true;
-            this.rightDisable.Location = new System.Drawing.Point(15, 221);
-            this.rightDisable.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rightDisable.Location = new System.Drawing.Point(22, 340);
             this.rightDisable.Name = "rightDisable";
-            this.rightDisable.Size = new System.Drawing.Size(68, 21);
+            this.rightDisable.Size = new System.Drawing.Size(88, 24);
             this.rightDisable.TabIndex = 2;
             this.rightDisable.Text = "Disable";
             this.rightDisable.UseVisualStyleBackColor = true;
@@ -455,11 +463,9 @@ namespace ConfigUI
             this.groupBox5.Controls.Add(this.label18);
             this.groupBox5.Controls.Add(this.rightXRotationText);
             this.groupBox5.Controls.Add(this.rightXRotation);
-            this.groupBox5.Location = new System.Drawing.Point(513, 26);
-            this.groupBox5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox5.Location = new System.Drawing.Point(770, 40);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox5.Size = new System.Drawing.Size(483, 189);
+            this.groupBox5.Size = new System.Drawing.Size(724, 291);
             this.groupBox5.TabIndex = 1;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Orientation";
@@ -467,42 +473,38 @@ namespace ConfigUI
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(455, 146);
-            this.label13.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label13.Location = new System.Drawing.Point(682, 225);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(25, 13);
+            this.label13.Size = new System.Drawing.Size(36, 20);
             this.label13.TabIndex = 11;
             this.label13.Text = "deg";
             // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(4, 144);
-            this.label14.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label14.Location = new System.Drawing.Point(6, 222);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(17, 13);
+            this.label14.Size = new System.Drawing.Size(23, 20);
             this.label14.TabIndex = 8;
             this.label14.Text = "Z:";
             // 
             // rightZRotationText
             // 
             this.rightZRotationText.Enabled = false;
-            this.rightZRotationText.Location = new System.Drawing.Point(421, 144);
-            this.rightZRotationText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rightZRotationText.Location = new System.Drawing.Point(632, 222);
             this.rightZRotationText.Name = "rightZRotationText";
-            this.rightZRotationText.Size = new System.Drawing.Size(31, 20);
+            this.rightZRotationText.Size = new System.Drawing.Size(44, 26);
             this.rightZRotationText.TabIndex = 10;
             // 
             // rightZRotation
             // 
             this.rightZRotation.BackColor = System.Drawing.SystemColors.Window;
             this.rightZRotation.LargeChange = 10;
-            this.rightZRotation.Location = new System.Drawing.Point(23, 131);
-            this.rightZRotation.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rightZRotation.Location = new System.Drawing.Point(34, 202);
             this.rightZRotation.Maximum = 180;
             this.rightZRotation.Minimum = -180;
             this.rightZRotation.Name = "rightZRotation";
-            this.rightZRotation.Size = new System.Drawing.Size(397, 69);
+            this.rightZRotation.Size = new System.Drawing.Size(596, 69);
             this.rightZRotation.TabIndex = 9;
             this.rightZRotation.TickFrequency = 5;
             this.rightZRotation.Scroll += new System.EventHandler(this.rightZRotation_Scroll);
@@ -510,42 +512,38 @@ namespace ConfigUI
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(455, 96);
-            this.label15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label15.Location = new System.Drawing.Point(682, 148);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(25, 13);
+            this.label15.Size = new System.Drawing.Size(36, 20);
             this.label15.TabIndex = 7;
             this.label15.Text = "deg";
             // 
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(4, 94);
-            this.label16.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label16.Location = new System.Drawing.Point(6, 145);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(17, 13);
+            this.label16.Size = new System.Drawing.Size(24, 20);
             this.label16.TabIndex = 4;
             this.label16.Text = "Y:";
             // 
             // rightYRotationText
             // 
             this.rightYRotationText.Enabled = false;
-            this.rightYRotationText.Location = new System.Drawing.Point(421, 94);
-            this.rightYRotationText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rightYRotationText.Location = new System.Drawing.Point(632, 145);
             this.rightYRotationText.Name = "rightYRotationText";
-            this.rightYRotationText.Size = new System.Drawing.Size(31, 20);
+            this.rightYRotationText.Size = new System.Drawing.Size(44, 26);
             this.rightYRotationText.TabIndex = 6;
             // 
             // rightYRotation
             // 
             this.rightYRotation.BackColor = System.Drawing.SystemColors.Window;
             this.rightYRotation.LargeChange = 10;
-            this.rightYRotation.Location = new System.Drawing.Point(23, 81);
-            this.rightYRotation.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rightYRotation.Location = new System.Drawing.Point(34, 125);
             this.rightYRotation.Maximum = 180;
             this.rightYRotation.Minimum = -180;
             this.rightYRotation.Name = "rightYRotation";
-            this.rightYRotation.Size = new System.Drawing.Size(397, 69);
+            this.rightYRotation.Size = new System.Drawing.Size(596, 69);
             this.rightYRotation.TabIndex = 5;
             this.rightYRotation.TickFrequency = 5;
             this.rightYRotation.Scroll += new System.EventHandler(this.rightYRotation_Scroll);
@@ -553,42 +551,38 @@ namespace ConfigUI
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(455, 46);
-            this.label17.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label17.Location = new System.Drawing.Point(682, 71);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(25, 13);
+            this.label17.Size = new System.Drawing.Size(36, 20);
             this.label17.TabIndex = 3;
             this.label17.Text = "deg";
             // 
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(4, 44);
-            this.label18.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label18.Location = new System.Drawing.Point(6, 68);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(17, 13);
+            this.label18.Size = new System.Drawing.Size(24, 20);
             this.label18.TabIndex = 0;
             this.label18.Text = "X:";
             // 
             // rightXRotationText
             // 
             this.rightXRotationText.Enabled = false;
-            this.rightXRotationText.Location = new System.Drawing.Point(421, 44);
-            this.rightXRotationText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rightXRotationText.Location = new System.Drawing.Point(632, 68);
             this.rightXRotationText.Name = "rightXRotationText";
-            this.rightXRotationText.Size = new System.Drawing.Size(31, 20);
+            this.rightXRotationText.Size = new System.Drawing.Size(44, 26);
             this.rightXRotationText.TabIndex = 2;
             // 
             // rightXRotation
             // 
             this.rightXRotation.BackColor = System.Drawing.SystemColors.Window;
             this.rightXRotation.LargeChange = 10;
-            this.rightXRotation.Location = new System.Drawing.Point(23, 31);
-            this.rightXRotation.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rightXRotation.Location = new System.Drawing.Point(34, 48);
             this.rightXRotation.Maximum = 180;
             this.rightXRotation.Minimum = -180;
             this.rightXRotation.Name = "rightXRotation";
-            this.rightXRotation.Size = new System.Drawing.Size(397, 69);
+            this.rightXRotation.Size = new System.Drawing.Size(596, 69);
             this.rightXRotation.TabIndex = 1;
             this.rightXRotation.TickFrequency = 5;
             this.rightXRotation.Scroll += new System.EventHandler(this.rightXRotation_Scroll);
@@ -607,11 +601,9 @@ namespace ConfigUI
             this.groupBox6.Controls.Add(this.label24);
             this.groupBox6.Controls.Add(this.rightXOffsetText);
             this.groupBox6.Controls.Add(this.rightXOffset);
-            this.groupBox6.Location = new System.Drawing.Point(15, 26);
-            this.groupBox6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox6.Location = new System.Drawing.Point(22, 40);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox6.Size = new System.Drawing.Size(483, 189);
+            this.groupBox6.Size = new System.Drawing.Size(724, 291);
             this.groupBox6.TabIndex = 0;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Translation";
@@ -619,42 +611,38 @@ namespace ConfigUI
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(455, 146);
-            this.label19.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label19.Location = new System.Drawing.Point(682, 225);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(23, 13);
+            this.label19.Size = new System.Drawing.Size(35, 20);
             this.label19.TabIndex = 11;
             this.label19.Text = "mm";
             // 
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(4, 144);
-            this.label20.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label20.Location = new System.Drawing.Point(6, 222);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(17, 13);
+            this.label20.Size = new System.Drawing.Size(23, 20);
             this.label20.TabIndex = 8;
             this.label20.Text = "Z:";
             // 
             // rightZOffsetText
             // 
             this.rightZOffsetText.Enabled = false;
-            this.rightZOffsetText.Location = new System.Drawing.Point(421, 144);
-            this.rightZOffsetText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rightZOffsetText.Location = new System.Drawing.Point(632, 222);
             this.rightZOffsetText.Name = "rightZOffsetText";
-            this.rightZOffsetText.Size = new System.Drawing.Size(31, 20);
+            this.rightZOffsetText.Size = new System.Drawing.Size(44, 26);
             this.rightZOffsetText.TabIndex = 10;
             // 
             // rightZOffset
             // 
             this.rightZOffset.BackColor = System.Drawing.SystemColors.Window;
             this.rightZOffset.LargeChange = 10;
-            this.rightZOffset.Location = new System.Drawing.Point(23, 131);
-            this.rightZOffset.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rightZOffset.Location = new System.Drawing.Point(34, 202);
             this.rightZOffset.Maximum = 100;
             this.rightZOffset.Minimum = -100;
             this.rightZOffset.Name = "rightZOffset";
-            this.rightZOffset.Size = new System.Drawing.Size(397, 69);
+            this.rightZOffset.Size = new System.Drawing.Size(596, 69);
             this.rightZOffset.TabIndex = 9;
             this.rightZOffset.TickFrequency = 5;
             this.rightZOffset.Scroll += new System.EventHandler(this.rightZOffset_Scroll);
@@ -662,42 +650,38 @@ namespace ConfigUI
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(455, 96);
-            this.label21.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label21.Location = new System.Drawing.Point(682, 148);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(23, 13);
+            this.label21.Size = new System.Drawing.Size(35, 20);
             this.label21.TabIndex = 7;
             this.label21.Text = "mm";
             // 
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(4, 94);
-            this.label22.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label22.Location = new System.Drawing.Point(6, 145);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(17, 13);
+            this.label22.Size = new System.Drawing.Size(24, 20);
             this.label22.TabIndex = 4;
             this.label22.Text = "Y:";
             // 
             // rightYOffsetText
             // 
             this.rightYOffsetText.Enabled = false;
-            this.rightYOffsetText.Location = new System.Drawing.Point(421, 94);
-            this.rightYOffsetText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rightYOffsetText.Location = new System.Drawing.Point(632, 145);
             this.rightYOffsetText.Name = "rightYOffsetText";
-            this.rightYOffsetText.Size = new System.Drawing.Size(31, 20);
+            this.rightYOffsetText.Size = new System.Drawing.Size(44, 26);
             this.rightYOffsetText.TabIndex = 6;
             // 
             // rightYOffset
             // 
             this.rightYOffset.BackColor = System.Drawing.SystemColors.Window;
             this.rightYOffset.LargeChange = 10;
-            this.rightYOffset.Location = new System.Drawing.Point(23, 81);
-            this.rightYOffset.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rightYOffset.Location = new System.Drawing.Point(34, 125);
             this.rightYOffset.Maximum = 100;
             this.rightYOffset.Minimum = -100;
             this.rightYOffset.Name = "rightYOffset";
-            this.rightYOffset.Size = new System.Drawing.Size(397, 69);
+            this.rightYOffset.Size = new System.Drawing.Size(596, 69);
             this.rightYOffset.TabIndex = 5;
             this.rightYOffset.TickFrequency = 5;
             this.rightYOffset.Scroll += new System.EventHandler(this.rightYOffset_Scroll);
@@ -705,42 +689,38 @@ namespace ConfigUI
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(455, 46);
-            this.label23.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label23.Location = new System.Drawing.Point(682, 71);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(23, 13);
+            this.label23.Size = new System.Drawing.Size(35, 20);
             this.label23.TabIndex = 3;
             this.label23.Text = "mm";
             // 
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(4, 44);
-            this.label24.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label24.Location = new System.Drawing.Point(6, 68);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(17, 13);
+            this.label24.Size = new System.Drawing.Size(24, 20);
             this.label24.TabIndex = 0;
             this.label24.Text = "X:";
             // 
             // rightXOffsetText
             // 
             this.rightXOffsetText.Enabled = false;
-            this.rightXOffsetText.Location = new System.Drawing.Point(421, 44);
-            this.rightXOffsetText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rightXOffsetText.Location = new System.Drawing.Point(632, 68);
             this.rightXOffsetText.Name = "rightXOffsetText";
-            this.rightXOffsetText.Size = new System.Drawing.Size(31, 20);
+            this.rightXOffsetText.Size = new System.Drawing.Size(44, 26);
             this.rightXOffsetText.TabIndex = 2;
             // 
             // rightXOffset
             // 
             this.rightXOffset.BackColor = System.Drawing.SystemColors.Window;
             this.rightXOffset.LargeChange = 10;
-            this.rightXOffset.Location = new System.Drawing.Point(23, 31);
-            this.rightXOffset.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rightXOffset.Location = new System.Drawing.Point(34, 48);
             this.rightXOffset.Maximum = 100;
             this.rightXOffset.Minimum = -100;
             this.rightXOffset.Name = "rightXOffset";
-            this.rightXOffset.Size = new System.Drawing.Size(397, 69);
+            this.rightXOffset.Size = new System.Drawing.Size(596, 69);
             this.rightXOffset.TabIndex = 1;
             this.rightXOffset.TickFrequency = 5;
             this.rightXOffset.Scroll += new System.EventHandler(this.rightXOffset_Scroll);
@@ -750,11 +730,9 @@ namespace ConfigUI
             this.groupBox1.Controls.Add(this.leftDisable);
             this.groupBox1.Controls.Add(this.groupBox3);
             this.groupBox1.Controls.Add(this.groupBox2);
-            this.groupBox1.Location = new System.Drawing.Point(3, 3);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Location = new System.Drawing.Point(4, 5);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox1.Size = new System.Drawing.Size(1011, 248);
+            this.groupBox1.Size = new System.Drawing.Size(1516, 382);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Left Hand";
@@ -762,10 +740,9 @@ namespace ConfigUI
             // leftDisable
             // 
             this.leftDisable.AutoSize = true;
-            this.leftDisable.Location = new System.Drawing.Point(15, 221);
-            this.leftDisable.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.leftDisable.Location = new System.Drawing.Point(22, 340);
             this.leftDisable.Name = "leftDisable";
-            this.leftDisable.Size = new System.Drawing.Size(68, 21);
+            this.leftDisable.Size = new System.Drawing.Size(88, 24);
             this.leftDisable.TabIndex = 2;
             this.leftDisable.Text = "Disable";
             this.leftDisable.UseVisualStyleBackColor = true;
@@ -785,11 +762,9 @@ namespace ConfigUI
             this.groupBox3.Controls.Add(this.label12);
             this.groupBox3.Controls.Add(this.leftXRotationText);
             this.groupBox3.Controls.Add(this.leftXRotation);
-            this.groupBox3.Location = new System.Drawing.Point(513, 26);
-            this.groupBox3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox3.Location = new System.Drawing.Point(770, 40);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox3.Size = new System.Drawing.Size(483, 189);
+            this.groupBox3.Size = new System.Drawing.Size(724, 291);
             this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Orientation";
@@ -797,42 +772,38 @@ namespace ConfigUI
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(455, 146);
-            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label7.Location = new System.Drawing.Point(682, 225);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(25, 13);
+            this.label7.Size = new System.Drawing.Size(36, 20);
             this.label7.TabIndex = 11;
             this.label7.Text = "deg";
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(4, 144);
-            this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label8.Location = new System.Drawing.Point(6, 222);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(17, 13);
+            this.label8.Size = new System.Drawing.Size(23, 20);
             this.label8.TabIndex = 8;
             this.label8.Text = "Z:";
             // 
             // leftZRotationText
             // 
             this.leftZRotationText.Enabled = false;
-            this.leftZRotationText.Location = new System.Drawing.Point(421, 144);
-            this.leftZRotationText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.leftZRotationText.Location = new System.Drawing.Point(632, 222);
             this.leftZRotationText.Name = "leftZRotationText";
-            this.leftZRotationText.Size = new System.Drawing.Size(31, 20);
+            this.leftZRotationText.Size = new System.Drawing.Size(44, 26);
             this.leftZRotationText.TabIndex = 10;
             // 
             // leftZRotation
             // 
             this.leftZRotation.BackColor = System.Drawing.SystemColors.Window;
             this.leftZRotation.LargeChange = 10;
-            this.leftZRotation.Location = new System.Drawing.Point(23, 131);
-            this.leftZRotation.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.leftZRotation.Location = new System.Drawing.Point(34, 202);
             this.leftZRotation.Maximum = 180;
             this.leftZRotation.Minimum = -180;
             this.leftZRotation.Name = "leftZRotation";
-            this.leftZRotation.Size = new System.Drawing.Size(397, 69);
+            this.leftZRotation.Size = new System.Drawing.Size(596, 69);
             this.leftZRotation.TabIndex = 9;
             this.leftZRotation.TickFrequency = 5;
             this.leftZRotation.Scroll += new System.EventHandler(this.leftZRotation_Scroll);
@@ -840,42 +811,38 @@ namespace ConfigUI
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(455, 96);
-            this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label9.Location = new System.Drawing.Point(682, 148);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(25, 13);
+            this.label9.Size = new System.Drawing.Size(36, 20);
             this.label9.TabIndex = 7;
             this.label9.Text = "deg";
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(4, 94);
-            this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label10.Location = new System.Drawing.Point(6, 145);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(17, 13);
+            this.label10.Size = new System.Drawing.Size(24, 20);
             this.label10.TabIndex = 4;
             this.label10.Text = "Y:";
             // 
             // leftYRotationText
             // 
             this.leftYRotationText.Enabled = false;
-            this.leftYRotationText.Location = new System.Drawing.Point(421, 94);
-            this.leftYRotationText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.leftYRotationText.Location = new System.Drawing.Point(632, 145);
             this.leftYRotationText.Name = "leftYRotationText";
-            this.leftYRotationText.Size = new System.Drawing.Size(31, 20);
+            this.leftYRotationText.Size = new System.Drawing.Size(44, 26);
             this.leftYRotationText.TabIndex = 6;
             // 
             // leftYRotation
             // 
             this.leftYRotation.BackColor = System.Drawing.SystemColors.Window;
             this.leftYRotation.LargeChange = 10;
-            this.leftYRotation.Location = new System.Drawing.Point(23, 81);
-            this.leftYRotation.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.leftYRotation.Location = new System.Drawing.Point(34, 125);
             this.leftYRotation.Maximum = 180;
             this.leftYRotation.Minimum = -180;
             this.leftYRotation.Name = "leftYRotation";
-            this.leftYRotation.Size = new System.Drawing.Size(397, 69);
+            this.leftYRotation.Size = new System.Drawing.Size(596, 69);
             this.leftYRotation.TabIndex = 5;
             this.leftYRotation.TickFrequency = 5;
             this.leftYRotation.Scroll += new System.EventHandler(this.leftYRotation_Scroll);
@@ -883,42 +850,38 @@ namespace ConfigUI
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(455, 46);
-            this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label11.Location = new System.Drawing.Point(682, 71);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(25, 13);
+            this.label11.Size = new System.Drawing.Size(36, 20);
             this.label11.TabIndex = 3;
             this.label11.Text = "deg";
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(4, 44);
-            this.label12.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label12.Location = new System.Drawing.Point(6, 68);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(17, 13);
+            this.label12.Size = new System.Drawing.Size(24, 20);
             this.label12.TabIndex = 0;
             this.label12.Text = "X:";
             // 
             // leftXRotationText
             // 
             this.leftXRotationText.Enabled = false;
-            this.leftXRotationText.Location = new System.Drawing.Point(421, 44);
-            this.leftXRotationText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.leftXRotationText.Location = new System.Drawing.Point(632, 68);
             this.leftXRotationText.Name = "leftXRotationText";
-            this.leftXRotationText.Size = new System.Drawing.Size(31, 20);
+            this.leftXRotationText.Size = new System.Drawing.Size(44, 26);
             this.leftXRotationText.TabIndex = 2;
             // 
             // leftXRotation
             // 
             this.leftXRotation.BackColor = System.Drawing.SystemColors.Window;
             this.leftXRotation.LargeChange = 10;
-            this.leftXRotation.Location = new System.Drawing.Point(23, 31);
-            this.leftXRotation.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.leftXRotation.Location = new System.Drawing.Point(34, 48);
             this.leftXRotation.Maximum = 180;
             this.leftXRotation.Minimum = -180;
             this.leftXRotation.Name = "leftXRotation";
-            this.leftXRotation.Size = new System.Drawing.Size(397, 69);
+            this.leftXRotation.Size = new System.Drawing.Size(596, 69);
             this.leftXRotation.TabIndex = 1;
             this.leftXRotation.TickFrequency = 5;
             this.leftXRotation.Scroll += new System.EventHandler(this.leftXRotation_Scroll);
@@ -937,11 +900,9 @@ namespace ConfigUI
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.leftXOffsetText);
             this.groupBox2.Controls.Add(this.leftXOffset);
-            this.groupBox2.Location = new System.Drawing.Point(15, 26);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox2.Location = new System.Drawing.Point(22, 40);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox2.Size = new System.Drawing.Size(483, 189);
+            this.groupBox2.Size = new System.Drawing.Size(724, 291);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Translation";
@@ -949,42 +910,38 @@ namespace ConfigUI
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(455, 146);
-            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label5.Location = new System.Drawing.Point(682, 225);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(23, 13);
+            this.label5.Size = new System.Drawing.Size(35, 20);
             this.label5.TabIndex = 11;
             this.label5.Text = "mm";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(4, 144);
-            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label6.Location = new System.Drawing.Point(6, 222);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(17, 13);
+            this.label6.Size = new System.Drawing.Size(23, 20);
             this.label6.TabIndex = 8;
             this.label6.Text = "Z:";
             // 
             // leftZOffsetText
             // 
             this.leftZOffsetText.Enabled = false;
-            this.leftZOffsetText.Location = new System.Drawing.Point(421, 144);
-            this.leftZOffsetText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.leftZOffsetText.Location = new System.Drawing.Point(632, 222);
             this.leftZOffsetText.Name = "leftZOffsetText";
-            this.leftZOffsetText.Size = new System.Drawing.Size(31, 20);
+            this.leftZOffsetText.Size = new System.Drawing.Size(44, 26);
             this.leftZOffsetText.TabIndex = 10;
             // 
             // leftZOffset
             // 
             this.leftZOffset.BackColor = System.Drawing.SystemColors.Window;
             this.leftZOffset.LargeChange = 10;
-            this.leftZOffset.Location = new System.Drawing.Point(23, 131);
-            this.leftZOffset.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.leftZOffset.Location = new System.Drawing.Point(34, 202);
             this.leftZOffset.Maximum = 100;
             this.leftZOffset.Minimum = -100;
             this.leftZOffset.Name = "leftZOffset";
-            this.leftZOffset.Size = new System.Drawing.Size(397, 69);
+            this.leftZOffset.Size = new System.Drawing.Size(596, 69);
             this.leftZOffset.TabIndex = 9;
             this.leftZOffset.TickFrequency = 5;
             this.leftZOffset.Scroll += new System.EventHandler(this.leftZOffset_Scroll);
@@ -992,42 +949,38 @@ namespace ConfigUI
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(455, 96);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.Location = new System.Drawing.Point(682, 148);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(23, 13);
+            this.label3.Size = new System.Drawing.Size(35, 20);
             this.label3.TabIndex = 7;
             this.label3.Text = "mm";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(4, 94);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label4.Location = new System.Drawing.Point(6, 145);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(17, 13);
+            this.label4.Size = new System.Drawing.Size(24, 20);
             this.label4.TabIndex = 4;
             this.label4.Text = "Y:";
             // 
             // leftYOffsetText
             // 
             this.leftYOffsetText.Enabled = false;
-            this.leftYOffsetText.Location = new System.Drawing.Point(421, 94);
-            this.leftYOffsetText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.leftYOffsetText.Location = new System.Drawing.Point(632, 145);
             this.leftYOffsetText.Name = "leftYOffsetText";
-            this.leftYOffsetText.Size = new System.Drawing.Size(31, 20);
+            this.leftYOffsetText.Size = new System.Drawing.Size(44, 26);
             this.leftYOffsetText.TabIndex = 6;
             // 
             // leftYOffset
             // 
             this.leftYOffset.BackColor = System.Drawing.SystemColors.Window;
             this.leftYOffset.LargeChange = 10;
-            this.leftYOffset.Location = new System.Drawing.Point(23, 81);
-            this.leftYOffset.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.leftYOffset.Location = new System.Drawing.Point(34, 125);
             this.leftYOffset.Maximum = 100;
             this.leftYOffset.Minimum = -100;
             this.leftYOffset.Name = "leftYOffset";
-            this.leftYOffset.Size = new System.Drawing.Size(397, 69);
+            this.leftYOffset.Size = new System.Drawing.Size(596, 69);
             this.leftYOffset.TabIndex = 5;
             this.leftYOffset.TickFrequency = 5;
             this.leftYOffset.Scroll += new System.EventHandler(this.leftYOffset_Scroll);
@@ -1035,42 +988,38 @@ namespace ConfigUI
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(455, 46);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Location = new System.Drawing.Point(682, 71);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(23, 13);
+            this.label2.Size = new System.Drawing.Size(35, 20);
             this.label2.TabIndex = 3;
             this.label2.Text = "mm";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(4, 44);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Location = new System.Drawing.Point(6, 68);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(17, 13);
+            this.label1.Size = new System.Drawing.Size(24, 20);
             this.label1.TabIndex = 0;
             this.label1.Text = "X:";
             // 
             // leftXOffsetText
             // 
             this.leftXOffsetText.Enabled = false;
-            this.leftXOffsetText.Location = new System.Drawing.Point(421, 44);
-            this.leftXOffsetText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.leftXOffsetText.Location = new System.Drawing.Point(632, 68);
             this.leftXOffsetText.Name = "leftXOffsetText";
-            this.leftXOffsetText.Size = new System.Drawing.Size(31, 20);
+            this.leftXOffsetText.Size = new System.Drawing.Size(44, 26);
             this.leftXOffsetText.TabIndex = 2;
             // 
             // leftXOffset
             // 
             this.leftXOffset.BackColor = System.Drawing.SystemColors.Window;
             this.leftXOffset.LargeChange = 10;
-            this.leftXOffset.Location = new System.Drawing.Point(23, 31);
-            this.leftXOffset.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.leftXOffset.Location = new System.Drawing.Point(34, 48);
             this.leftXOffset.Maximum = 100;
             this.leftXOffset.Minimum = -100;
             this.leftXOffset.Name = "leftXOffset";
-            this.leftXOffset.Size = new System.Drawing.Size(397, 69);
+            this.leftXOffset.Size = new System.Drawing.Size(596, 69);
             this.leftXOffset.TabIndex = 1;
             this.leftXOffset.TickFrequency = 5;
             this.leftXOffset.Scroll += new System.EventHandler(this.leftXOffset_Scroll);
@@ -1084,11 +1033,10 @@ namespace ConfigUI
             this.tabPage2.Controls.Add(this.groupBox9);
             this.tabPage2.Controls.Add(this.groupBox8);
             this.tabPage2.Controls.Add(this.label28);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage2.Location = new System.Drawing.Point(4, 29);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.tabPage2.Size = new System.Drawing.Size(1016, 575);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.tabPage2.Size = new System.Drawing.Size(1528, 906);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Bindings";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -1096,9 +1044,10 @@ namespace ConfigUI
             // label68
             // 
             this.label68.AutoSize = true;
-            this.label68.Location = new System.Drawing.Point(447, 475);
+            this.label68.Location = new System.Drawing.Point(670, 731);
+            this.label68.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label68.Name = "label68";
-            this.label68.Size = new System.Drawing.Size(164, 13);
+            this.label68.Size = new System.Drawing.Size(250, 20);
             this.label68.TabIndex = 6;
             this.label68.Text = "(requires OpenXR session restart)";
             // 
@@ -1111,18 +1060,20 @@ namespace ConfigUI
             "/interaction_profiles/hp/mixed_reality_controller (HP Reverb G2)",
             "/interaction_profiles/oculus/touch_controller (Oculus Touch)",
             "/interaction_profiles/khr/simple_controller (uncommon)"});
-            this.interactionProfile.Location = new System.Drawing.Point(109, 472);
+            this.interactionProfile.Location = new System.Drawing.Point(164, 726);
+            this.interactionProfile.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.interactionProfile.Name = "interactionProfile";
-            this.interactionProfile.Size = new System.Drawing.Size(332, 21);
+            this.interactionProfile.Size = new System.Drawing.Size(496, 28);
             this.interactionProfile.TabIndex = 5;
             this.interactionProfile.SelectedIndexChanged += new System.EventHandler(this.interactionProfile_SelectedIndexChanged);
             // 
             // label67
             // 
             this.label67.AutoSize = true;
-            this.label67.Location = new System.Drawing.Point(8, 475);
+            this.label67.Location = new System.Drawing.Point(12, 731);
+            this.label67.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label67.Name = "label67";
-            this.label67.Size = new System.Drawing.Size(91, 13);
+            this.label67.Size = new System.Drawing.Size(136, 20);
             this.label67.TabIndex = 4;
             this.label67.Text = "Interaction profile:";
             // 
@@ -1130,9 +1081,11 @@ namespace ConfigUI
             // 
             this.groupBox10.Controls.Add(this.groupBox15);
             this.groupBox10.Controls.Add(this.groupBox16);
-            this.groupBox10.Location = new System.Drawing.Point(2, 308);
+            this.groupBox10.Location = new System.Drawing.Point(3, 474);
+            this.groupBox10.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(1011, 154);
+            this.groupBox10.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox10.Size = new System.Drawing.Size(1516, 237);
             this.groupBox10.TabIndex = 3;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Index finger tap (two-handed gestures)";
@@ -1145,9 +1098,11 @@ namespace ConfigUI
             this.groupBox15.Controls.Add(this.label33);
             this.groupBox15.Controls.Add(this.leftWristTapAction);
             this.groupBox15.Controls.Add(this.label35);
-            this.groupBox15.Location = new System.Drawing.Point(15, 26);
+            this.groupBox15.Location = new System.Drawing.Point(22, 40);
+            this.groupBox15.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox15.Name = "groupBox15";
-            this.groupBox15.Size = new System.Drawing.Size(483, 115);
+            this.groupBox15.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox15.Size = new System.Drawing.Size(724, 177);
             this.groupBox15.TabIndex = 0;
             this.groupBox15.TabStop = false;
             this.groupBox15.Text = "Left hand";
@@ -1170,18 +1125,20 @@ namespace ConfigUI
             "/input/system/click (Windows button)",
             "/input/trackpad/click (WMR 1st gen only)",
             "/input/select/click (simple_controller only)"});
-            this.leftIndexTipTapAction.Location = new System.Drawing.Point(87, 82);
+            this.leftIndexTipTapAction.Location = new System.Drawing.Point(130, 126);
+            this.leftIndexTipTapAction.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.leftIndexTipTapAction.Name = "leftIndexTipTapAction";
-            this.leftIndexTipTapAction.Size = new System.Drawing.Size(325, 21);
+            this.leftIndexTipTapAction.Size = new System.Drawing.Size(486, 28);
             this.leftIndexTipTapAction.TabIndex = 5;
             this.leftIndexTipTapAction.SelectedIndexChanged += new System.EventHandler(this.leftIndexTipTapAction_SelectedIndexChanged);
             // 
             // label32
             // 
             this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(8, 85);
+            this.label32.Location = new System.Drawing.Point(12, 131);
+            this.label32.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(68, 13);
+            this.label32.Size = new System.Drawing.Size(100, 20);
             this.label32.TabIndex = 4;
             this.label32.Text = "Index tip tap:";
             // 
@@ -1203,18 +1160,20 @@ namespace ConfigUI
             "/input/system/click (Windows button)",
             "/input/trackpad/click (WMR 1st gen only)",
             "/input/select/click (simple_controller only)"});
-            this.leftPalmTapAction.Location = new System.Drawing.Point(87, 55);
+            this.leftPalmTapAction.Location = new System.Drawing.Point(130, 85);
+            this.leftPalmTapAction.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.leftPalmTapAction.Name = "leftPalmTapAction";
-            this.leftPalmTapAction.Size = new System.Drawing.Size(325, 21);
+            this.leftPalmTapAction.Size = new System.Drawing.Size(486, 28);
             this.leftPalmTapAction.TabIndex = 3;
             this.leftPalmTapAction.SelectedIndexChanged += new System.EventHandler(this.leftPalmTapAction_SelectedIndexChanged);
             // 
             // label33
             // 
             this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(8, 58);
+            this.label33.Location = new System.Drawing.Point(12, 89);
+            this.label33.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(51, 13);
+            this.label33.Size = new System.Drawing.Size(75, 20);
             this.label33.TabIndex = 2;
             this.label33.Text = "Palm tap:";
             // 
@@ -1236,18 +1195,20 @@ namespace ConfigUI
             "/input/system/click (Windows button)",
             "/input/trackpad/click (WMR 1st gen only)",
             "/input/select/click (simple_controller only)"});
-            this.leftWristTapAction.Location = new System.Drawing.Point(87, 28);
+            this.leftWristTapAction.Location = new System.Drawing.Point(130, 43);
+            this.leftWristTapAction.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.leftWristTapAction.Name = "leftWristTapAction";
-            this.leftWristTapAction.Size = new System.Drawing.Size(325, 21);
+            this.leftWristTapAction.Size = new System.Drawing.Size(486, 28);
             this.leftWristTapAction.TabIndex = 1;
             this.leftWristTapAction.SelectedIndexChanged += new System.EventHandler(this.leftWristTapAction_SelectedIndexChanged);
             // 
             // label35
             // 
             this.label35.AutoSize = true;
-            this.label35.Location = new System.Drawing.Point(8, 31);
+            this.label35.Location = new System.Drawing.Point(12, 48);
+            this.label35.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(52, 13);
+            this.label35.Size = new System.Drawing.Size(76, 20);
             this.label35.TabIndex = 0;
             this.label35.Text = "Wrist tap:";
             // 
@@ -1257,9 +1218,11 @@ namespace ConfigUI
             this.groupBox16.Controls.Add(this.label41);
             this.groupBox16.Controls.Add(this.rightWristTapAction);
             this.groupBox16.Controls.Add(this.label42);
-            this.groupBox16.Location = new System.Drawing.Point(513, 26);
+            this.groupBox16.Location = new System.Drawing.Point(770, 40);
+            this.groupBox16.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox16.Name = "groupBox16";
-            this.groupBox16.Size = new System.Drawing.Size(483, 115);
+            this.groupBox16.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox16.Size = new System.Drawing.Size(724, 177);
             this.groupBox16.TabIndex = 0;
             this.groupBox16.TabStop = false;
             this.groupBox16.Text = "Right hand";
@@ -1282,18 +1245,20 @@ namespace ConfigUI
             "/input/system/click (Windows button)",
             "/input/trackpad/click (WMR 1st gen only)",
             "/input/select/click (simple_controller only)"});
-            this.rightPalmTapAction.Location = new System.Drawing.Point(87, 55);
+            this.rightPalmTapAction.Location = new System.Drawing.Point(130, 85);
+            this.rightPalmTapAction.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.rightPalmTapAction.Name = "rightPalmTapAction";
-            this.rightPalmTapAction.Size = new System.Drawing.Size(325, 21);
+            this.rightPalmTapAction.Size = new System.Drawing.Size(486, 28);
             this.rightPalmTapAction.TabIndex = 3;
             this.rightPalmTapAction.SelectedIndexChanged += new System.EventHandler(this.rightPalmTapAction_SelectedIndexChanged);
             // 
             // label41
             // 
             this.label41.AutoSize = true;
-            this.label41.Location = new System.Drawing.Point(8, 58);
+            this.label41.Location = new System.Drawing.Point(12, 89);
+            this.label41.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(51, 13);
+            this.label41.Size = new System.Drawing.Size(75, 20);
             this.label41.TabIndex = 2;
             this.label41.Text = "Palm tap:";
             // 
@@ -1315,18 +1280,20 @@ namespace ConfigUI
             "/input/system/click (Windows button)",
             "/input/trackpad/click (WMR 1st gen only)",
             "/input/select/click (simple_controller only)"});
-            this.rightWristTapAction.Location = new System.Drawing.Point(87, 28);
+            this.rightWristTapAction.Location = new System.Drawing.Point(130, 43);
+            this.rightWristTapAction.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.rightWristTapAction.Name = "rightWristTapAction";
-            this.rightWristTapAction.Size = new System.Drawing.Size(325, 21);
+            this.rightWristTapAction.Size = new System.Drawing.Size(486, 28);
             this.rightWristTapAction.TabIndex = 1;
             this.rightWristTapAction.SelectedIndexChanged += new System.EventHandler(this.rightWristTapAction_SelectedIndexChanged);
             // 
             // label42
             // 
             this.label42.AutoSize = true;
-            this.label42.Location = new System.Drawing.Point(8, 31);
+            this.label42.Location = new System.Drawing.Point(12, 48);
+            this.label42.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label42.Name = "label42";
-            this.label42.Size = new System.Drawing.Size(52, 13);
+            this.label42.Size = new System.Drawing.Size(76, 20);
             this.label42.TabIndex = 6;
             this.label42.Text = "Wrist tap:";
             // 
@@ -1334,9 +1301,11 @@ namespace ConfigUI
             // 
             this.groupBox9.Controls.Add(this.groupBox13);
             this.groupBox9.Controls.Add(this.groupBox14);
-            this.groupBox9.Location = new System.Drawing.Point(3, 195);
+            this.groupBox9.Location = new System.Drawing.Point(4, 300);
+            this.groupBox9.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(1011, 99);
+            this.groupBox9.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox9.Size = new System.Drawing.Size(1516, 152);
             this.groupBox9.TabIndex = 2;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Multi-fingers (one-handed gestures)";
@@ -1345,9 +1314,11 @@ namespace ConfigUI
             // 
             this.groupBox13.Controls.Add(this.leftSqueezeAction);
             this.groupBox13.Controls.Add(this.label34);
-            this.groupBox13.Location = new System.Drawing.Point(15, 26);
+            this.groupBox13.Location = new System.Drawing.Point(22, 40);
+            this.groupBox13.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox13.Name = "groupBox13";
-            this.groupBox13.Size = new System.Drawing.Size(483, 60);
+            this.groupBox13.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox13.Size = new System.Drawing.Size(724, 92);
             this.groupBox13.TabIndex = 0;
             this.groupBox13.TabStop = false;
             this.groupBox13.Text = "Left hand";
@@ -1370,18 +1341,20 @@ namespace ConfigUI
             "/input/system/click (Windows button)",
             "/input/trackpad/click (WMR 1st gen only)",
             "/input/select/click (simple_controller only)"});
-            this.leftSqueezeAction.Location = new System.Drawing.Point(87, 28);
+            this.leftSqueezeAction.Location = new System.Drawing.Point(130, 43);
+            this.leftSqueezeAction.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.leftSqueezeAction.Name = "leftSqueezeAction";
-            this.leftSqueezeAction.Size = new System.Drawing.Size(325, 21);
+            this.leftSqueezeAction.Size = new System.Drawing.Size(486, 28);
             this.leftSqueezeAction.TabIndex = 1;
             this.leftSqueezeAction.SelectedIndexChanged += new System.EventHandler(this.leftSqueezeAction_SelectedIndexChanged);
             // 
             // label34
             // 
             this.label34.AutoSize = true;
-            this.label34.Location = new System.Drawing.Point(8, 31);
+            this.label34.Location = new System.Drawing.Point(12, 48);
+            this.label34.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(52, 13);
+            this.label34.Size = new System.Drawing.Size(77, 20);
             this.label34.TabIndex = 0;
             this.label34.Text = "Squeeze:";
             // 
@@ -1389,9 +1362,11 @@ namespace ConfigUI
             // 
             this.groupBox14.Controls.Add(this.rightSqueezeAction);
             this.groupBox14.Controls.Add(this.label40);
-            this.groupBox14.Location = new System.Drawing.Point(513, 26);
+            this.groupBox14.Location = new System.Drawing.Point(770, 40);
+            this.groupBox14.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox14.Name = "groupBox14";
-            this.groupBox14.Size = new System.Drawing.Size(483, 60);
+            this.groupBox14.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox14.Size = new System.Drawing.Size(724, 92);
             this.groupBox14.TabIndex = 0;
             this.groupBox14.TabStop = false;
             this.groupBox14.Text = "Right hand";
@@ -1414,18 +1389,20 @@ namespace ConfigUI
             "/input/system/click (Windows button)",
             "/input/trackpad/click (WMR 1st gen only)",
             "/input/select/click (simple_controller only)"});
-            this.rightSqueezeAction.Location = new System.Drawing.Point(87, 28);
+            this.rightSqueezeAction.Location = new System.Drawing.Point(130, 43);
+            this.rightSqueezeAction.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.rightSqueezeAction.Name = "rightSqueezeAction";
-            this.rightSqueezeAction.Size = new System.Drawing.Size(325, 21);
+            this.rightSqueezeAction.Size = new System.Drawing.Size(486, 28);
             this.rightSqueezeAction.TabIndex = 1;
             this.rightSqueezeAction.SelectedIndexChanged += new System.EventHandler(this.rightSqueezeAction_SelectedIndexChanged);
             // 
             // label40
             // 
             this.label40.AutoSize = true;
-            this.label40.Location = new System.Drawing.Point(8, 31);
+            this.label40.Location = new System.Drawing.Point(12, 48);
+            this.label40.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(52, 13);
+            this.label40.Size = new System.Drawing.Size(77, 20);
             this.label40.TabIndex = 6;
             this.label40.Text = "Squeeze:";
             // 
@@ -1433,9 +1410,11 @@ namespace ConfigUI
             // 
             this.groupBox8.Controls.Add(this.groupBox12);
             this.groupBox8.Controls.Add(this.groupBox11);
-            this.groupBox8.Location = new System.Drawing.Point(3, 29);
+            this.groupBox8.Location = new System.Drawing.Point(4, 45);
+            this.groupBox8.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(1011, 154);
+            this.groupBox8.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox8.Size = new System.Drawing.Size(1516, 237);
             this.groupBox8.TabIndex = 1;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Thumb/Index (one-handed gestures)";
@@ -1448,9 +1427,11 @@ namespace ConfigUI
             this.groupBox12.Controls.Add(this.label37);
             this.groupBox12.Controls.Add(this.leftPinchAction);
             this.groupBox12.Controls.Add(this.label38);
-            this.groupBox12.Location = new System.Drawing.Point(15, 26);
+            this.groupBox12.Location = new System.Drawing.Point(22, 40);
+            this.groupBox12.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(483, 115);
+            this.groupBox12.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox12.Size = new System.Drawing.Size(724, 177);
             this.groupBox12.TabIndex = 0;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "Left hand";
@@ -1473,18 +1454,20 @@ namespace ConfigUI
             "/input/system/click (Windows button)",
             "/input/trackpad/click (WMR 1st gen only)",
             "/input/select/click (simple_controller only)"});
-            this.leftIndexBendAction.Location = new System.Drawing.Point(87, 82);
+            this.leftIndexBendAction.Location = new System.Drawing.Point(130, 126);
+            this.leftIndexBendAction.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.leftIndexBendAction.Name = "leftIndexBendAction";
-            this.leftIndexBendAction.Size = new System.Drawing.Size(325, 21);
+            this.leftIndexBendAction.Size = new System.Drawing.Size(486, 28);
             this.leftIndexBendAction.TabIndex = 5;
             this.leftIndexBendAction.SelectedIndexChanged += new System.EventHandler(this.leftIndexBendAction_SelectedIndexChanged);
             // 
             // label36
             // 
             this.label36.AutoSize = true;
-            this.label36.Location = new System.Drawing.Point(8, 85);
+            this.label36.Location = new System.Drawing.Point(12, 131);
+            this.label36.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label36.Name = "label36";
-            this.label36.Size = new System.Drawing.Size(63, 13);
+            this.label36.Size = new System.Drawing.Size(92, 20);
             this.label36.TabIndex = 4;
             this.label36.Text = "Index bend:";
             // 
@@ -1506,18 +1489,20 @@ namespace ConfigUI
             "/input/system/click (Windows button)",
             "/input/trackpad/click (WMR 1st gen only)",
             "/input/select/click (simple_controller only)"});
-            this.leftThumbPressAction.Location = new System.Drawing.Point(87, 55);
+            this.leftThumbPressAction.Location = new System.Drawing.Point(130, 85);
+            this.leftThumbPressAction.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.leftThumbPressAction.Name = "leftThumbPressAction";
-            this.leftThumbPressAction.Size = new System.Drawing.Size(325, 21);
+            this.leftThumbPressAction.Size = new System.Drawing.Size(486, 28);
             this.leftThumbPressAction.TabIndex = 3;
             this.leftThumbPressAction.SelectedIndexChanged += new System.EventHandler(this.leftThumbPressAction_SelectedIndexChanged);
             // 
             // label37
             // 
             this.label37.AutoSize = true;
-            this.label37.Location = new System.Drawing.Point(8, 58);
+            this.label37.Location = new System.Drawing.Point(12, 89);
+            this.label37.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(71, 13);
+            this.label37.Size = new System.Drawing.Size(105, 20);
             this.label37.TabIndex = 2;
             this.label37.Text = "Thumb press:";
             // 
@@ -1539,18 +1524,20 @@ namespace ConfigUI
             "/input/system/click (Windows button)",
             "/input/trackpad/click (WMR 1st gen only)",
             "/input/select/click (simple_controller only)"});
-            this.leftPinchAction.Location = new System.Drawing.Point(87, 28);
+            this.leftPinchAction.Location = new System.Drawing.Point(130, 43);
+            this.leftPinchAction.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.leftPinchAction.Name = "leftPinchAction";
-            this.leftPinchAction.Size = new System.Drawing.Size(325, 21);
+            this.leftPinchAction.Size = new System.Drawing.Size(486, 28);
             this.leftPinchAction.TabIndex = 1;
             this.leftPinchAction.SelectedIndexChanged += new System.EventHandler(this.leftPinchAction_SelectedIndexChanged);
             // 
             // label38
             // 
             this.label38.AutoSize = true;
-            this.label38.Location = new System.Drawing.Point(8, 31);
+            this.label38.Location = new System.Drawing.Point(12, 48);
+            this.label38.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(37, 13);
+            this.label38.Size = new System.Drawing.Size(52, 20);
             this.label38.TabIndex = 0;
             this.label38.Text = "Pinch:";
             // 
@@ -1562,9 +1549,11 @@ namespace ConfigUI
             this.groupBox11.Controls.Add(this.label30);
             this.groupBox11.Controls.Add(this.rightPinchAction);
             this.groupBox11.Controls.Add(this.label29);
-            this.groupBox11.Location = new System.Drawing.Point(513, 26);
+            this.groupBox11.Location = new System.Drawing.Point(770, 40);
+            this.groupBox11.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(483, 115);
+            this.groupBox11.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox11.Size = new System.Drawing.Size(724, 177);
             this.groupBox11.TabIndex = 1;
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "Right hand";
@@ -1587,18 +1576,20 @@ namespace ConfigUI
             "/input/system/click (Windows button)",
             "/input/trackpad/click (WMR 1st gen only)",
             "/input/select/click (simple_controller only)"});
-            this.rightIndexBendAction.Location = new System.Drawing.Point(87, 82);
+            this.rightIndexBendAction.Location = new System.Drawing.Point(130, 126);
+            this.rightIndexBendAction.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.rightIndexBendAction.Name = "rightIndexBendAction";
-            this.rightIndexBendAction.Size = new System.Drawing.Size(325, 21);
+            this.rightIndexBendAction.Size = new System.Drawing.Size(486, 28);
             this.rightIndexBendAction.TabIndex = 5;
             this.rightIndexBendAction.SelectedIndexChanged += new System.EventHandler(this.rightIndexBendAction_SelectedIndexChanged);
             // 
             // label31
             // 
             this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(8, 85);
+            this.label31.Location = new System.Drawing.Point(12, 131);
+            this.label31.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(63, 13);
+            this.label31.Size = new System.Drawing.Size(92, 20);
             this.label31.TabIndex = 4;
             this.label31.Text = "Index bend:";
             // 
@@ -1620,18 +1611,20 @@ namespace ConfigUI
             "/input/system/click (Windows button)",
             "/input/trackpad/click (WMR 1st gen only)",
             "/input/select/click (simple_controller only)"});
-            this.rightThumbPressAction.Location = new System.Drawing.Point(87, 55);
+            this.rightThumbPressAction.Location = new System.Drawing.Point(130, 85);
+            this.rightThumbPressAction.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.rightThumbPressAction.Name = "rightThumbPressAction";
-            this.rightThumbPressAction.Size = new System.Drawing.Size(325, 21);
+            this.rightThumbPressAction.Size = new System.Drawing.Size(486, 28);
             this.rightThumbPressAction.TabIndex = 3;
             this.rightThumbPressAction.SelectedIndexChanged += new System.EventHandler(this.rightThumbPressAction_SelectedIndexChanged);
             // 
             // label30
             // 
             this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(8, 58);
+            this.label30.Location = new System.Drawing.Point(12, 89);
+            this.label30.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(71, 13);
+            this.label30.Size = new System.Drawing.Size(105, 20);
             this.label30.TabIndex = 2;
             this.label30.Text = "Thumb press:";
             // 
@@ -1653,18 +1646,20 @@ namespace ConfigUI
             "/input/system/click (Windows button)",
             "/input/trackpad/click (WMR 1st gen only)",
             "/input/select/click (simple_controller only)"});
-            this.rightPinchAction.Location = new System.Drawing.Point(87, 28);
+            this.rightPinchAction.Location = new System.Drawing.Point(130, 43);
+            this.rightPinchAction.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.rightPinchAction.Name = "rightPinchAction";
-            this.rightPinchAction.Size = new System.Drawing.Size(325, 21);
+            this.rightPinchAction.Size = new System.Drawing.Size(486, 28);
             this.rightPinchAction.TabIndex = 1;
             this.rightPinchAction.SelectedIndexChanged += new System.EventHandler(this.rightPinchAction_SelectedIndexChanged);
             // 
             // label29
             // 
             this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(8, 31);
+            this.label29.Location = new System.Drawing.Point(12, 48);
+            this.label29.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(37, 13);
+            this.label29.Size = new System.Drawing.Size(52, 20);
             this.label29.TabIndex = 0;
             this.label29.Text = "Pinch:";
             // 
@@ -1672,7 +1667,8 @@ namespace ConfigUI
             // 
             this.label28.AutoSize = true;
             this.label28.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label28.Location = new System.Drawing.Point(8, 6);
+            this.label28.Location = new System.Drawing.Point(12, 9);
+            this.label28.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label28.Name = "label28";
             this.label28.Size = new System.Drawing.Size(609, 20);
             this.label28.TabIndex = 0;
@@ -1681,10 +1677,9 @@ namespace ConfigUI
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.groupBox17);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage3.Location = new System.Drawing.Point(4, 29);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(1016, 582);
+            this.tabPage3.Size = new System.Drawing.Size(1528, 906);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Gestures";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -1746,9 +1741,11 @@ namespace ConfigUI
             this.groupBox17.Controls.Add(this.thumbPressNearText);
             this.groupBox17.Controls.Add(this.pinchNear);
             this.groupBox17.Controls.Add(this.thumbPressNear);
-            this.groupBox17.Location = new System.Drawing.Point(3, 3);
+            this.groupBox17.Location = new System.Drawing.Point(4, 5);
+            this.groupBox17.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox17.Name = "groupBox17";
-            this.groupBox17.Size = new System.Drawing.Size(1011, 468);
+            this.groupBox17.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox17.Size = new System.Drawing.Size(1516, 720);
             this.groupBox17.TabIndex = 0;
             this.groupBox17.TabStop = false;
             this.groupBox17.Text = "Sensitivity";
@@ -1756,48 +1753,49 @@ namespace ConfigUI
             // label45
             // 
             this.label45.AutoSize = true;
-            this.label45.Location = new System.Drawing.Point(6, 42);
+            this.label45.Location = new System.Drawing.Point(9, 65);
+            this.label45.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label45.Name = "label45";
-            this.label45.Size = new System.Drawing.Size(78, 13);
+            this.label45.Size = new System.Drawing.Size(111, 20);
             this.label45.TabIndex = 0;
             this.label45.Text = "Pinch near/far:";
             // 
             // label69
             // 
             this.label69.AutoSize = true;
-            this.label69.Location = new System.Drawing.Point(4, 197);
+            this.label69.Location = new System.Drawing.Point(6, 303);
+            this.label69.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label69.Name = "label69";
-            this.label69.Size = new System.Drawing.Size(93, 13);
+            this.label69.Size = new System.Drawing.Size(136, 20);
             this.label69.TabIndex = 21;
             this.label69.Text = "Squeeze near/far:";
             // 
             // label70
             // 
             this.label70.AutoSize = true;
-            this.label70.Location = new System.Drawing.Point(881, 195);
-            this.label70.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label70.Location = new System.Drawing.Point(1322, 300);
             this.label70.Name = "label70";
-            this.label70.Size = new System.Drawing.Size(23, 13);
+            this.label70.Size = new System.Drawing.Size(35, 20);
             this.label70.TabIndex = 27;
             this.label70.Text = "mm";
             // 
             // squeezeFarText
             // 
             this.squeezeFarText.Enabled = false;
-            this.squeezeFarText.Location = new System.Drawing.Point(847, 193);
-            this.squeezeFarText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.squeezeFarText.Location = new System.Drawing.Point(1270, 297);
             this.squeezeFarText.Name = "squeezeFarText";
-            this.squeezeFarText.Size = new System.Drawing.Size(31, 20);
+            this.squeezeFarText.Size = new System.Drawing.Size(44, 26);
             this.squeezeFarText.TabIndex = 26;
             // 
             // squeezeFar
             // 
             this.squeezeFar.BackColor = System.Drawing.SystemColors.Window;
-            this.squeezeFar.Location = new System.Drawing.Point(533, 184);
+            this.squeezeFar.Location = new System.Drawing.Point(800, 283);
+            this.squeezeFar.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.squeezeFar.Maximum = 100;
             this.squeezeFar.Minimum = 1;
             this.squeezeFar.Name = "squeezeFar";
-            this.squeezeFar.Size = new System.Drawing.Size(313, 69);
+            this.squeezeFar.Size = new System.Drawing.Size(470, 69);
             this.squeezeFar.TabIndex = 25;
             this.squeezeFar.TickFrequency = 5;
             this.squeezeFar.Value = 1;
@@ -1806,29 +1804,28 @@ namespace ConfigUI
             // label71
             // 
             this.label71.AutoSize = true;
-            this.label71.Location = new System.Drawing.Point(474, 195);
-            this.label71.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label71.Location = new System.Drawing.Point(711, 300);
             this.label71.Name = "label71";
-            this.label71.Size = new System.Drawing.Size(23, 13);
+            this.label71.Size = new System.Drawing.Size(35, 20);
             this.label71.TabIndex = 24;
             this.label71.Text = "mm";
             // 
             // squeezeNearText
             // 
             this.squeezeNearText.Enabled = false;
-            this.squeezeNearText.Location = new System.Drawing.Point(440, 193);
-            this.squeezeNearText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.squeezeNearText.Location = new System.Drawing.Point(660, 297);
             this.squeezeNearText.Name = "squeezeNearText";
-            this.squeezeNearText.Size = new System.Drawing.Size(31, 20);
+            this.squeezeNearText.Size = new System.Drawing.Size(44, 26);
             this.squeezeNearText.TabIndex = 23;
             // 
             // squeezeNear
             // 
             this.squeezeNear.BackColor = System.Drawing.SystemColors.Window;
-            this.squeezeNear.Location = new System.Drawing.Point(126, 184);
+            this.squeezeNear.Location = new System.Drawing.Point(189, 283);
+            this.squeezeNear.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.squeezeNear.Maximum = 99;
             this.squeezeNear.Name = "squeezeNear";
-            this.squeezeNear.Size = new System.Drawing.Size(313, 69);
+            this.squeezeNear.Size = new System.Drawing.Size(470, 69);
             this.squeezeNear.TabIndex = 22;
             this.squeezeNear.TickFrequency = 5;
             this.squeezeNear.Scroll += new System.EventHandler(this.squeezeNear_Scroll);
@@ -1836,19 +1833,19 @@ namespace ConfigUI
             // label66
             // 
             this.label66.AutoSize = true;
-            this.label66.Location = new System.Drawing.Point(474, 420);
-            this.label66.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label66.Location = new System.Drawing.Point(711, 646);
             this.label66.Name = "label66";
-            this.label66.Size = new System.Drawing.Size(15, 13);
+            this.label66.Size = new System.Drawing.Size(23, 20);
             this.label66.TabIndex = 52;
             this.label66.Text = "%";
             // 
             // label65
             // 
             this.label65.AutoSize = true;
-            this.label65.Location = new System.Drawing.Point(517, 431);
+            this.label65.Location = new System.Drawing.Point(776, 663);
+            this.label65.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label65.Name = "label65";
-            this.label65.Size = new System.Drawing.Size(483, 13);
+            this.label65.Size = new System.Drawing.Size(715, 20);
             this.label65.TabIndex = 54;
             this.label65.Text = "If the application is using a \"value\" action, then the application is managing it" +
     "s own threshold instead.";
@@ -1857,7 +1854,8 @@ namespace ConfigUI
             // 
             this.label64.AutoSize = true;
             this.label64.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label64.Location = new System.Drawing.Point(517, 414);
+            this.label64.Location = new System.Drawing.Point(776, 637);
+            this.label64.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label64.Name = "label64";
             this.label64.Size = new System.Drawing.Size(450, 20);
             this.label64.TabIndex = 53;
@@ -1866,29 +1864,30 @@ namespace ConfigUI
             // label63
             // 
             this.label63.AutoSize = true;
-            this.label63.Location = new System.Drawing.Point(4, 421);
+            this.label63.Location = new System.Drawing.Point(6, 648);
+            this.label63.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label63.Name = "label63";
-            this.label63.Size = new System.Drawing.Size(79, 13);
+            this.label63.Size = new System.Drawing.Size(116, 20);
             this.label63.TabIndex = 49;
             this.label63.Text = "Click threshold:";
             // 
             // clickThresholdText
             // 
             this.clickThresholdText.Enabled = false;
-            this.clickThresholdText.Location = new System.Drawing.Point(440, 417);
-            this.clickThresholdText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.clickThresholdText.Location = new System.Drawing.Point(660, 642);
             this.clickThresholdText.Name = "clickThresholdText";
-            this.clickThresholdText.Size = new System.Drawing.Size(31, 20);
+            this.clickThresholdText.Size = new System.Drawing.Size(44, 26);
             this.clickThresholdText.TabIndex = 51;
             // 
             // clickThreshold
             // 
             this.clickThreshold.BackColor = System.Drawing.SystemColors.Window;
-            this.clickThreshold.Location = new System.Drawing.Point(126, 408);
+            this.clickThreshold.Location = new System.Drawing.Point(189, 628);
+            this.clickThreshold.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.clickThreshold.Maximum = 100;
             this.clickThreshold.Minimum = 10;
             this.clickThreshold.Name = "clickThreshold";
-            this.clickThreshold.Size = new System.Drawing.Size(313, 69);
+            this.clickThreshold.Size = new System.Drawing.Size(470, 69);
             this.clickThreshold.TabIndex = 50;
             this.clickThreshold.TickFrequency = 5;
             this.clickThreshold.Value = 10;
@@ -1897,39 +1896,39 @@ namespace ConfigUI
             // label60
             // 
             this.label60.AutoSize = true;
-            this.label60.Location = new System.Drawing.Point(4, 350);
+            this.label60.Location = new System.Drawing.Point(6, 538);
+            this.label60.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label60.Name = "label60";
-            this.label60.Size = new System.Drawing.Size(109, 13);
+            this.label60.Size = new System.Drawing.Size(159, 20);
             this.label60.TabIndex = 42;
             this.label60.Text = "Index tip tap near/far:";
             // 
             // label61
             // 
             this.label61.AutoSize = true;
-            this.label61.Location = new System.Drawing.Point(881, 348);
-            this.label61.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label61.Location = new System.Drawing.Point(1322, 535);
             this.label61.Name = "label61";
-            this.label61.Size = new System.Drawing.Size(23, 13);
+            this.label61.Size = new System.Drawing.Size(35, 20);
             this.label61.TabIndex = 48;
             this.label61.Text = "mm";
             // 
             // indexTipTapFarText
             // 
             this.indexTipTapFarText.Enabled = false;
-            this.indexTipTapFarText.Location = new System.Drawing.Point(847, 346);
-            this.indexTipTapFarText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.indexTipTapFarText.Location = new System.Drawing.Point(1270, 532);
             this.indexTipTapFarText.Name = "indexTipTapFarText";
-            this.indexTipTapFarText.Size = new System.Drawing.Size(31, 20);
+            this.indexTipTapFarText.Size = new System.Drawing.Size(44, 26);
             this.indexTipTapFarText.TabIndex = 47;
             // 
             // indexTipTapFar
             // 
             this.indexTipTapFar.BackColor = System.Drawing.SystemColors.Window;
-            this.indexTipTapFar.Location = new System.Drawing.Point(533, 337);
+            this.indexTipTapFar.Location = new System.Drawing.Point(800, 518);
+            this.indexTipTapFar.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.indexTipTapFar.Maximum = 100;
             this.indexTipTapFar.Minimum = 1;
             this.indexTipTapFar.Name = "indexTipTapFar";
-            this.indexTipTapFar.Size = new System.Drawing.Size(313, 69);
+            this.indexTipTapFar.Size = new System.Drawing.Size(470, 69);
             this.indexTipTapFar.TabIndex = 46;
             this.indexTipTapFar.TickFrequency = 5;
             this.indexTipTapFar.Value = 1;
@@ -1938,29 +1937,28 @@ namespace ConfigUI
             // label62
             // 
             this.label62.AutoSize = true;
-            this.label62.Location = new System.Drawing.Point(474, 348);
-            this.label62.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label62.Location = new System.Drawing.Point(711, 535);
             this.label62.Name = "label62";
-            this.label62.Size = new System.Drawing.Size(23, 13);
+            this.label62.Size = new System.Drawing.Size(35, 20);
             this.label62.TabIndex = 45;
             this.label62.Text = "mm";
             // 
             // indexTipTapNearText
             // 
             this.indexTipTapNearText.Enabled = false;
-            this.indexTipTapNearText.Location = new System.Drawing.Point(440, 346);
-            this.indexTipTapNearText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.indexTipTapNearText.Location = new System.Drawing.Point(660, 532);
             this.indexTipTapNearText.Name = "indexTipTapNearText";
-            this.indexTipTapNearText.Size = new System.Drawing.Size(31, 20);
+            this.indexTipTapNearText.Size = new System.Drawing.Size(44, 26);
             this.indexTipTapNearText.TabIndex = 44;
             // 
             // indexTipTapNear
             // 
             this.indexTipTapNear.BackColor = System.Drawing.SystemColors.Window;
-            this.indexTipTapNear.Location = new System.Drawing.Point(126, 337);
+            this.indexTipTapNear.Location = new System.Drawing.Point(189, 518);
+            this.indexTipTapNear.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.indexTipTapNear.Maximum = 99;
             this.indexTipTapNear.Name = "indexTipTapNear";
-            this.indexTipTapNear.Size = new System.Drawing.Size(313, 69);
+            this.indexTipTapNear.Size = new System.Drawing.Size(470, 69);
             this.indexTipTapNear.TabIndex = 43;
             this.indexTipTapNear.TickFrequency = 5;
             this.indexTipTapNear.Scroll += new System.EventHandler(this.indexTipTapNear_Scroll);
@@ -1968,39 +1966,39 @@ namespace ConfigUI
             // label57
             // 
             this.label57.AutoSize = true;
-            this.label57.Location = new System.Drawing.Point(4, 299);
+            this.label57.Location = new System.Drawing.Point(6, 460);
+            this.label57.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label57.Name = "label57";
-            this.label57.Size = new System.Drawing.Size(92, 13);
+            this.label57.Size = new System.Drawing.Size(134, 20);
             this.label57.TabIndex = 35;
             this.label57.Text = "Palm tap near/far:";
             // 
             // label58
             // 
             this.label58.AutoSize = true;
-            this.label58.Location = new System.Drawing.Point(881, 297);
-            this.label58.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label58.Location = new System.Drawing.Point(1322, 457);
             this.label58.Name = "label58";
-            this.label58.Size = new System.Drawing.Size(23, 13);
+            this.label58.Size = new System.Drawing.Size(35, 20);
             this.label58.TabIndex = 41;
             this.label58.Text = "mm";
             // 
             // palmTapFarText
             // 
             this.palmTapFarText.Enabled = false;
-            this.palmTapFarText.Location = new System.Drawing.Point(847, 295);
-            this.palmTapFarText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.palmTapFarText.Location = new System.Drawing.Point(1270, 454);
             this.palmTapFarText.Name = "palmTapFarText";
-            this.palmTapFarText.Size = new System.Drawing.Size(31, 20);
+            this.palmTapFarText.Size = new System.Drawing.Size(44, 26);
             this.palmTapFarText.TabIndex = 40;
             // 
             // palmTapFar
             // 
             this.palmTapFar.BackColor = System.Drawing.SystemColors.Window;
-            this.palmTapFar.Location = new System.Drawing.Point(533, 286);
+            this.palmTapFar.Location = new System.Drawing.Point(800, 440);
+            this.palmTapFar.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.palmTapFar.Maximum = 100;
             this.palmTapFar.Minimum = 1;
             this.palmTapFar.Name = "palmTapFar";
-            this.palmTapFar.Size = new System.Drawing.Size(313, 69);
+            this.palmTapFar.Size = new System.Drawing.Size(470, 69);
             this.palmTapFar.TabIndex = 39;
             this.palmTapFar.TickFrequency = 5;
             this.palmTapFar.Value = 1;
@@ -2009,29 +2007,28 @@ namespace ConfigUI
             // label59
             // 
             this.label59.AutoSize = true;
-            this.label59.Location = new System.Drawing.Point(474, 297);
-            this.label59.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label59.Location = new System.Drawing.Point(711, 457);
             this.label59.Name = "label59";
-            this.label59.Size = new System.Drawing.Size(23, 13);
+            this.label59.Size = new System.Drawing.Size(35, 20);
             this.label59.TabIndex = 38;
             this.label59.Text = "mm";
             // 
             // palmTapNearText
             // 
             this.palmTapNearText.Enabled = false;
-            this.palmTapNearText.Location = new System.Drawing.Point(440, 295);
-            this.palmTapNearText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.palmTapNearText.Location = new System.Drawing.Point(660, 454);
             this.palmTapNearText.Name = "palmTapNearText";
-            this.palmTapNearText.Size = new System.Drawing.Size(31, 20);
+            this.palmTapNearText.Size = new System.Drawing.Size(44, 26);
             this.palmTapNearText.TabIndex = 37;
             // 
             // palmTapNear
             // 
             this.palmTapNear.BackColor = System.Drawing.SystemColors.Window;
-            this.palmTapNear.Location = new System.Drawing.Point(126, 286);
+            this.palmTapNear.Location = new System.Drawing.Point(189, 440);
+            this.palmTapNear.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.palmTapNear.Maximum = 99;
             this.palmTapNear.Name = "palmTapNear";
-            this.palmTapNear.Size = new System.Drawing.Size(313, 69);
+            this.palmTapNear.Size = new System.Drawing.Size(470, 69);
             this.palmTapNear.TabIndex = 36;
             this.palmTapNear.TickFrequency = 5;
             this.palmTapNear.Scroll += new System.EventHandler(this.palmTapNear_Scroll);
@@ -2039,39 +2036,39 @@ namespace ConfigUI
             // label54
             // 
             this.label54.AutoSize = true;
-            this.label54.Location = new System.Drawing.Point(4, 248);
+            this.label54.Location = new System.Drawing.Point(6, 382);
+            this.label54.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label54.Name = "label54";
-            this.label54.Size = new System.Drawing.Size(93, 13);
+            this.label54.Size = new System.Drawing.Size(135, 20);
             this.label54.TabIndex = 28;
             this.label54.Text = "Wrist tap near/far:";
             // 
             // label55
             // 
             this.label55.AutoSize = true;
-            this.label55.Location = new System.Drawing.Point(881, 246);
-            this.label55.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label55.Location = new System.Drawing.Point(1322, 378);
             this.label55.Name = "label55";
-            this.label55.Size = new System.Drawing.Size(23, 13);
+            this.label55.Size = new System.Drawing.Size(35, 20);
             this.label55.TabIndex = 34;
             this.label55.Text = "mm";
             // 
             // wristTapFarText
             // 
             this.wristTapFarText.Enabled = false;
-            this.wristTapFarText.Location = new System.Drawing.Point(847, 244);
-            this.wristTapFarText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.wristTapFarText.Location = new System.Drawing.Point(1270, 375);
             this.wristTapFarText.Name = "wristTapFarText";
-            this.wristTapFarText.Size = new System.Drawing.Size(31, 20);
+            this.wristTapFarText.Size = new System.Drawing.Size(44, 26);
             this.wristTapFarText.TabIndex = 33;
             // 
             // wristTapFar
             // 
             this.wristTapFar.BackColor = System.Drawing.SystemColors.Window;
-            this.wristTapFar.Location = new System.Drawing.Point(533, 235);
+            this.wristTapFar.Location = new System.Drawing.Point(800, 362);
+            this.wristTapFar.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.wristTapFar.Maximum = 100;
             this.wristTapFar.Minimum = 1;
             this.wristTapFar.Name = "wristTapFar";
-            this.wristTapFar.Size = new System.Drawing.Size(313, 69);
+            this.wristTapFar.Size = new System.Drawing.Size(470, 69);
             this.wristTapFar.TabIndex = 32;
             this.wristTapFar.TickFrequency = 5;
             this.wristTapFar.Value = 1;
@@ -2080,29 +2077,28 @@ namespace ConfigUI
             // label56
             // 
             this.label56.AutoSize = true;
-            this.label56.Location = new System.Drawing.Point(474, 246);
-            this.label56.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label56.Location = new System.Drawing.Point(711, 378);
             this.label56.Name = "label56";
-            this.label56.Size = new System.Drawing.Size(23, 13);
+            this.label56.Size = new System.Drawing.Size(35, 20);
             this.label56.TabIndex = 31;
             this.label56.Text = "mm";
             // 
             // wristTapNearText
             // 
             this.wristTapNearText.Enabled = false;
-            this.wristTapNearText.Location = new System.Drawing.Point(440, 244);
-            this.wristTapNearText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.wristTapNearText.Location = new System.Drawing.Point(660, 375);
             this.wristTapNearText.Name = "wristTapNearText";
-            this.wristTapNearText.Size = new System.Drawing.Size(31, 20);
+            this.wristTapNearText.Size = new System.Drawing.Size(44, 26);
             this.wristTapNearText.TabIndex = 30;
             // 
             // wristTapNear
             // 
             this.wristTapNear.BackColor = System.Drawing.SystemColors.Window;
-            this.wristTapNear.Location = new System.Drawing.Point(126, 235);
+            this.wristTapNear.Location = new System.Drawing.Point(189, 362);
+            this.wristTapNear.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.wristTapNear.Maximum = 99;
             this.wristTapNear.Name = "wristTapNear";
-            this.wristTapNear.Size = new System.Drawing.Size(313, 69);
+            this.wristTapNear.Size = new System.Drawing.Size(470, 69);
             this.wristTapNear.TabIndex = 29;
             this.wristTapNear.TickFrequency = 5;
             this.wristTapNear.Scroll += new System.EventHandler(this.wristTapNear_Scroll);
@@ -2110,39 +2106,39 @@ namespace ConfigUI
             // label51
             // 
             this.label51.AutoSize = true;
-            this.label51.Location = new System.Drawing.Point(4, 146);
+            this.label51.Location = new System.Drawing.Point(6, 225);
+            this.label51.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label51.Name = "label51";
-            this.label51.Size = new System.Drawing.Size(104, 13);
+            this.label51.Size = new System.Drawing.Size(151, 20);
             this.label51.TabIndex = 14;
             this.label51.Text = "Index bend near/far:";
             // 
             // label52
             // 
             this.label52.AutoSize = true;
-            this.label52.Location = new System.Drawing.Point(881, 144);
-            this.label52.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label52.Location = new System.Drawing.Point(1322, 222);
             this.label52.Name = "label52";
-            this.label52.Size = new System.Drawing.Size(23, 13);
+            this.label52.Size = new System.Drawing.Size(35, 20);
             this.label52.TabIndex = 20;
             this.label52.Text = "mm";
             // 
             // indexBendFarText
             // 
             this.indexBendFarText.Enabled = false;
-            this.indexBendFarText.Location = new System.Drawing.Point(847, 142);
-            this.indexBendFarText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.indexBendFarText.Location = new System.Drawing.Point(1270, 218);
             this.indexBendFarText.Name = "indexBendFarText";
-            this.indexBendFarText.Size = new System.Drawing.Size(31, 20);
+            this.indexBendFarText.Size = new System.Drawing.Size(44, 26);
             this.indexBendFarText.TabIndex = 19;
             // 
             // indexBendFar
             // 
             this.indexBendFar.BackColor = System.Drawing.SystemColors.Window;
-            this.indexBendFar.Location = new System.Drawing.Point(533, 133);
+            this.indexBendFar.Location = new System.Drawing.Point(800, 205);
+            this.indexBendFar.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.indexBendFar.Maximum = 100;
             this.indexBendFar.Minimum = 1;
             this.indexBendFar.Name = "indexBendFar";
-            this.indexBendFar.Size = new System.Drawing.Size(313, 69);
+            this.indexBendFar.Size = new System.Drawing.Size(470, 69);
             this.indexBendFar.TabIndex = 18;
             this.indexBendFar.TickFrequency = 5;
             this.indexBendFar.Value = 1;
@@ -2151,29 +2147,28 @@ namespace ConfigUI
             // label53
             // 
             this.label53.AutoSize = true;
-            this.label53.Location = new System.Drawing.Point(474, 144);
-            this.label53.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label53.Location = new System.Drawing.Point(711, 222);
             this.label53.Name = "label53";
-            this.label53.Size = new System.Drawing.Size(23, 13);
+            this.label53.Size = new System.Drawing.Size(35, 20);
             this.label53.TabIndex = 17;
             this.label53.Text = "mm";
             // 
             // indexBendNearText
             // 
             this.indexBendNearText.Enabled = false;
-            this.indexBendNearText.Location = new System.Drawing.Point(440, 142);
-            this.indexBendNearText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.indexBendNearText.Location = new System.Drawing.Point(660, 218);
             this.indexBendNearText.Name = "indexBendNearText";
-            this.indexBendNearText.Size = new System.Drawing.Size(31, 20);
+            this.indexBendNearText.Size = new System.Drawing.Size(44, 26);
             this.indexBendNearText.TabIndex = 16;
             // 
             // indexBendNear
             // 
             this.indexBendNear.BackColor = System.Drawing.SystemColors.Window;
-            this.indexBendNear.Location = new System.Drawing.Point(126, 133);
+            this.indexBendNear.Location = new System.Drawing.Point(189, 205);
+            this.indexBendNear.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.indexBendNear.Maximum = 99;
             this.indexBendNear.Name = "indexBendNear";
-            this.indexBendNear.Size = new System.Drawing.Size(313, 69);
+            this.indexBendNear.Size = new System.Drawing.Size(470, 69);
             this.indexBendNear.TabIndex = 15;
             this.indexBendNear.TickFrequency = 5;
             this.indexBendNear.Scroll += new System.EventHandler(this.indexBendNear_Scroll);
@@ -2181,58 +2176,56 @@ namespace ConfigUI
             // label48
             // 
             this.label48.AutoSize = true;
-            this.label48.Location = new System.Drawing.Point(4, 95);
+            this.label48.Location = new System.Drawing.Point(6, 146);
+            this.label48.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label48.Name = "label48";
-            this.label48.Size = new System.Drawing.Size(112, 13);
+            this.label48.Size = new System.Drawing.Size(164, 20);
             this.label48.TabIndex = 7;
             this.label48.Text = "Thumb press near/far:";
             // 
             // label47
             // 
             this.label47.AutoSize = true;
-            this.label47.Location = new System.Drawing.Point(881, 42);
-            this.label47.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label47.Location = new System.Drawing.Point(1322, 65);
             this.label47.Name = "label47";
-            this.label47.Size = new System.Drawing.Size(23, 13);
+            this.label47.Size = new System.Drawing.Size(35, 20);
             this.label47.TabIndex = 6;
             this.label47.Text = "mm";
             // 
             // label49
             // 
             this.label49.AutoSize = true;
-            this.label49.Location = new System.Drawing.Point(881, 93);
-            this.label49.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label49.Location = new System.Drawing.Point(1322, 143);
             this.label49.Name = "label49";
-            this.label49.Size = new System.Drawing.Size(23, 13);
+            this.label49.Size = new System.Drawing.Size(35, 20);
             this.label49.TabIndex = 13;
             this.label49.Text = "mm";
             // 
             // pinchFarText
             // 
             this.pinchFarText.Enabled = false;
-            this.pinchFarText.Location = new System.Drawing.Point(847, 40);
-            this.pinchFarText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pinchFarText.Location = new System.Drawing.Point(1270, 62);
             this.pinchFarText.Name = "pinchFarText";
-            this.pinchFarText.Size = new System.Drawing.Size(31, 20);
+            this.pinchFarText.Size = new System.Drawing.Size(44, 26);
             this.pinchFarText.TabIndex = 5;
             // 
             // thumbPressFarText
             // 
             this.thumbPressFarText.Enabled = false;
-            this.thumbPressFarText.Location = new System.Drawing.Point(847, 91);
-            this.thumbPressFarText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.thumbPressFarText.Location = new System.Drawing.Point(1270, 140);
             this.thumbPressFarText.Name = "thumbPressFarText";
-            this.thumbPressFarText.Size = new System.Drawing.Size(31, 20);
+            this.thumbPressFarText.Size = new System.Drawing.Size(44, 26);
             this.thumbPressFarText.TabIndex = 12;
             // 
             // pinchFar
             // 
             this.pinchFar.BackColor = System.Drawing.SystemColors.Window;
-            this.pinchFar.Location = new System.Drawing.Point(533, 31);
+            this.pinchFar.Location = new System.Drawing.Point(800, 48);
+            this.pinchFar.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.pinchFar.Maximum = 100;
             this.pinchFar.Minimum = 1;
             this.pinchFar.Name = "pinchFar";
-            this.pinchFar.Size = new System.Drawing.Size(313, 69);
+            this.pinchFar.Size = new System.Drawing.Size(470, 69);
             this.pinchFar.TabIndex = 4;
             this.pinchFar.TickFrequency = 5;
             this.pinchFar.Value = 1;
@@ -2241,11 +2234,12 @@ namespace ConfigUI
             // thumbPressFar
             // 
             this.thumbPressFar.BackColor = System.Drawing.SystemColors.Window;
-            this.thumbPressFar.Location = new System.Drawing.Point(533, 82);
+            this.thumbPressFar.Location = new System.Drawing.Point(800, 126);
+            this.thumbPressFar.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.thumbPressFar.Maximum = 100;
             this.thumbPressFar.Minimum = 1;
             this.thumbPressFar.Name = "thumbPressFar";
-            this.thumbPressFar.Size = new System.Drawing.Size(313, 69);
+            this.thumbPressFar.Size = new System.Drawing.Size(470, 69);
             this.thumbPressFar.TabIndex = 11;
             this.thumbPressFar.TickFrequency = 5;
             this.thumbPressFar.Value = 1;
@@ -2254,48 +2248,45 @@ namespace ConfigUI
             // label46
             // 
             this.label46.AutoSize = true;
-            this.label46.Location = new System.Drawing.Point(474, 42);
-            this.label46.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label46.Location = new System.Drawing.Point(711, 65);
             this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(23, 13);
+            this.label46.Size = new System.Drawing.Size(35, 20);
             this.label46.TabIndex = 3;
             this.label46.Text = "mm";
             // 
             // label50
             // 
             this.label50.AutoSize = true;
-            this.label50.Location = new System.Drawing.Point(474, 93);
-            this.label50.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label50.Location = new System.Drawing.Point(711, 143);
             this.label50.Name = "label50";
-            this.label50.Size = new System.Drawing.Size(23, 13);
+            this.label50.Size = new System.Drawing.Size(35, 20);
             this.label50.TabIndex = 10;
             this.label50.Text = "mm";
             // 
             // pinchNearText
             // 
             this.pinchNearText.Enabled = false;
-            this.pinchNearText.Location = new System.Drawing.Point(440, 40);
-            this.pinchNearText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pinchNearText.Location = new System.Drawing.Point(660, 62);
             this.pinchNearText.Name = "pinchNearText";
-            this.pinchNearText.Size = new System.Drawing.Size(31, 20);
+            this.pinchNearText.Size = new System.Drawing.Size(44, 26);
             this.pinchNearText.TabIndex = 2;
             // 
             // thumbPressNearText
             // 
             this.thumbPressNearText.Enabled = false;
-            this.thumbPressNearText.Location = new System.Drawing.Point(440, 91);
-            this.thumbPressNearText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.thumbPressNearText.Location = new System.Drawing.Point(660, 140);
             this.thumbPressNearText.Name = "thumbPressNearText";
-            this.thumbPressNearText.Size = new System.Drawing.Size(31, 20);
+            this.thumbPressNearText.Size = new System.Drawing.Size(44, 26);
             this.thumbPressNearText.TabIndex = 9;
             // 
             // pinchNear
             // 
             this.pinchNear.BackColor = System.Drawing.SystemColors.Window;
-            this.pinchNear.Location = new System.Drawing.Point(126, 31);
+            this.pinchNear.Location = new System.Drawing.Point(189, 48);
+            this.pinchNear.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.pinchNear.Maximum = 99;
             this.pinchNear.Name = "pinchNear";
-            this.pinchNear.Size = new System.Drawing.Size(313, 69);
+            this.pinchNear.Size = new System.Drawing.Size(470, 69);
             this.pinchNear.TabIndex = 1;
             this.pinchNear.TickFrequency = 5;
             this.pinchNear.Scroll += new System.EventHandler(this.pinchNear_Scroll);
@@ -2303,10 +2294,11 @@ namespace ConfigUI
             // thumbPressNear
             // 
             this.thumbPressNear.BackColor = System.Drawing.SystemColors.Window;
-            this.thumbPressNear.Location = new System.Drawing.Point(126, 82);
+            this.thumbPressNear.Location = new System.Drawing.Point(189, 126);
+            this.thumbPressNear.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.thumbPressNear.Maximum = 99;
             this.thumbPressNear.Name = "thumbPressNear";
-            this.thumbPressNear.Size = new System.Drawing.Size(313, 69);
+            this.thumbPressNear.Size = new System.Drawing.Size(470, 69);
             this.thumbPressNear.TabIndex = 8;
             this.thumbPressNear.TickFrequency = 5;
             this.thumbPressNear.Scroll += new System.EventHandler(this.thumbPressNear_Scroll);
@@ -2314,10 +2306,9 @@ namespace ConfigUI
             // tabPage4
             // 
             this.tabPage4.Controls.Add(this.groupBox7);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
-            this.tabPage4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPage4.Location = new System.Drawing.Point(4, 29);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(1016, 582);
+            this.tabPage4.Size = new System.Drawing.Size(1528, 906);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Misc";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -2336,11 +2327,9 @@ namespace ConfigUI
             this.groupBox7.Controls.Add(this.projLayerIndexText);
             this.groupBox7.Controls.Add(this.label27);
             this.groupBox7.Controls.Add(this.projLayerIndex);
-            this.groupBox7.Location = new System.Drawing.Point(3, 3);
-            this.groupBox7.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox7.Location = new System.Drawing.Point(4, 5);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.groupBox7.Size = new System.Drawing.Size(1011, 161);
+            this.groupBox7.Size = new System.Drawing.Size(1516, 248);
             this.groupBox7.TabIndex = 0;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Hands display";
@@ -2348,36 +2337,40 @@ namespace ConfigUI
             // label73
             // 
             this.label73.AutoSize = true;
-            this.label73.Location = new System.Drawing.Point(678, 67);
+            this.label73.Location = new System.Drawing.Point(1017, 103);
+            this.label73.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label73.Name = "label73";
-            this.label73.Size = new System.Drawing.Size(15, 13);
+            this.label73.Size = new System.Drawing.Size(23, 20);
             this.label73.TabIndex = 11;
             this.label73.Text = "%";
             // 
             // opacityText
             // 
             this.opacityText.Enabled = false;
-            this.opacityText.Location = new System.Drawing.Point(644, 63);
+            this.opacityText.Location = new System.Drawing.Point(966, 97);
+            this.opacityText.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.opacityText.Name = "opacityText";
-            this.opacityText.Size = new System.Drawing.Size(31, 20);
+            this.opacityText.Size = new System.Drawing.Size(44, 26);
             this.opacityText.TabIndex = 10;
             // 
             // label72
             // 
             this.label72.AutoSize = true;
-            this.label72.Location = new System.Drawing.Point(383, 57);
+            this.label72.Location = new System.Drawing.Point(574, 88);
+            this.label72.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label72.Name = "label72";
-            this.label72.Size = new System.Drawing.Size(46, 13);
+            this.label72.Size = new System.Drawing.Size(66, 20);
             this.label72.TabIndex = 9;
             this.label72.Text = "Opacity:";
             // 
             // opacity
             // 
             this.opacity.BackColor = System.Drawing.SystemColors.Window;
-            this.opacity.Location = new System.Drawing.Point(432, 50);
+            this.opacity.Location = new System.Drawing.Point(648, 77);
+            this.opacity.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.opacity.Maximum = 100;
             this.opacity.Name = "opacity";
-            this.opacity.Size = new System.Drawing.Size(206, 69);
+            this.opacity.Size = new System.Drawing.Size(309, 69);
             this.opacity.TabIndex = 2;
             this.opacity.TickFrequency = 5;
             this.opacity.Scroll += new System.EventHandler(this.opacity_Scroll);
@@ -2385,9 +2378,10 @@ namespace ConfigUI
             // displayDisable
             // 
             this.displayDisable.AutoSize = true;
-            this.displayDisable.Location = new System.Drawing.Point(6, 28);
+            this.displayDisable.Location = new System.Drawing.Point(9, 43);
+            this.displayDisable.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.displayDisable.Name = "displayDisable";
-            this.displayDisable.Size = new System.Drawing.Size(263, 21);
+            this.displayDisable.Size = new System.Drawing.Size(385, 24);
             this.displayDisable.TabIndex = 0;
             this.displayDisable.Text = "Disable display (requires OpenXR session restart)";
             this.displayDisable.UseVisualStyleBackColor = true;
@@ -2397,7 +2391,8 @@ namespace ConfigUI
             // 
             this.label44.AutoSize = true;
             this.label44.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label44.Location = new System.Drawing.Point(284, 128);
+            this.label44.Location = new System.Drawing.Point(426, 197);
+            this.label44.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label44.Name = "label44";
             this.label44.Size = new System.Drawing.Size(181, 20);
             this.label44.TabIndex = 6;
@@ -2412,26 +2407,29 @@ namespace ConfigUI
             "Medium",
             "Dark",
             "Darker"});
-            this.skinTone.Location = new System.Drawing.Point(93, 63);
+            this.skinTone.Location = new System.Drawing.Point(140, 97);
+            this.skinTone.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.skinTone.Name = "skinTone";
-            this.skinTone.Size = new System.Drawing.Size(121, 21);
+            this.skinTone.Size = new System.Drawing.Size(180, 28);
             this.skinTone.TabIndex = 1;
             this.skinTone.SelectedIndexChanged += new System.EventHandler(this.skinTone_SelectedIndexChanged);
             // 
             // label43
             // 
             this.label43.AutoSize = true;
-            this.label43.Location = new System.Drawing.Point(21, 66);
+            this.label43.Location = new System.Drawing.Point(32, 102);
+            this.label43.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label43.Name = "label43";
-            this.label43.Size = new System.Drawing.Size(55, 13);
+            this.label43.Size = new System.Drawing.Size(80, 20);
             this.label43.TabIndex = 4;
             this.label43.Text = "Skin tone:";
             // 
             // depthDisable
             // 
-            this.depthDisable.Location = new System.Drawing.Point(4, 108);
+            this.depthDisable.Location = new System.Drawing.Point(6, 166);
+            this.depthDisable.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.depthDisable.Name = "depthDisable";
-            this.depthDisable.Size = new System.Drawing.Size(194, 39);
+            this.depthDisable.Size = new System.Drawing.Size(291, 60);
             this.depthDisable.TabIndex = 3;
             this.depthDisable.Text = "Never use application depth buffer (prevent visual occlusion)";
             this.depthDisable.UseVisualStyleBackColor = true;
@@ -2440,17 +2438,19 @@ namespace ConfigUI
             // projLayerIndexText
             // 
             this.projLayerIndexText.Enabled = false;
-            this.projLayerIndexText.Location = new System.Drawing.Point(543, 117);
+            this.projLayerIndexText.Location = new System.Drawing.Point(814, 180);
+            this.projLayerIndexText.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.projLayerIndexText.Name = "projLayerIndexText";
-            this.projLayerIndexText.Size = new System.Drawing.Size(31, 20);
+            this.projLayerIndexText.Size = new System.Drawing.Size(44, 26);
             this.projLayerIndexText.TabIndex = 2;
             // 
             // label27
             // 
             this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(281, 111);
+            this.label27.Location = new System.Drawing.Point(422, 171);
+            this.label27.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(149, 13);
+            this.label27.Size = new System.Drawing.Size(220, 20);
             this.label27.TabIndex = 1;
             this.label27.Text = "Projection layer to display into:";
             // 
@@ -2458,14 +2458,16 @@ namespace ConfigUI
             // 
             this.projLayerIndex.BackColor = System.Drawing.SystemColors.Window;
             this.projLayerIndex.LargeChange = 2;
-            this.projLayerIndex.Location = new System.Drawing.Point(432, 104);
+            this.projLayerIndex.Location = new System.Drawing.Point(648, 160);
+            this.projLayerIndex.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.projLayerIndex.Name = "projLayerIndex";
-            this.projLayerIndex.Size = new System.Drawing.Size(104, 69);
+            this.projLayerIndex.Size = new System.Drawing.Size(156, 69);
             this.projLayerIndex.TabIndex = 4;
             this.projLayerIndex.Scroll += new System.EventHandler(this.projLayerIndex_Scroll);
             // 
             // menuStrip1
             // 
+            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.loadMenuItem,
@@ -2474,15 +2476,15 @@ namespace ConfigUI
             this.toolStripMenuItem1});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 1, 0, 1);
-            this.menuStrip1.Size = new System.Drawing.Size(1024, 31);
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(6, 2, 0, 2);
+            this.menuStrip1.Size = new System.Drawing.Size(1536, 36);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // loadMenuItem
             // 
             this.loadMenuItem.Name = "loadMenuItem";
-            this.loadMenuItem.Size = new System.Drawing.Size(67, 29);
+            this.loadMenuItem.Size = new System.Drawing.Size(67, 32);
             this.loadMenuItem.Text = "&Load";
             this.loadMenuItem.Click += new System.EventHandler(this.loadMenuItem_Click);
             // 
@@ -2490,14 +2492,14 @@ namespace ConfigUI
             // 
             this.saveMenuItem.Name = "saveMenuItem";
             this.saveMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveMenuItem.Size = new System.Drawing.Size(65, 29);
+            this.saveMenuItem.Size = new System.Drawing.Size(65, 32);
             this.saveMenuItem.Text = "&Save";
             this.saveMenuItem.Click += new System.EventHandler(this.saveMenuItem_Click);
             // 
             // flushMenuItem
             // 
             this.flushMenuItem.Name = "flushMenuItem";
-            this.flushMenuItem.Size = new System.Drawing.Size(155, 29);
+            this.flushMenuItem.Size = new System.Drawing.Size(155, 32);
             this.flushMenuItem.Text = "&Push all settings";
             this.flushMenuItem.Click += new System.EventHandler(this.flushMenuItem_Click);
             // 
@@ -2506,7 +2508,7 @@ namespace ConfigUI
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.restoreMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(155, 29);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(155, 32);
             this.toolStripMenuItem1.Text = "Restore defaults";
             // 
             // restoreMenuItem
@@ -2521,9 +2523,10 @@ namespace ConfigUI
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.status});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 610);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 950);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1024, 22);
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(2, 0, 21, 0);
+            this.statusStrip1.Size = new System.Drawing.Size(1536, 22);
             this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
@@ -2533,17 +2536,47 @@ namespace ConfigUI
             this.status.Name = "status";
             this.status.Size = new System.Drawing.Size(0, 15);
             // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(this.reportIssuesLink);
+            this.tabPage5.Controls.Add(this.layerActive);
+            this.tabPage5.Location = new System.Drawing.Point(4, 29);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Size = new System.Drawing.Size(1528, 903);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "Welcome";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // layerActive
+            // 
+            this.layerActive.AutoSize = true;
+            this.layerActive.Location = new System.Drawing.Point(9, 17);
+            this.layerActive.Name = "layerActive";
+            this.layerActive.Size = new System.Drawing.Size(139, 20);
+            this.layerActive.TabIndex = 0;
+            this.layerActive.Text = "Status is unknown";
+            // 
+            // reportIssuesLink
+            // 
+            this.reportIssuesLink.AutoSize = true;
+            this.reportIssuesLink.Location = new System.Drawing.Point(13, 833);
+            this.reportIssuesLink.Name = "reportIssuesLink";
+            this.reportIssuesLink.Size = new System.Drawing.Size(107, 20);
+            this.reportIssuesLink.TabIndex = 1;
+            this.reportIssuesLink.TabStop = true;
+            this.reportIssuesLink.Text = "Report issues";
+            this.reportIssuesLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.reportIssuesLink_LinkClicked);
+            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1024, 632);
+            this.ClientSize = new System.Drawing.Size(1536, 972);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "OpenXR hand_to_controller configuration tool";
@@ -2618,6 +2651,8 @@ namespace ConfigUI
             this.menuStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.tabPage5.ResumeLayout(false);
+            this.tabPage5.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2808,6 +2843,10 @@ namespace ConfigUI
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel status;
         private System.Windows.Forms.LinkLabel linkLabel2;
+        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.LinkLabel reportIssuesLink;
+        private System.Windows.Forms.Label layerActive;
+        private System.Windows.Forms.ToolTip tooltip;
     }
 }
 

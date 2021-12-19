@@ -1,6 +1,6 @@
 Bug fixes:
 
-* (#2) Binding multiple gestures to the same action does not work.
+* (#1) Binding multiple gestures to the same action does not work.
 
 Tracking:
 
@@ -15,17 +15,13 @@ Graphics:
 
 Haptics:
 
-* Play audio instead of haptics.
+* (#3) Play audio instead of haptics.
 * Bind haptics + current gesture to an action (eg: to simulate button presses with "finger gun" gesture).
 
 Config tool:
 
-* (#3) Add custom gesture
+* (#2) Add custom gesture
 * Add grip pose offset axis correction to reflect proper X/Y/Z axes.
-
-Install script:
-
-* (#1) Make a proper installer so we can handle layer ordering with the NIS layer too.
 
 Misc:
 

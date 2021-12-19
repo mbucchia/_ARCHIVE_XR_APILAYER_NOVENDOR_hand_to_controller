@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XR_APILAYER_NOVENDOR_hand_t
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigUI", "ConfigUI\ConfigUI.csproj", "{F64486BA-421E-43A7-8E97-DC9981EA5C6F}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{13ED4ED1-B118-4A90-9E70-392B0E5D3D34}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,9 @@ Global
 		{F64486BA-421E-43A7-8E97-DC9981EA5C6F}.Debug|x64.Build.0 = Debug|Any CPU
 		{F64486BA-421E-43A7-8E97-DC9981EA5C6F}.Release|x64.ActiveCfg = Release|Any CPU
 		{F64486BA-421E-43A7-8E97-DC9981EA5C6F}.Release|x64.Build.0 = Release|Any CPU
+		{13ED4ED1-B118-4A90-9E70-392B0E5D3D34}.Debug|x64.ActiveCfg = Debug
+		{13ED4ED1-B118-4A90-9E70-392B0E5D3D34}.Release|x64.ActiveCfg = Release
+		{13ED4ED1-B118-4A90-9E70-392B0E5D3D34}.Release|x64.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
