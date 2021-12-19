@@ -154,9 +154,9 @@ namespace ConfigUI
             indexBendNear_Scroll(null, null);
             indexBendFar.Value = 70;
             indexBendFar_Scroll(null, null);
-            fingerGunNear.Value = 0;
+            fingerGunNear.Value = 10;
             fingerGunNear_Scroll(null, null);
-            fingerGunFar.Value = 20;
+            fingerGunFar.Value = 30;
             fingerGunFar_Scroll(null, null);
             squeezeNear.Value = 35;
             squeezeNear_Scroll(null, null);

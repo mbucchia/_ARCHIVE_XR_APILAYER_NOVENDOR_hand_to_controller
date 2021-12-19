@@ -189,9 +189,13 @@ namespace {
                 }
                 if (leftHandEnabled || rightHandEnabled)
                 {
-                    Log("Grip pose uses joint: %d\n", config.gripJointIndex);
-                    Log("Aim pose uses joint: %d\n", config.aimJointIndex);
-                    Log("Click threshold: %.3f\n", config.clickThreshold);
+                    Log("Grip pose uses joint: %d\n", gripJointIndex);
+                    Log("Aim pose uses joint: %d\n", aimJointIndex);
+                    Log("Click threshold: %.3f\n", clickThreshold);
+                }
+                if (custom1Joint1Index >= 0 && custom1Joint2Index >= 0)
+                {
+                    Log("Custom gesture uses joints: %d %d\n", custom1Joint1Index, custom1Joint2Index);
                 }
                 for (int side = 0; side <= 1; side++)
                 {
@@ -249,8 +253,8 @@ namespace {
             indexBendNear = 0.045f;
             indexBendFar = 0.07f;
             fingerGunAction[0] = fingerGunAction[1] = "";
-            fingerGunNear = 0.0f;
-            fingerGunFar = 0.02f;
+            fingerGunNear = 0.01f;
+            fingerGunFar = 0.03f;
             squeezeAction[0] = squeezeAction[1] = "/input/squeeze/value";
             squeezeNear = 0.035f;
             squeezeFar = 0.07f;
@@ -375,6 +379,14 @@ namespace {
                 {
                     config.gripJointIndex = std::stoi(value);
                 }
+                else if (name == "custom1_joint1")
+                {
+                    config.custom1Joint1Index = std::stoi(value);
+                }
+                else if (name == "custom1_joint2")
+                {
+                    config.custom1Joint2Index = std::stoi(value);
+                }
                 else if (name == "click_threshold")
                 {
                     config.clickThreshold = std::stof(value);
@@ -441,6 +453,7 @@ namespace {
                 PARSE_ACTION("palm_tap", palmTap)
                 PARSE_ACTION("wrist_tap", wristTap)
                 PARSE_ACTION("index_tip_tap", indexTipTap)
+                PARSE_ACTION("custom1", custom1)
 
 #undef PARSE_ACTION
                 else
