@@ -32,6 +32,9 @@ namespace ConfigUI
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.reportIssuesLink = new System.Windows.Forms.LinkLabel();
+            this.layerActive = new System.Windows.Forms.Label();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
@@ -214,11 +217,39 @@ namespace ConfigUI
             this.restoreMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.status = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.layerActive = new System.Windows.Forms.Label();
-            this.reportIssuesLink = new System.Windows.Forms.LinkLabel();
             this.tooltip = new System.Windows.Forms.ToolTip(this.components);
+            this.leftFingerGunAction = new System.Windows.Forms.ComboBox();
+            this.label39 = new System.Windows.Forms.Label();
+            this.rightFingerGunAction = new System.Windows.Forms.ComboBox();
+            this.label74 = new System.Windows.Forms.Label();
+            this.groupBox18 = new System.Windows.Forms.GroupBox();
+            this.groupBox19 = new System.Windows.Forms.GroupBox();
+            this.leftCustom1Action = new System.Windows.Forms.ComboBox();
+            this.label75 = new System.Windows.Forms.Label();
+            this.groupBox20 = new System.Windows.Forms.GroupBox();
+            this.rightCustom1Action = new System.Windows.Forms.ComboBox();
+            this.label76 = new System.Windows.Forms.Label();
+            this.groupBox21 = new System.Windows.Forms.GroupBox();
+            this.label77 = new System.Windows.Forms.Label();
+            this.custom1Joint2 = new System.Windows.Forms.ComboBox();
+            this.label78 = new System.Windows.Forms.Label();
+            this.custom1Joint1 = new System.Windows.Forms.ComboBox();
+            this.label79 = new System.Windows.Forms.Label();
+            this.label80 = new System.Windows.Forms.Label();
+            this.custom1FarText = new System.Windows.Forms.TextBox();
+            this.custom1Far = new System.Windows.Forms.TrackBar();
+            this.label81 = new System.Windows.Forms.Label();
+            this.custom1NearText = new System.Windows.Forms.TextBox();
+            this.custom1Near = new System.Windows.Forms.TrackBar();
+            this.label82 = new System.Windows.Forms.Label();
+            this.label83 = new System.Windows.Forms.Label();
+            this.fingerGunFarText = new System.Windows.Forms.TextBox();
+            this.fingerGunFar = new System.Windows.Forms.TrackBar();
+            this.label84 = new System.Windows.Forms.Label();
+            this.fingerGunNearText = new System.Windows.Forms.TextBox();
+            this.fingerGunNear = new System.Windows.Forms.TrackBar();
             this.tabControl1.SuspendLayout();
+            this.tabPage5.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
@@ -271,7 +302,14 @@ namespace ConfigUI
             ((System.ComponentModel.ISupportInitialize)(this.projLayerIndex)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
-            this.tabPage5.SuspendLayout();
+            this.groupBox18.SuspendLayout();
+            this.groupBox19.SuspendLayout();
+            this.groupBox20.SuspendLayout();
+            this.groupBox21.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.custom1Far)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.custom1Near)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fingerGunFar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fingerGunNear)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -282,11 +320,42 @@ namespace ConfigUI
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 36);
+            this.tabControl1.Location = new System.Drawing.Point(0, 33);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1536, 936);
+            this.tabControl1.Size = new System.Drawing.Size(1536, 1095);
             this.tabControl1.TabIndex = 0;
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(this.reportIssuesLink);
+            this.tabPage5.Controls.Add(this.layerActive);
+            this.tabPage5.Location = new System.Drawing.Point(4, 29);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Size = new System.Drawing.Size(1528, 1062);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "Welcome";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // reportIssuesLink
+            // 
+            this.reportIssuesLink.AutoSize = true;
+            this.reportIssuesLink.Location = new System.Drawing.Point(13, 928);
+            this.reportIssuesLink.Name = "reportIssuesLink";
+            this.reportIssuesLink.Size = new System.Drawing.Size(107, 20);
+            this.reportIssuesLink.TabIndex = 1;
+            this.reportIssuesLink.TabStop = true;
+            this.reportIssuesLink.Text = "Report issues";
+            this.reportIssuesLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.reportIssuesLink_LinkClicked);
+            // 
+            // layerActive
+            // 
+            this.layerActive.AutoSize = true;
+            this.layerActive.Location = new System.Drawing.Point(9, 17);
+            this.layerActive.Name = "layerActive";
+            this.layerActive.Size = new System.Drawing.Size(139, 20);
+            this.layerActive.TabIndex = 0;
+            this.layerActive.Text = "Status is unknown";
             // 
             // tabPage1
             // 
@@ -300,8 +369,8 @@ namespace ConfigUI
             this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabPage1.Size = new System.Drawing.Size(1528, 906);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(1528, 1062);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Offsets";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -1026,6 +1095,7 @@ namespace ConfigUI
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.groupBox18);
             this.tabPage2.Controls.Add(this.label68);
             this.tabPage2.Controls.Add(this.interactionProfile);
             this.tabPage2.Controls.Add(this.label67);
@@ -1035,8 +1105,8 @@ namespace ConfigUI
             this.tabPage2.Controls.Add(this.label28);
             this.tabPage2.Location = new System.Drawing.Point(4, 29);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
-            this.tabPage2.Size = new System.Drawing.Size(1528, 906);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(1528, 1062);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Bindings";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -1044,11 +1114,11 @@ namespace ConfigUI
             // label68
             // 
             this.label68.AutoSize = true;
-            this.label68.Location = new System.Drawing.Point(670, 731);
+            this.label68.Location = new System.Drawing.Point(670, 939);
             this.label68.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label68.Name = "label68";
             this.label68.Size = new System.Drawing.Size(250, 20);
-            this.label68.TabIndex = 6;
+            this.label68.TabIndex = 7;
             this.label68.Text = "(requires OpenXR session restart)";
             // 
             // interactionProfile
@@ -1060,32 +1130,32 @@ namespace ConfigUI
             "/interaction_profiles/hp/mixed_reality_controller (HP Reverb G2)",
             "/interaction_profiles/oculus/touch_controller (Oculus Touch)",
             "/interaction_profiles/khr/simple_controller (uncommon)"});
-            this.interactionProfile.Location = new System.Drawing.Point(164, 726);
+            this.interactionProfile.Location = new System.Drawing.Point(164, 934);
             this.interactionProfile.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.interactionProfile.Name = "interactionProfile";
             this.interactionProfile.Size = new System.Drawing.Size(496, 28);
-            this.interactionProfile.TabIndex = 5;
+            this.interactionProfile.TabIndex = 6;
             this.interactionProfile.SelectedIndexChanged += new System.EventHandler(this.interactionProfile_SelectedIndexChanged);
             // 
             // label67
             // 
             this.label67.AutoSize = true;
-            this.label67.Location = new System.Drawing.Point(12, 731);
+            this.label67.Location = new System.Drawing.Point(12, 939);
             this.label67.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label67.Name = "label67";
             this.label67.Size = new System.Drawing.Size(136, 20);
-            this.label67.TabIndex = 4;
+            this.label67.TabIndex = 5;
             this.label67.Text = "Interaction profile:";
             // 
             // groupBox10
             // 
             this.groupBox10.Controls.Add(this.groupBox15);
             this.groupBox10.Controls.Add(this.groupBox16);
-            this.groupBox10.Location = new System.Drawing.Point(3, 474);
+            this.groupBox10.Location = new System.Drawing.Point(3, 509);
             this.groupBox10.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox10.Name = "groupBox10";
             this.groupBox10.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.groupBox10.Size = new System.Drawing.Size(1516, 237);
+            this.groupBox10.Size = new System.Drawing.Size(1516, 235);
             this.groupBox10.TabIndex = 3;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Index finger tap (two-handed gestures)";
@@ -1301,11 +1371,11 @@ namespace ConfigUI
             // 
             this.groupBox9.Controls.Add(this.groupBox13);
             this.groupBox9.Controls.Add(this.groupBox14);
-            this.groupBox9.Location = new System.Drawing.Point(4, 300);
+            this.groupBox9.Location = new System.Drawing.Point(4, 339);
             this.groupBox9.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox9.Name = "groupBox9";
             this.groupBox9.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.groupBox9.Size = new System.Drawing.Size(1516, 152);
+            this.groupBox9.Size = new System.Drawing.Size(1516, 148);
             this.groupBox9.TabIndex = 2;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Multi-fingers (one-handed gestures)";
@@ -1414,13 +1484,15 @@ namespace ConfigUI
             this.groupBox8.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.groupBox8.Size = new System.Drawing.Size(1516, 237);
+            this.groupBox8.Size = new System.Drawing.Size(1516, 273);
             this.groupBox8.TabIndex = 1;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Thumb/Index (one-handed gestures)";
             // 
             // groupBox12
             // 
+            this.groupBox12.Controls.Add(this.leftFingerGunAction);
+            this.groupBox12.Controls.Add(this.label39);
             this.groupBox12.Controls.Add(this.leftIndexBendAction);
             this.groupBox12.Controls.Add(this.label36);
             this.groupBox12.Controls.Add(this.leftThumbPressAction);
@@ -1431,7 +1503,7 @@ namespace ConfigUI
             this.groupBox12.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox12.Name = "groupBox12";
             this.groupBox12.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.groupBox12.Size = new System.Drawing.Size(724, 177);
+            this.groupBox12.Size = new System.Drawing.Size(724, 217);
             this.groupBox12.TabIndex = 0;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "Left hand";
@@ -1543,6 +1615,8 @@ namespace ConfigUI
             // 
             // groupBox11
             // 
+            this.groupBox11.Controls.Add(this.rightFingerGunAction);
+            this.groupBox11.Controls.Add(this.label74);
             this.groupBox11.Controls.Add(this.rightIndexBendAction);
             this.groupBox11.Controls.Add(this.label31);
             this.groupBox11.Controls.Add(this.rightThumbPressAction);
@@ -1553,7 +1627,7 @@ namespace ConfigUI
             this.groupBox11.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox11.Name = "groupBox11";
             this.groupBox11.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.groupBox11.Size = new System.Drawing.Size(724, 177);
+            this.groupBox11.Size = new System.Drawing.Size(724, 217);
             this.groupBox11.TabIndex = 1;
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "Right hand";
@@ -1676,16 +1750,24 @@ namespace ConfigUI
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.groupBox21);
             this.tabPage3.Controls.Add(this.groupBox17);
             this.tabPage3.Location = new System.Drawing.Point(4, 29);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(1528, 906);
+            this.tabPage3.Size = new System.Drawing.Size(1528, 1062);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Gestures";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // groupBox17
             // 
+            this.groupBox17.Controls.Add(this.label82);
+            this.groupBox17.Controls.Add(this.label83);
+            this.groupBox17.Controls.Add(this.fingerGunFarText);
+            this.groupBox17.Controls.Add(this.fingerGunFar);
+            this.groupBox17.Controls.Add(this.label84);
+            this.groupBox17.Controls.Add(this.fingerGunNearText);
+            this.groupBox17.Controls.Add(this.fingerGunNear);
             this.groupBox17.Controls.Add(this.label45);
             this.groupBox17.Controls.Add(this.label69);
             this.groupBox17.Controls.Add(this.label70);
@@ -1745,7 +1827,7 @@ namespace ConfigUI
             this.groupBox17.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBox17.Name = "groupBox17";
             this.groupBox17.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.groupBox17.Size = new System.Drawing.Size(1516, 720);
+            this.groupBox17.Size = new System.Drawing.Size(1516, 792);
             this.groupBox17.TabIndex = 0;
             this.groupBox17.TabStop = false;
             this.groupBox17.Text = "Sensitivity";
@@ -1763,7 +1845,7 @@ namespace ConfigUI
             // label69
             // 
             this.label69.AutoSize = true;
-            this.label69.Location = new System.Drawing.Point(6, 303);
+            this.label69.Location = new System.Drawing.Point(8, 386);
             this.label69.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label69.Name = "label69";
             this.label69.Size = new System.Drawing.Size(136, 20);
@@ -1773,7 +1855,7 @@ namespace ConfigUI
             // label70
             // 
             this.label70.AutoSize = true;
-            this.label70.Location = new System.Drawing.Point(1322, 300);
+            this.label70.Location = new System.Drawing.Point(1324, 383);
             this.label70.Name = "label70";
             this.label70.Size = new System.Drawing.Size(35, 20);
             this.label70.TabIndex = 27;
@@ -1782,7 +1864,7 @@ namespace ConfigUI
             // squeezeFarText
             // 
             this.squeezeFarText.Enabled = false;
-            this.squeezeFarText.Location = new System.Drawing.Point(1270, 297);
+            this.squeezeFarText.Location = new System.Drawing.Point(1272, 380);
             this.squeezeFarText.Name = "squeezeFarText";
             this.squeezeFarText.Size = new System.Drawing.Size(44, 26);
             this.squeezeFarText.TabIndex = 26;
@@ -1790,7 +1872,7 @@ namespace ConfigUI
             // squeezeFar
             // 
             this.squeezeFar.BackColor = System.Drawing.SystemColors.Window;
-            this.squeezeFar.Location = new System.Drawing.Point(800, 283);
+            this.squeezeFar.Location = new System.Drawing.Point(802, 366);
             this.squeezeFar.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.squeezeFar.Maximum = 100;
             this.squeezeFar.Minimum = 1;
@@ -1804,7 +1886,7 @@ namespace ConfigUI
             // label71
             // 
             this.label71.AutoSize = true;
-            this.label71.Location = new System.Drawing.Point(711, 300);
+            this.label71.Location = new System.Drawing.Point(713, 383);
             this.label71.Name = "label71";
             this.label71.Size = new System.Drawing.Size(35, 20);
             this.label71.TabIndex = 24;
@@ -1813,7 +1895,7 @@ namespace ConfigUI
             // squeezeNearText
             // 
             this.squeezeNearText.Enabled = false;
-            this.squeezeNearText.Location = new System.Drawing.Point(660, 297);
+            this.squeezeNearText.Location = new System.Drawing.Point(662, 380);
             this.squeezeNearText.Name = "squeezeNearText";
             this.squeezeNearText.Size = new System.Drawing.Size(44, 26);
             this.squeezeNearText.TabIndex = 23;
@@ -1821,7 +1903,7 @@ namespace ConfigUI
             // squeezeNear
             // 
             this.squeezeNear.BackColor = System.Drawing.SystemColors.Window;
-            this.squeezeNear.Location = new System.Drawing.Point(189, 283);
+            this.squeezeNear.Location = new System.Drawing.Point(191, 366);
             this.squeezeNear.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.squeezeNear.Maximum = 99;
             this.squeezeNear.Name = "squeezeNear";
@@ -1833,7 +1915,7 @@ namespace ConfigUI
             // label66
             // 
             this.label66.AutoSize = true;
-            this.label66.Location = new System.Drawing.Point(711, 646);
+            this.label66.Location = new System.Drawing.Point(713, 729);
             this.label66.Name = "label66";
             this.label66.Size = new System.Drawing.Size(23, 20);
             this.label66.TabIndex = 52;
@@ -1842,7 +1924,7 @@ namespace ConfigUI
             // label65
             // 
             this.label65.AutoSize = true;
-            this.label65.Location = new System.Drawing.Point(776, 663);
+            this.label65.Location = new System.Drawing.Point(778, 746);
             this.label65.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label65.Name = "label65";
             this.label65.Size = new System.Drawing.Size(715, 20);
@@ -1854,7 +1936,7 @@ namespace ConfigUI
             // 
             this.label64.AutoSize = true;
             this.label64.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label64.Location = new System.Drawing.Point(776, 637);
+            this.label64.Location = new System.Drawing.Point(778, 720);
             this.label64.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label64.Name = "label64";
             this.label64.Size = new System.Drawing.Size(450, 20);
@@ -1864,7 +1946,7 @@ namespace ConfigUI
             // label63
             // 
             this.label63.AutoSize = true;
-            this.label63.Location = new System.Drawing.Point(6, 648);
+            this.label63.Location = new System.Drawing.Point(8, 731);
             this.label63.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label63.Name = "label63";
             this.label63.Size = new System.Drawing.Size(116, 20);
@@ -1874,7 +1956,7 @@ namespace ConfigUI
             // clickThresholdText
             // 
             this.clickThresholdText.Enabled = false;
-            this.clickThresholdText.Location = new System.Drawing.Point(660, 642);
+            this.clickThresholdText.Location = new System.Drawing.Point(662, 725);
             this.clickThresholdText.Name = "clickThresholdText";
             this.clickThresholdText.Size = new System.Drawing.Size(44, 26);
             this.clickThresholdText.TabIndex = 51;
@@ -1882,7 +1964,7 @@ namespace ConfigUI
             // clickThreshold
             // 
             this.clickThreshold.BackColor = System.Drawing.SystemColors.Window;
-            this.clickThreshold.Location = new System.Drawing.Point(189, 628);
+            this.clickThreshold.Location = new System.Drawing.Point(191, 711);
             this.clickThreshold.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.clickThreshold.Maximum = 100;
             this.clickThreshold.Minimum = 10;
@@ -1896,7 +1978,7 @@ namespace ConfigUI
             // label60
             // 
             this.label60.AutoSize = true;
-            this.label60.Location = new System.Drawing.Point(6, 538);
+            this.label60.Location = new System.Drawing.Point(8, 621);
             this.label60.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label60.Name = "label60";
             this.label60.Size = new System.Drawing.Size(159, 20);
@@ -1906,7 +1988,7 @@ namespace ConfigUI
             // label61
             // 
             this.label61.AutoSize = true;
-            this.label61.Location = new System.Drawing.Point(1322, 535);
+            this.label61.Location = new System.Drawing.Point(1324, 618);
             this.label61.Name = "label61";
             this.label61.Size = new System.Drawing.Size(35, 20);
             this.label61.TabIndex = 48;
@@ -1915,7 +1997,7 @@ namespace ConfigUI
             // indexTipTapFarText
             // 
             this.indexTipTapFarText.Enabled = false;
-            this.indexTipTapFarText.Location = new System.Drawing.Point(1270, 532);
+            this.indexTipTapFarText.Location = new System.Drawing.Point(1272, 615);
             this.indexTipTapFarText.Name = "indexTipTapFarText";
             this.indexTipTapFarText.Size = new System.Drawing.Size(44, 26);
             this.indexTipTapFarText.TabIndex = 47;
@@ -1923,7 +2005,7 @@ namespace ConfigUI
             // indexTipTapFar
             // 
             this.indexTipTapFar.BackColor = System.Drawing.SystemColors.Window;
-            this.indexTipTapFar.Location = new System.Drawing.Point(800, 518);
+            this.indexTipTapFar.Location = new System.Drawing.Point(802, 601);
             this.indexTipTapFar.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.indexTipTapFar.Maximum = 100;
             this.indexTipTapFar.Minimum = 1;
@@ -1937,7 +2019,7 @@ namespace ConfigUI
             // label62
             // 
             this.label62.AutoSize = true;
-            this.label62.Location = new System.Drawing.Point(711, 535);
+            this.label62.Location = new System.Drawing.Point(713, 618);
             this.label62.Name = "label62";
             this.label62.Size = new System.Drawing.Size(35, 20);
             this.label62.TabIndex = 45;
@@ -1946,7 +2028,7 @@ namespace ConfigUI
             // indexTipTapNearText
             // 
             this.indexTipTapNearText.Enabled = false;
-            this.indexTipTapNearText.Location = new System.Drawing.Point(660, 532);
+            this.indexTipTapNearText.Location = new System.Drawing.Point(662, 615);
             this.indexTipTapNearText.Name = "indexTipTapNearText";
             this.indexTipTapNearText.Size = new System.Drawing.Size(44, 26);
             this.indexTipTapNearText.TabIndex = 44;
@@ -1954,7 +2036,7 @@ namespace ConfigUI
             // indexTipTapNear
             // 
             this.indexTipTapNear.BackColor = System.Drawing.SystemColors.Window;
-            this.indexTipTapNear.Location = new System.Drawing.Point(189, 518);
+            this.indexTipTapNear.Location = new System.Drawing.Point(191, 601);
             this.indexTipTapNear.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.indexTipTapNear.Maximum = 99;
             this.indexTipTapNear.Name = "indexTipTapNear";
@@ -1966,7 +2048,7 @@ namespace ConfigUI
             // label57
             // 
             this.label57.AutoSize = true;
-            this.label57.Location = new System.Drawing.Point(6, 460);
+            this.label57.Location = new System.Drawing.Point(8, 543);
             this.label57.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label57.Name = "label57";
             this.label57.Size = new System.Drawing.Size(134, 20);
@@ -1976,7 +2058,7 @@ namespace ConfigUI
             // label58
             // 
             this.label58.AutoSize = true;
-            this.label58.Location = new System.Drawing.Point(1322, 457);
+            this.label58.Location = new System.Drawing.Point(1324, 540);
             this.label58.Name = "label58";
             this.label58.Size = new System.Drawing.Size(35, 20);
             this.label58.TabIndex = 41;
@@ -1985,7 +2067,7 @@ namespace ConfigUI
             // palmTapFarText
             // 
             this.palmTapFarText.Enabled = false;
-            this.palmTapFarText.Location = new System.Drawing.Point(1270, 454);
+            this.palmTapFarText.Location = new System.Drawing.Point(1272, 537);
             this.palmTapFarText.Name = "palmTapFarText";
             this.palmTapFarText.Size = new System.Drawing.Size(44, 26);
             this.palmTapFarText.TabIndex = 40;
@@ -1993,7 +2075,7 @@ namespace ConfigUI
             // palmTapFar
             // 
             this.palmTapFar.BackColor = System.Drawing.SystemColors.Window;
-            this.palmTapFar.Location = new System.Drawing.Point(800, 440);
+            this.palmTapFar.Location = new System.Drawing.Point(802, 523);
             this.palmTapFar.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.palmTapFar.Maximum = 100;
             this.palmTapFar.Minimum = 1;
@@ -2007,7 +2089,7 @@ namespace ConfigUI
             // label59
             // 
             this.label59.AutoSize = true;
-            this.label59.Location = new System.Drawing.Point(711, 457);
+            this.label59.Location = new System.Drawing.Point(713, 540);
             this.label59.Name = "label59";
             this.label59.Size = new System.Drawing.Size(35, 20);
             this.label59.TabIndex = 38;
@@ -2016,7 +2098,7 @@ namespace ConfigUI
             // palmTapNearText
             // 
             this.palmTapNearText.Enabled = false;
-            this.palmTapNearText.Location = new System.Drawing.Point(660, 454);
+            this.palmTapNearText.Location = new System.Drawing.Point(662, 537);
             this.palmTapNearText.Name = "palmTapNearText";
             this.palmTapNearText.Size = new System.Drawing.Size(44, 26);
             this.palmTapNearText.TabIndex = 37;
@@ -2024,7 +2106,7 @@ namespace ConfigUI
             // palmTapNear
             // 
             this.palmTapNear.BackColor = System.Drawing.SystemColors.Window;
-            this.palmTapNear.Location = new System.Drawing.Point(189, 440);
+            this.palmTapNear.Location = new System.Drawing.Point(191, 523);
             this.palmTapNear.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.palmTapNear.Maximum = 99;
             this.palmTapNear.Name = "palmTapNear";
@@ -2036,7 +2118,7 @@ namespace ConfigUI
             // label54
             // 
             this.label54.AutoSize = true;
-            this.label54.Location = new System.Drawing.Point(6, 382);
+            this.label54.Location = new System.Drawing.Point(8, 465);
             this.label54.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label54.Name = "label54";
             this.label54.Size = new System.Drawing.Size(135, 20);
@@ -2046,7 +2128,7 @@ namespace ConfigUI
             // label55
             // 
             this.label55.AutoSize = true;
-            this.label55.Location = new System.Drawing.Point(1322, 378);
+            this.label55.Location = new System.Drawing.Point(1324, 461);
             this.label55.Name = "label55";
             this.label55.Size = new System.Drawing.Size(35, 20);
             this.label55.TabIndex = 34;
@@ -2055,7 +2137,7 @@ namespace ConfigUI
             // wristTapFarText
             // 
             this.wristTapFarText.Enabled = false;
-            this.wristTapFarText.Location = new System.Drawing.Point(1270, 375);
+            this.wristTapFarText.Location = new System.Drawing.Point(1272, 458);
             this.wristTapFarText.Name = "wristTapFarText";
             this.wristTapFarText.Size = new System.Drawing.Size(44, 26);
             this.wristTapFarText.TabIndex = 33;
@@ -2063,7 +2145,7 @@ namespace ConfigUI
             // wristTapFar
             // 
             this.wristTapFar.BackColor = System.Drawing.SystemColors.Window;
-            this.wristTapFar.Location = new System.Drawing.Point(800, 362);
+            this.wristTapFar.Location = new System.Drawing.Point(802, 445);
             this.wristTapFar.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.wristTapFar.Maximum = 100;
             this.wristTapFar.Minimum = 1;
@@ -2077,7 +2159,7 @@ namespace ConfigUI
             // label56
             // 
             this.label56.AutoSize = true;
-            this.label56.Location = new System.Drawing.Point(711, 378);
+            this.label56.Location = new System.Drawing.Point(713, 461);
             this.label56.Name = "label56";
             this.label56.Size = new System.Drawing.Size(35, 20);
             this.label56.TabIndex = 31;
@@ -2086,7 +2168,7 @@ namespace ConfigUI
             // wristTapNearText
             // 
             this.wristTapNearText.Enabled = false;
-            this.wristTapNearText.Location = new System.Drawing.Point(660, 375);
+            this.wristTapNearText.Location = new System.Drawing.Point(662, 458);
             this.wristTapNearText.Name = "wristTapNearText";
             this.wristTapNearText.Size = new System.Drawing.Size(44, 26);
             this.wristTapNearText.TabIndex = 30;
@@ -2094,7 +2176,7 @@ namespace ConfigUI
             // wristTapNear
             // 
             this.wristTapNear.BackColor = System.Drawing.SystemColors.Window;
-            this.wristTapNear.Location = new System.Drawing.Point(189, 362);
+            this.wristTapNear.Location = new System.Drawing.Point(191, 445);
             this.wristTapNear.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.wristTapNear.Maximum = 99;
             this.wristTapNear.Name = "wristTapNear";
@@ -2308,7 +2390,7 @@ namespace ConfigUI
             this.tabPage4.Controls.Add(this.groupBox7);
             this.tabPage4.Location = new System.Drawing.Point(4, 29);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(1528, 906);
+            this.tabPage4.Size = new System.Drawing.Size(1528, 1062);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Misc";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -2476,15 +2558,14 @@ namespace ConfigUI
             this.toolStripMenuItem1});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(6, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(1536, 36);
+            this.menuStrip1.Size = new System.Drawing.Size(1536, 33);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // loadMenuItem
             // 
             this.loadMenuItem.Name = "loadMenuItem";
-            this.loadMenuItem.Size = new System.Drawing.Size(67, 32);
+            this.loadMenuItem.Size = new System.Drawing.Size(67, 29);
             this.loadMenuItem.Text = "&Load";
             this.loadMenuItem.Click += new System.EventHandler(this.loadMenuItem_Click);
             // 
@@ -2492,14 +2573,14 @@ namespace ConfigUI
             // 
             this.saveMenuItem.Name = "saveMenuItem";
             this.saveMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveMenuItem.Size = new System.Drawing.Size(65, 32);
+            this.saveMenuItem.Size = new System.Drawing.Size(65, 29);
             this.saveMenuItem.Text = "&Save";
             this.saveMenuItem.Click += new System.EventHandler(this.saveMenuItem_Click);
             // 
             // flushMenuItem
             // 
             this.flushMenuItem.Name = "flushMenuItem";
-            this.flushMenuItem.Size = new System.Drawing.Size(155, 32);
+            this.flushMenuItem.Size = new System.Drawing.Size(155, 29);
             this.flushMenuItem.Text = "&Push all settings";
             this.flushMenuItem.Click += new System.EventHandler(this.flushMenuItem_Click);
             // 
@@ -2508,7 +2589,7 @@ namespace ConfigUI
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.restoreMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(155, 32);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(155, 29);
             this.toolStripMenuItem1.Text = "Restore defaults";
             // 
             // restoreMenuItem
@@ -2523,7 +2604,7 @@ namespace ConfigUI
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.status});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 950);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 1106);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(2, 0, 21, 0);
             this.statusStrip1.Size = new System.Drawing.Size(1536, 22);
@@ -2536,42 +2617,448 @@ namespace ConfigUI
             this.status.Name = "status";
             this.status.Size = new System.Drawing.Size(0, 15);
             // 
-            // tabPage5
+            // leftFingerGunAction
             // 
-            this.tabPage5.Controls.Add(this.reportIssuesLink);
-            this.tabPage5.Controls.Add(this.layerActive);
-            this.tabPage5.Location = new System.Drawing.Point(4, 29);
-            this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(1528, 903);
-            this.tabPage5.TabIndex = 4;
-            this.tabPage5.Text = "Welcome";
-            this.tabPage5.UseVisualStyleBackColor = true;
+            this.leftFingerGunAction.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.leftFingerGunAction.FormattingEnabled = true;
+            this.leftFingerGunAction.Items.AddRange(new object[] {
+            "",
+            "/input/menu/click",
+            "/input/trigger/value",
+            "/input/squeeze/value (HP/Oculus only)",
+            "/input/squeeze/click",
+            "/input/x/click (HP/Oculus left hand only)",
+            "/input/y/click (HP/Oculus left hand only)",
+            "/input/a/click (HP/Oculus right hand only)",
+            "/input/b/click (HP/Oculus right hand only)",
+            "/input/thumbstick/click",
+            "/input/system/click (Windows button)",
+            "/input/trackpad/click (WMR 1st gen only)",
+            "/input/select/click (simple_controller only)"});
+            this.leftFingerGunAction.Location = new System.Drawing.Point(130, 167);
+            this.leftFingerGunAction.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.leftFingerGunAction.Name = "leftFingerGunAction";
+            this.leftFingerGunAction.Size = new System.Drawing.Size(486, 28);
+            this.leftFingerGunAction.TabIndex = 7;
+            this.leftFingerGunAction.SelectedIndexChanged += new System.EventHandler(this.leftFingerGunAction_SelectedIndexChanged);
             // 
-            // layerActive
+            // label39
             // 
-            this.layerActive.AutoSize = true;
-            this.layerActive.Location = new System.Drawing.Point(9, 17);
-            this.layerActive.Name = "layerActive";
-            this.layerActive.Size = new System.Drawing.Size(139, 20);
-            this.layerActive.TabIndex = 0;
-            this.layerActive.Text = "Status is unknown";
+            this.label39.AutoSize = true;
+            this.label39.Location = new System.Drawing.Point(12, 172);
+            this.label39.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(89, 20);
+            this.label39.TabIndex = 6;
+            this.label39.Text = "Finger gun:";
             // 
-            // reportIssuesLink
+            // rightFingerGunAction
             // 
-            this.reportIssuesLink.AutoSize = true;
-            this.reportIssuesLink.Location = new System.Drawing.Point(13, 833);
-            this.reportIssuesLink.Name = "reportIssuesLink";
-            this.reportIssuesLink.Size = new System.Drawing.Size(107, 20);
-            this.reportIssuesLink.TabIndex = 1;
-            this.reportIssuesLink.TabStop = true;
-            this.reportIssuesLink.Text = "Report issues";
-            this.reportIssuesLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.reportIssuesLink_LinkClicked);
+            this.rightFingerGunAction.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.rightFingerGunAction.FormattingEnabled = true;
+            this.rightFingerGunAction.Items.AddRange(new object[] {
+            "",
+            "/input/menu/click",
+            "/input/trigger/value",
+            "/input/squeeze/value (HP/Oculus only)",
+            "/input/squeeze/click",
+            "/input/x/click (HP/Oculus left hand only)",
+            "/input/y/click (HP/Oculus left hand only)",
+            "/input/a/click (HP/Oculus right hand only)",
+            "/input/b/click (HP/Oculus right hand only)",
+            "/input/thumbstick/click",
+            "/input/system/click (Windows button)",
+            "/input/trackpad/click (WMR 1st gen only)",
+            "/input/select/click (simple_controller only)"});
+            this.rightFingerGunAction.Location = new System.Drawing.Point(130, 168);
+            this.rightFingerGunAction.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.rightFingerGunAction.Name = "rightFingerGunAction";
+            this.rightFingerGunAction.Size = new System.Drawing.Size(486, 28);
+            this.rightFingerGunAction.TabIndex = 11;
+            this.rightFingerGunAction.SelectedIndexChanged += new System.EventHandler(this.rightFingerGunAction_SelectedIndexChanged);
+            // 
+            // label74
+            // 
+            this.label74.AutoSize = true;
+            this.label74.Location = new System.Drawing.Point(12, 173);
+            this.label74.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label74.Name = "label74";
+            this.label74.Size = new System.Drawing.Size(89, 20);
+            this.label74.TabIndex = 10;
+            this.label74.Text = "Finger gun:";
+            // 
+            // groupBox18
+            // 
+            this.groupBox18.Controls.Add(this.groupBox19);
+            this.groupBox18.Controls.Add(this.groupBox20);
+            this.groupBox18.Location = new System.Drawing.Point(6, 763);
+            this.groupBox18.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox18.Name = "groupBox18";
+            this.groupBox18.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox18.Size = new System.Drawing.Size(1516, 148);
+            this.groupBox18.TabIndex = 5;
+            this.groupBox18.TabStop = false;
+            this.groupBox18.Text = "Custom gestures";
+            // 
+            // groupBox19
+            // 
+            this.groupBox19.Controls.Add(this.leftCustom1Action);
+            this.groupBox19.Controls.Add(this.label75);
+            this.groupBox19.Location = new System.Drawing.Point(22, 40);
+            this.groupBox19.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox19.Name = "groupBox19";
+            this.groupBox19.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox19.Size = new System.Drawing.Size(724, 92);
+            this.groupBox19.TabIndex = 0;
+            this.groupBox19.TabStop = false;
+            this.groupBox19.Text = "Left hand";
+            // 
+            // leftCustom1Action
+            // 
+            this.leftCustom1Action.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.leftCustom1Action.FormattingEnabled = true;
+            this.leftCustom1Action.Items.AddRange(new object[] {
+            "",
+            "/input/menu/click",
+            "/input/trigger/value",
+            "/input/squeeze/value (HP/Oculus only)",
+            "/input/squeeze/click",
+            "/input/x/click (HP/Oculus left hand only)",
+            "/input/y/click (HP/Oculus left hand only)",
+            "/input/a/click (HP/Oculus right hand only)",
+            "/input/b/click (HP/Oculus right hand only)",
+            "/input/thumbstick/click",
+            "/input/system/click (Windows button)",
+            "/input/trackpad/click (WMR 1st gen only)",
+            "/input/select/click (simple_controller only)"});
+            this.leftCustom1Action.Location = new System.Drawing.Point(130, 43);
+            this.leftCustom1Action.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.leftCustom1Action.Name = "leftCustom1Action";
+            this.leftCustom1Action.Size = new System.Drawing.Size(486, 28);
+            this.leftCustom1Action.TabIndex = 1;
+            this.leftCustom1Action.SelectedIndexChanged += new System.EventHandler(this.leftCustom1Action_SelectedIndexChanged);
+            // 
+            // label75
+            // 
+            this.label75.AutoSize = true;
+            this.label75.Location = new System.Drawing.Point(12, 48);
+            this.label75.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label75.Name = "label75";
+            this.label75.Size = new System.Drawing.Size(81, 20);
+            this.label75.TabIndex = 0;
+            this.label75.Text = "Custom 1:";
+            // 
+            // groupBox20
+            // 
+            this.groupBox20.Controls.Add(this.rightCustom1Action);
+            this.groupBox20.Controls.Add(this.label76);
+            this.groupBox20.Location = new System.Drawing.Point(770, 40);
+            this.groupBox20.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox20.Name = "groupBox20";
+            this.groupBox20.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox20.Size = new System.Drawing.Size(724, 92);
+            this.groupBox20.TabIndex = 0;
+            this.groupBox20.TabStop = false;
+            this.groupBox20.Text = "Right hand";
+            // 
+            // rightCustom1Action
+            // 
+            this.rightCustom1Action.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.rightCustom1Action.FormattingEnabled = true;
+            this.rightCustom1Action.Items.AddRange(new object[] {
+            "",
+            "/input/menu/click",
+            "/input/trigger/value",
+            "/input/squeeze/value (HP/Oculus only)",
+            "/input/squeeze/click",
+            "/input/x/click (HP/Oculus left hand only)",
+            "/input/y/click (HP/Oculus left hand only)",
+            "/input/a/click (HP/Oculus right hand only)",
+            "/input/b/click (HP/Oculus right hand only)",
+            "/input/thumbstick/click",
+            "/input/system/click (Windows button)",
+            "/input/trackpad/click (WMR 1st gen only)",
+            "/input/select/click (simple_controller only)"});
+            this.rightCustom1Action.Location = new System.Drawing.Point(130, 43);
+            this.rightCustom1Action.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.rightCustom1Action.Name = "rightCustom1Action";
+            this.rightCustom1Action.Size = new System.Drawing.Size(486, 28);
+            this.rightCustom1Action.TabIndex = 1;
+            this.rightCustom1Action.SelectedIndexChanged += new System.EventHandler(this.rightCustom1Action_SelectedIndexChanged);
+            // 
+            // label76
+            // 
+            this.label76.AutoSize = true;
+            this.label76.Location = new System.Drawing.Point(12, 48);
+            this.label76.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label76.Name = "label76";
+            this.label76.Size = new System.Drawing.Size(81, 20);
+            this.label76.TabIndex = 6;
+            this.label76.Text = "Custom 1:";
+            // 
+            // groupBox21
+            // 
+            this.groupBox21.Controls.Add(this.label79);
+            this.groupBox21.Controls.Add(this.label80);
+            this.groupBox21.Controls.Add(this.custom1FarText);
+            this.groupBox21.Controls.Add(this.custom1Far);
+            this.groupBox21.Controls.Add(this.label81);
+            this.groupBox21.Controls.Add(this.custom1NearText);
+            this.groupBox21.Controls.Add(this.custom1Near);
+            this.groupBox21.Controls.Add(this.label77);
+            this.groupBox21.Controls.Add(this.custom1Joint2);
+            this.groupBox21.Controls.Add(this.label78);
+            this.groupBox21.Controls.Add(this.custom1Joint1);
+            this.groupBox21.Location = new System.Drawing.Point(3, 805);
+            this.groupBox21.Name = "groupBox21";
+            this.groupBox21.Size = new System.Drawing.Size(1517, 191);
+            this.groupBox21.TabIndex = 1;
+            this.groupBox21.TabStop = false;
+            this.groupBox21.Text = "Custom gestures";
+            // 
+            // label77
+            // 
+            this.label77.AutoSize = true;
+            this.label77.Location = new System.Drawing.Point(458, 50);
+            this.label77.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label77.Name = "label77";
+            this.label77.Size = new System.Drawing.Size(101, 20);
+            this.label77.TabIndex = 2;
+            this.label77.Text = "Second joint:";
+            // 
+            // custom1Joint2
+            // 
+            this.custom1Joint2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.custom1Joint2.FormattingEnabled = true;
+            this.custom1Joint2.Items.AddRange(new object[] {
+            "",
+            "Palm",
+            "Wrist",
+            "Thumb metacarpal",
+            "Thumb proximal",
+            "Thumb distal",
+            "Thumb tip",
+            "Index metacarpal",
+            "Index proximal",
+            "Index intermediate",
+            "Index distal",
+            "Index tip",
+            "Middle metacarpal",
+            "Middle proximal",
+            "Middle intermediate",
+            "Middle distal",
+            "Middle tip",
+            "Ring metacarpal",
+            "Ring proximal",
+            "Ring intermediate",
+            "Ring distal",
+            "Ring tip",
+            "Little metacarpal",
+            "Little proximal",
+            "Little intermediate",
+            "Little distal",
+            "Little tip"});
+            this.custom1Joint2.Location = new System.Drawing.Point(654, 46);
+            this.custom1Joint2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.custom1Joint2.Name = "custom1Joint2";
+            this.custom1Joint2.Size = new System.Drawing.Size(180, 28);
+            this.custom1Joint2.TabIndex = 3;
+            this.custom1Joint2.SelectedIndexChanged += new System.EventHandler(this.custom1Joint2_SelectedIndexChanged);
+            // 
+            // label78
+            // 
+            this.label78.AutoSize = true;
+            this.label78.Location = new System.Drawing.Point(10, 50);
+            this.label78.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label78.Name = "label78";
+            this.label78.Size = new System.Drawing.Size(77, 20);
+            this.label78.TabIndex = 0;
+            this.label78.Text = "First joint:";
+            // 
+            // custom1Joint1
+            // 
+            this.custom1Joint1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.custom1Joint1.FormattingEnabled = true;
+            this.custom1Joint1.Items.AddRange(new object[] {
+            "",
+            "Palm",
+            "Wrist",
+            "Thumb metacarpal",
+            "Thumb proximal",
+            "Thumb distal",
+            "Thumb tip",
+            "Index metacarpal",
+            "Index proximal",
+            "Index intermediate",
+            "Index distal",
+            "Index tip",
+            "Middle metacarpal",
+            "Middle proximal",
+            "Middle intermediate",
+            "Middle distal",
+            "Middle tip",
+            "Ring metacarpal",
+            "Ring proximal",
+            "Ring intermediate",
+            "Ring distal",
+            "Ring tip",
+            "Little metacarpal",
+            "Little proximal",
+            "Little intermediate",
+            "Little distal",
+            "Little tip"});
+            this.custom1Joint1.Location = new System.Drawing.Point(207, 46);
+            this.custom1Joint1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.custom1Joint1.Name = "custom1Joint1";
+            this.custom1Joint1.Size = new System.Drawing.Size(180, 28);
+            this.custom1Joint1.TabIndex = 1;
+            this.custom1Joint1.SelectedIndexChanged += new System.EventHandler(this.custom1Joint1_SelectedIndexChanged);
+            // 
+            // label79
+            // 
+            this.label79.AutoSize = true;
+            this.label79.Location = new System.Drawing.Point(10, 123);
+            this.label79.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label79.Name = "label79";
+            this.label79.Size = new System.Drawing.Size(70, 20);
+            this.label79.TabIndex = 4;
+            this.label79.Text = "Near/far:";
+            // 
+            // label80
+            // 
+            this.label80.AutoSize = true;
+            this.label80.Location = new System.Drawing.Point(1323, 123);
+            this.label80.Name = "label80";
+            this.label80.Size = new System.Drawing.Size(35, 20);
+            this.label80.TabIndex = 10;
+            this.label80.Text = "mm";
+            // 
+            // custom1FarText
+            // 
+            this.custom1FarText.Enabled = false;
+            this.custom1FarText.Location = new System.Drawing.Point(1271, 120);
+            this.custom1FarText.Name = "custom1FarText";
+            this.custom1FarText.Size = new System.Drawing.Size(44, 26);
+            this.custom1FarText.TabIndex = 9;
+            // 
+            // custom1Far
+            // 
+            this.custom1Far.BackColor = System.Drawing.SystemColors.Window;
+            this.custom1Far.Location = new System.Drawing.Point(801, 106);
+            this.custom1Far.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.custom1Far.Maximum = 100;
+            this.custom1Far.Minimum = 1;
+            this.custom1Far.Name = "custom1Far";
+            this.custom1Far.Size = new System.Drawing.Size(470, 69);
+            this.custom1Far.TabIndex = 8;
+            this.custom1Far.TickFrequency = 5;
+            this.custom1Far.Value = 1;
+            this.custom1Far.Scroll += new System.EventHandler(this.custom1Far_Scroll);
+            // 
+            // label81
+            // 
+            this.label81.AutoSize = true;
+            this.label81.Location = new System.Drawing.Point(712, 123);
+            this.label81.Name = "label81";
+            this.label81.Size = new System.Drawing.Size(35, 20);
+            this.label81.TabIndex = 7;
+            this.label81.Text = "mm";
+            // 
+            // custom1NearText
+            // 
+            this.custom1NearText.Enabled = false;
+            this.custom1NearText.Location = new System.Drawing.Point(661, 120);
+            this.custom1NearText.Name = "custom1NearText";
+            this.custom1NearText.Size = new System.Drawing.Size(44, 26);
+            this.custom1NearText.TabIndex = 6;
+            // 
+            // custom1Near
+            // 
+            this.custom1Near.BackColor = System.Drawing.SystemColors.Window;
+            this.custom1Near.Location = new System.Drawing.Point(190, 106);
+            this.custom1Near.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.custom1Near.Maximum = 99;
+            this.custom1Near.Name = "custom1Near";
+            this.custom1Near.Size = new System.Drawing.Size(470, 69);
+            this.custom1Near.TabIndex = 5;
+            this.custom1Near.TickFrequency = 5;
+            this.custom1Near.Scroll += new System.EventHandler(this.custom1Near_Scroll);
+            // 
+            // label82
+            // 
+            this.label82.AutoSize = true;
+            this.label82.Location = new System.Drawing.Point(8, 305);
+            this.label82.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label82.Name = "label82";
+            this.label82.Size = new System.Drawing.Size(148, 20);
+            this.label82.TabIndex = 55;
+            this.label82.Text = "Finger gun near/far:";
+            // 
+            // label83
+            // 
+            this.label83.AutoSize = true;
+            this.label83.Location = new System.Drawing.Point(1324, 302);
+            this.label83.Name = "label83";
+            this.label83.Size = new System.Drawing.Size(35, 20);
+            this.label83.TabIndex = 61;
+            this.label83.Text = "mm";
+            // 
+            // fingerGunFarText
+            // 
+            this.fingerGunFarText.Enabled = false;
+            this.fingerGunFarText.Location = new System.Drawing.Point(1272, 298);
+            this.fingerGunFarText.Name = "fingerGunFarText";
+            this.fingerGunFarText.Size = new System.Drawing.Size(44, 26);
+            this.fingerGunFarText.TabIndex = 60;
+            // 
+            // fingerGunFar
+            // 
+            this.fingerGunFar.BackColor = System.Drawing.SystemColors.Window;
+            this.fingerGunFar.Location = new System.Drawing.Point(802, 285);
+            this.fingerGunFar.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.fingerGunFar.Maximum = 100;
+            this.fingerGunFar.Minimum = 1;
+            this.fingerGunFar.Name = "fingerGunFar";
+            this.fingerGunFar.Size = new System.Drawing.Size(470, 69);
+            this.fingerGunFar.TabIndex = 59;
+            this.fingerGunFar.TickFrequency = 5;
+            this.fingerGunFar.Value = 1;
+            this.fingerGunFar.Scroll += new System.EventHandler(this.fingerGunFar_Scroll);
+            // 
+            // label84
+            // 
+            this.label84.AutoSize = true;
+            this.label84.Location = new System.Drawing.Point(713, 302);
+            this.label84.Name = "label84";
+            this.label84.Size = new System.Drawing.Size(35, 20);
+            this.label84.TabIndex = 58;
+            this.label84.Text = "mm";
+            // 
+            // fingerGunNearText
+            // 
+            this.fingerGunNearText.Enabled = false;
+            this.fingerGunNearText.Location = new System.Drawing.Point(662, 298);
+            this.fingerGunNearText.Name = "fingerGunNearText";
+            this.fingerGunNearText.Size = new System.Drawing.Size(44, 26);
+            this.fingerGunNearText.TabIndex = 57;
+            // 
+            // fingerGunNear
+            // 
+            this.fingerGunNear.BackColor = System.Drawing.SystemColors.Window;
+            this.fingerGunNear.Location = new System.Drawing.Point(191, 285);
+            this.fingerGunNear.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.fingerGunNear.Maximum = 99;
+            this.fingerGunNear.Name = "fingerGunNear";
+            this.fingerGunNear.Size = new System.Drawing.Size(470, 69);
+            this.fingerGunNear.TabIndex = 56;
+            this.fingerGunNear.TickFrequency = 5;
+            this.fingerGunNear.Scroll += new System.EventHandler(this.fingerGunNear_Scroll);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1536, 972);
+            this.ClientSize = new System.Drawing.Size(1536, 1128);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.menuStrip1);
@@ -2581,6 +3068,8 @@ namespace ConfigUI
             this.Name = "Form1";
             this.Text = "OpenXR hand_to_controller configuration tool";
             this.tabControl1.ResumeLayout(false);
+            this.tabPage5.ResumeLayout(false);
+            this.tabPage5.PerformLayout();
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.groupBox4.ResumeLayout(false);
@@ -2651,8 +3140,17 @@ namespace ConfigUI
             this.menuStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
-            this.tabPage5.ResumeLayout(false);
-            this.tabPage5.PerformLayout();
+            this.groupBox18.ResumeLayout(false);
+            this.groupBox19.ResumeLayout(false);
+            this.groupBox19.PerformLayout();
+            this.groupBox20.ResumeLayout(false);
+            this.groupBox20.PerformLayout();
+            this.groupBox21.ResumeLayout(false);
+            this.groupBox21.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.custom1Far)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.custom1Near)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fingerGunFar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fingerGunNear)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2847,6 +3345,36 @@ namespace ConfigUI
         private System.Windows.Forms.LinkLabel reportIssuesLink;
         private System.Windows.Forms.Label layerActive;
         private System.Windows.Forms.ToolTip tooltip;
+        private System.Windows.Forms.ComboBox leftFingerGunAction;
+        private System.Windows.Forms.Label label39;
+        private System.Windows.Forms.ComboBox rightFingerGunAction;
+        private System.Windows.Forms.Label label74;
+        private System.Windows.Forms.GroupBox groupBox18;
+        private System.Windows.Forms.GroupBox groupBox19;
+        private System.Windows.Forms.ComboBox leftCustom1Action;
+        private System.Windows.Forms.Label label75;
+        private System.Windows.Forms.GroupBox groupBox20;
+        private System.Windows.Forms.ComboBox rightCustom1Action;
+        private System.Windows.Forms.Label label76;
+        private System.Windows.Forms.GroupBox groupBox21;
+        private System.Windows.Forms.Label label77;
+        private System.Windows.Forms.ComboBox custom1Joint2;
+        private System.Windows.Forms.Label label78;
+        private System.Windows.Forms.ComboBox custom1Joint1;
+        private System.Windows.Forms.Label label79;
+        private System.Windows.Forms.Label label80;
+        private System.Windows.Forms.TextBox custom1FarText;
+        private System.Windows.Forms.TrackBar custom1Far;
+        private System.Windows.Forms.Label label81;
+        private System.Windows.Forms.TextBox custom1NearText;
+        private System.Windows.Forms.TrackBar custom1Near;
+        private System.Windows.Forms.Label label82;
+        private System.Windows.Forms.Label label83;
+        private System.Windows.Forms.TextBox fingerGunFarText;
+        private System.Windows.Forms.TrackBar fingerGunFar;
+        private System.Windows.Forms.Label label84;
+        private System.Windows.Forms.TextBox fingerGunNearText;
+        private System.Windows.Forms.TrackBar fingerGunNear;
     }
 }
 

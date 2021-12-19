@@ -137,8 +137,15 @@ namespace {
         // The threshold (between 0 and 1) when converting a float action into a boolean action and the action is true.
         float clickThreshold;
 
+
         // The transformation to apply to the aim and grip poses.
         XrPosef transform[2];
+
+        // The index of the 1st joint (see enum XrHandJointEXT) to use for 1st custom gesture.
+        int custom1Joint1Index;
+
+        // The index of the 2nd joint (see enum XrHandJointEXT) to use for 1st custom gesture.
+        int custom1Joint2Index;
 
         // The target XrAction path for a given gesture, and the near/far threshold to map the float action too (near maps to 1, far maps to 0).
 #define DEFINE_ACTION(configName)           \
@@ -149,10 +156,12 @@ namespace {
         DEFINE_ACTION(pinch);
         DEFINE_ACTION(thumbPress);
         DEFINE_ACTION(indexBend);
+        DEFINE_ACTION(fingerGun);
         DEFINE_ACTION(squeeze);
         DEFINE_ACTION(palmTap);
         DEFINE_ACTION(wristTap);
         DEFINE_ACTION(indexTipTap);
+        DEFINE_ACTION(custom1);
 
 #undef DEFINE_ACTION
 
@@ -201,10 +210,12 @@ namespace {
                     LOG_IF_SET("pinch", pinch);
                     LOG_IF_SET("thumb press", thumbPress);
                     LOG_IF_SET("index bend", indexBend);
+                    LOG_IF_SET("finger gun", fingerGun);
                     LOG_IF_SET("squeeze", squeeze);
                     LOG_IF_SET("palm tap", palmTap);
                     LOG_IF_SET("wrist tap", wristTap);
                     LOG_IF_SET("index tip tap", indexTipTap);
+                    LOG_IF_SET("custom gesture", custom1);
 
 #undef LOG_IF_SET
                 }
@@ -237,6 +248,9 @@ namespace {
             indexBendAction[0] = indexBendAction[1] = "";
             indexBendNear = 0.045f;
             indexBendFar = 0.07f;
+            fingerGunAction[0] = fingerGunAction[1] = "";
+            fingerGunNear = 0.0f;
+            fingerGunFar = 0.02f;
             squeezeAction[0] = squeezeAction[1] = "/input/squeeze/value";
             squeezeNear = 0.035f;
             squeezeFar = 0.07f;
@@ -252,6 +266,12 @@ namespace {
             indexTipTapAction[1] = "";
             indexTipTapNear = 0.0f;
             indexTipTapFar = 0.07f;
+            // Custom gesture is unconfigured.
+            custom1Action[0] = custom1Action[1] = "";
+            custom1Joint1Index = -1;
+            custom1Joint2Index = -1;
+            custom1Near = 0.0f;
+            custom1Far = 0.1f;
         }
     } config;
 
@@ -416,6 +436,7 @@ namespace {
                 PARSE_ACTION("pinch", pinch)
                 PARSE_ACTION("thumb_press", thumbPress)
                 PARSE_ACTION("index_bend", indexBend)
+                PARSE_ACTION("finger_gun", fingerGun)
                 PARSE_ACTION("squeeze", squeeze)
                 PARSE_ACTION("palm_tap", palmTap)
                 PARSE_ACTION("wrist_tap", wristTap)
@@ -997,6 +1018,11 @@ namespace {
                         ComputeJointAction(jointLocations, side, XR_HAND_JOINT_THUMB_TIP_EXT, side, XR_HAND_JOINT_INDEX_TIP_EXT, sidePath, ACTION_PARAMS(pinch));
                         ComputeJointAction(jointLocations, side, XR_HAND_JOINT_INDEX_INTERMEDIATE_EXT, side, XR_HAND_JOINT_THUMB_TIP_EXT, sidePath, ACTION_PARAMS(thumbPress));
                         ComputeJointAction(jointLocations, side, XR_HAND_JOINT_INDEX_PROXIMAL_EXT, side, XR_HAND_JOINT_INDEX_TIP_EXT, sidePath, ACTION_PARAMS(indexBend));
+                        ComputeJointAction(jointLocations, side, XR_HAND_JOINT_THUMB_TIP_EXT, side, XR_HAND_JOINT_MIDDLE_INTERMEDIATE_EXT, sidePath, ACTION_PARAMS(fingerGun));
+                        if (config.custom1Joint1Index >= 0 && config.custom1Joint2Index >= 0)
+                        {
+                            ComputeJointAction(jointLocations, side, config.custom1Joint1Index, side, config.custom1Joint2Index, sidePath, ACTION_PARAMS(custom1));
+                        }
 
                         if (!config.squeezeAction[side].empty())
                         {

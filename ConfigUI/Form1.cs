@@ -126,6 +126,7 @@ namespace ConfigUI
             leftPinchAction.SelectedIndex = 2; // /input/trigger/value
             leftThumbPressAction.SelectedIndex = 0;
             leftIndexBendAction.SelectedIndex = 0;
+            leftFingerGunAction.SelectedIndex = 0;
             leftSqueezeAction.SelectedIndex = 3; // /input/squeeze/value
             leftWristTapAction.SelectedIndex = 1; // /input/menu/click
             leftPalmTapAction.SelectedIndex = 0;
@@ -133,9 +134,12 @@ namespace ConfigUI
             rightPinchAction.SelectedIndex = 2; // /input/trigger/value
             rightThumbPressAction.SelectedIndex = 0;
             rightIndexBendAction.SelectedIndex = 0;
+            rightFingerGunAction.SelectedIndex = 0;
             rightSqueezeAction.SelectedIndex = 3; // /input/squeeze/value
             rightWristTapAction.SelectedIndex = 0;
             rightPalmTapAction.SelectedIndex = 0;
+            leftCustom1Action.SelectedIndex = 0;
+            rightCustom1Action.SelectedIndex = 0;
             interactionProfile.SelectedIndex = 1; // HP Reverb
 
             pinchNear.Value = 0;
@@ -150,6 +154,10 @@ namespace ConfigUI
             indexBendNear_Scroll(null, null);
             indexBendFar.Value = 70;
             indexBendFar_Scroll(null, null);
+            fingerGunNear.Value = 0;
+            fingerGunNear_Scroll(null, null);
+            fingerGunFar.Value = 20;
+            fingerGunFar_Scroll(null, null);
             squeezeNear.Value = 35;
             squeezeNear_Scroll(null, null);
             squeezeFar.Value = 70;
@@ -168,6 +176,12 @@ namespace ConfigUI
             indexTipTapFar_Scroll(null, null);
             clickThreshold.Value = 75;
             clickThreshold_Scroll(null, null);
+            custom1Joint1.SelectedIndex = 0;
+            custom1Joint2.SelectedIndex = 0;
+            custom1Near.Value = 0;
+            custom1Near_Scroll(null, null);
+            custom1Far.Value = 100;
+            custom1Far_Scroll(null, null);
 
             displayDisable.Checked = false;
             projLayerIndex_Scroll(null, null);
@@ -350,6 +364,10 @@ namespace ConfigUI
         {
             UpdateAction("left.index_bend", leftIndexBendAction.Text);
         }
+        private void leftFingerGunAction_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateAction("left.finger_gun", leftFingerGunAction.Text);
+        }
 
         private void rightPinchAction_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -366,6 +384,10 @@ namespace ConfigUI
             UpdateAction("right.index_bend", rightIndexBendAction.Text);
         }
 
+        private void rightFingerGunAction_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateAction("right.finger_gun", rightFingerGunAction.Text);
+        }
 
         private void leftSqueezeAction_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -402,6 +424,16 @@ namespace ConfigUI
             UpdateAction("right.palm_tap", rightPalmTapAction.Text);
         }
 
+        private void leftCustom1Action_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateAction("left.custom1", leftCustom1Action.Text);
+        }
+
+        private void rightCustom1Action_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateAction("right.custom1", rightCustom1Action.Text);
+        }
+
         private void interactionProfile_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Strip the note string when there is one.
@@ -410,6 +442,8 @@ namespace ConfigUI
         #endregion
 
         #region Gestures tab.
+
+        // TODO: Deduplicate the code below.
 
         private void pinchNear_Scroll(object sender, EventArgs e)
         {
@@ -481,6 +515,30 @@ namespace ConfigUI
                 indexBendNear_Scroll(null, null);
             }
             SendUpdate("index_bend.far", (indexBendFar.Value / 1000.0f).ToString());
+        }
+
+        private void fingerGunNear_Scroll(object sender, EventArgs e)
+        {
+            fingerGunNearText.Text = fingerGunNear.Value.ToString();
+            // We must always keep the far value greater than the near value.
+            if (fingerGunNear.Value >= fingerGunFar.Value)
+            {
+                fingerGunFar.Value = fingerGunNear.Value + 1;
+                fingerGunFar_Scroll(null, null);
+            }
+            SendUpdate("finger_gun.near", (fingerGunNear.Value / 1000.0f).ToString());
+        }
+
+        private void fingerGunFar_Scroll(object sender, EventArgs e)
+        {
+            fingerGunFarText.Text = fingerGunFar.Value.ToString();
+            // We must always keep the near value smaller than the near value.
+            if (fingerGunFar.Value <= fingerGunNear.Value)
+            {
+                fingerGunNear.Value = fingerGunFar.Value - 1;
+                fingerGunNear_Scroll(null, null);
+            }
+            SendUpdate("finger_gun.far", (fingerGunFar.Value / 1000.0f).ToString());
         }
 
         private void squeezeNear_Scroll(object sender, EventArgs e)
@@ -584,6 +642,40 @@ namespace ConfigUI
             clickThresholdText.Text = clickThreshold.Value.ToString();
             SendUpdate("click_threshold", (clickThreshold.Value / 100.0f).ToString());
         }
+
+        private void custom1Joint1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SendUpdate("custom1_joint1", (custom1Joint1.SelectedIndex - 1).ToString());
+        }
+
+        private void custom1Joint2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SendUpdate("custom1_joint2", (custom1Joint2.SelectedIndex - 1).ToString());
+        }
+
+        private void custom1Near_Scroll(object sender, EventArgs e)
+        {
+            custom1NearText.Text = custom1Near.Value.ToString();
+            // We must always keep the far value greater than the near value.
+            if (custom1Near.Value >= custom1Far.Value)
+            {
+                custom1Far.Value = custom1Near.Value + 1;
+                custom1Far_Scroll(null, null);
+            }
+            SendUpdate("custom1.near", (custom1Near.Value / 1000.0f).ToString());
+        }
+
+        private void custom1Far_Scroll(object sender, EventArgs e)
+        {
+            custom1FarText.Text = custom1Far.Value.ToString();
+            // We must always keep the near value smaller than the near value.
+            if (custom1Far.Value <= custom1Near.Value)
+            {
+                custom1Near.Value = custom1Far.Value - 1;
+                custom1Near_Scroll(null, null);
+            }
+            SendUpdate("custom1.far", (custom1Far.Value / 1000.0f).ToString());
+        }
         #endregion
 
         #region Misc tab.
@@ -655,16 +747,20 @@ namespace ConfigUI
             leftPinchAction_SelectedIndexChanged(null, null);
             leftThumbPressAction_SelectedIndexChanged(null, null);
             leftIndexBendAction_SelectedIndexChanged(null, null);
+            leftFingerGunAction_SelectedIndexChanged(null, null);
             leftSqueezeAction_SelectedIndexChanged(null, null);
             leftWristTapAction_SelectedIndexChanged(null, null);
             leftPalmTapAction_SelectedIndexChanged(null, null);
             leftIndexTipTapAction_SelectedIndexChanged(null, null);
+            leftCustom1Action_SelectedIndexChanged(null, null);
             rightPinchAction_SelectedIndexChanged(null, null);
             rightThumbPressAction_SelectedIndexChanged(null, null);
             rightIndexBendAction_SelectedIndexChanged(null, null);
+            rightFingerGunAction_SelectedIndexChanged(null, null);
             rightSqueezeAction_SelectedIndexChanged(null, null);
             rightWristTapAction_SelectedIndexChanged(null, null);
             rightPalmTapAction_SelectedIndexChanged(null, null);
+            rightCustom1Action_SelectedIndexChanged(null, null);
             interactionProfile_SelectedIndexChanged(null, null);
 
             pinchNear_Scroll(null, null);
@@ -673,6 +769,8 @@ namespace ConfigUI
             thumbPressFar_Scroll(null, null);
             indexBendNear_Scroll(null, null);
             indexBendFar_Scroll(null, null);
+            fingerGunNear_Scroll(null, null);
+            fingerGunFar_Scroll(null, null);
             squeezeNear_Scroll(null, null);
             squeezeFar_Scroll(null, null);
             wristTapNear_Scroll(null, null);
@@ -682,6 +780,10 @@ namespace ConfigUI
             indexTipTapNear_Scroll(null, null);
             indexTipTapFar_Scroll(null, null);
             clickThreshold_Scroll(null, null);
+            custom1Joint1_SelectedIndexChanged(null, null);
+            custom1Joint2_SelectedIndexChanged(null, null);
+            custom1Near_Scroll(null, null);
+            custom1Far_Scroll(null, null);
 
             displayDisable_CheckedChanged(null, null);
             projLayerIndex_Scroll(null, null);
@@ -802,6 +904,9 @@ namespace ConfigUI
                             case "left.index_bend":
                                 SelectActionByName(leftIndexBendAction, value);
                                 break;
+                            case "left.finger_gun":
+                                SelectActionByName(leftFingerGunAction, value);
+                                break;
                             case "left.squeeze":
                                 SelectActionByName(leftSqueezeAction, value);
                                 break;
@@ -814,6 +919,9 @@ namespace ConfigUI
                             case "left.index_tip_tap":
                                 SelectActionByName(leftIndexTipTapAction, value);
                                 break;
+                            case "left.custom1":
+                                SelectActionByName(leftCustom1Action, value);
+                                break;
                             case "right.pinch":
                                 SelectActionByName(rightPinchAction, value);
                                 break;
@@ -823,6 +931,9 @@ namespace ConfigUI
                             case "right.index_bend":
                                 SelectActionByName(rightIndexBendAction, value);
                                 break;
+                            case "right.finger_gun":
+                                SelectActionByName(rightFingerGunAction, value);
+                                break;
                             case "right.squeeze":
                                 SelectActionByName(rightSqueezeAction, value);
                                 break;
@@ -831,6 +942,9 @@ namespace ConfigUI
                                 break;
                             case "right.palm_tap":
                                 SelectActionByName(rightPalmTapAction, value);
+                                break;
+                            case "right.custom1":
+                                SelectActionByName(rightCustom1Action, value);
                                 break;
                             case "interaction_profile":
                                 SelectActionByName(interactionProfile, value);
@@ -852,6 +966,12 @@ namespace ConfigUI
                                 break;
                             case "index_bend.far":
                                 indexBendFar.Value = (int)Math.Round(Double.Parse(value) * 1000);
+                                break;
+                            case "finger_gun.near":
+                                fingerGunNear.Value = (int)Math.Round(Double.Parse(value) * 1000);
+                                break;
+                            case "finger_gun.far":
+                                fingerGunFar.Value = (int)Math.Round(Double.Parse(value) * 1000);
                                 break;
                             case "squeeze.near":
                                 squeezeNear.Value = (int)Math.Round(Double.Parse(value) * 1000);
@@ -879,6 +999,18 @@ namespace ConfigUI
                                 break;
                             case "click_threshold":
                                 clickThreshold.Value = (int)Math.Round(Double.Parse(value) * 100);
+                                break;
+                            case "custom1_joint1":
+                                custom1Joint1.SelectedIndex = 1 + Int32.Parse(value);
+                                break;
+                            case "custom1_joint2":
+                                custom1Joint2.SelectedIndex = 1 + Int32.Parse(value);
+                                break;
+                            case "custom1.near":
+                                custom1Near.Value = (int)Math.Round(Double.Parse(value) * 1000);
+                                break;
+                            case "custom1.far":
+                                custom1Far.Value = (int)Math.Round(Double.Parse(value) * 1000);
                                 break;
                             case "display.enabled":
                                 displayDisable.Checked = !(value == "1" || value == "true");

@@ -15,12 +15,11 @@ Graphics:
 
 Haptics:
 
-* (#3) Play audio instead of haptics.
+* (#2) Play audio instead of haptics.
 * Bind haptics + current gesture to an action (eg: to simulate button presses with "finger gun" gesture).
 
 Config tool:
 
-* (#2) Add custom gesture
 * Add grip pose offset axis correction to reflect proper X/Y/Z axes.
 
 Misc:
